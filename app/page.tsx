@@ -1,6 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Camera, Clapperboard, PenTool, Share2 } from 'lucide-react';
+import RecentGallery from '@/components/RecentGallery';
+import { photos } from '@/data/site';
+import { recentWork } from '@/data/recent-work';
 import ProductGrid from '@/components/ProductGrid';
 import { NewsletterForm } from '@/components/Forms';
 import { collections, featuredProducts } from '@/data/site';
@@ -25,17 +28,22 @@ export default function HomePage() {
           <p>Museum-quality prints of places shaped by weather, time and quiet observation.</p>
           <div className="hero__actions">
             <Link className="button button--solid" href="/shop">Shop prints</Link>
-            <Link className="text-link" href="/collections">Explore collections <ArrowRight /></Link>
+            <Link className="text-link" href="/photography">See the latest work <ArrowRight /></Link>
           </div>
         </div>
         <span className="hero__caption">Adirondack Mountains · New York</span>
       </section>
 
       <section className="home-proof" aria-label="Morse Media store highlights">
-        <div><strong>20</strong><span>Original photographs</span></div>
+        <div><strong>{photos.length + recentWork.length}</strong><span>Original photographs</span></div>
         <div><strong>5</strong><span>Curated collections</span></div>
         <div><strong>4</strong><span>Made-to-order finishes</span></div>
         <div><strong>Secure</strong><span>On-site Stripe checkout</span></div>
+      </section>
+
+      <section className="content-section latest-work" id="latest-work">
+        <div className="section-heading"><div><p className="eyebrow">New work / Autumn studies</p><h2>A season in full color.</h2></div><Link className="text-link" href="/photography">Explore the photographs <ArrowRight /></Link></div>
+        <RecentGallery />
       </section>
 
       <section className="content-section">

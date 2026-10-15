@@ -175,6 +175,7 @@ export function Footer() {
       </div>
       <div>
         <h4>Explore</h4>
+        <Link href="/photography">Latest photography</Link>
         <Link href="/collections">Collections</Link>
         <Link href="/services">Services</Link>
         <Link href="/portfolio">Portfolio</Link>
