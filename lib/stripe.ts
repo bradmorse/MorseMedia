@@ -5,7 +5,7 @@ let stripeClient: Stripe | null = null;
 
 function isRealKey(value: string | undefined, prefix: 'pk_' | 'sk_') {
   const key = value?.trim() || '';
-  return key.startsWith(prefix) && !key.includes('REPLACE_ME') && key.length > 20;
+  return (key.startsWith(prefix) || (prefix === 'sk_' && key.startsWith('rk_'))) && !key.includes('REPLACE_ME') && key.length > 20;
 }
 
 export function getStripe() {
