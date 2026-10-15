@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import RecentGallery from '@/components/RecentGallery';
 import styles from './portfolio.module.css';
 
 export const metadata: Metadata = {
@@ -265,6 +266,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
+      <section className="content-section"><div className="section-heading"><div><p className="eyebrow">Creative approach</p><h2>One campaign. Every touchpoint.</h2></div></div><div className="workflow-grid"><article><span>01 / Plan</span><h3>Start with the message.</h3><p>Define the offer, audience and channels. Build a shot list and asset plan around the campaign objective.</p></article><article><span>02 / Produce</span><h3>Create a consistent visual language.</h3><p>Bring together filming, photography, editing and graphic design for the formats the campaign needs.</p></article><article><span>03 / Refine</span><h3>Learn from the response.</h3><p>Use reporting and team feedback to inform the next round of content and creative decisions.</p></article></div></section>
       <div className={styles.caseStudyList}>
         {brands.map((brand, index) => (
           <article className={styles.caseStudy} key={brand.name}>
@@ -345,6 +347,7 @@ export default function PortfolioPage() {
         ))}
       </div>
 
+      <section className="content-section"><div className="section-heading"><div><p className="eyebrow">Personal photography</p><h2>The eye behind the work.</h2></div><Link className="text-link" href="/photography">Explore the archive ↗</Link></div><RecentGallery /></section>
       <section className={styles.ctaSection}>
         <div className={styles.container}>
           <div className={styles.ctaCard}>

@@ -1,10 +1,11 @@
+import { pageMetadata } from '@/lib/seo';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { collections } from '@/data/site';
 
-export const metadata: Metadata = { title: 'Collections', description: 'Explore Morse Media photography collections from New England and beyond.' };
+export const metadata = pageMetadata('New England Photography Collections', 'Explore original photographs of New Hampshire, Maine, the Adirondacks, forgotten architecture and the night sky.', '/collections');
 
 export default function CollectionsPage() {
   return (

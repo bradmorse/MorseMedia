@@ -63,7 +63,11 @@ export function NewsletterForm() {
   );
 }
 
-export function ContactForm({ defaultType = 'Print or order question' }: { defaultType?: string }) {
+export function ContactForm({ defaultType = 'Print or order question', photoTitle = '' }: { defaultType?: string; photoTitle?: string }) {
+  const [projectType, setProjectType] = useState(defaultType);
+  const [mailLink, setMailLink] = useState('');
+  const isPrint = projectType === 'Print or order question';
+  const isProperty = projectType === 'Real estate photography';
   const [state, setState] = useState<SubmitState>({ status: 'idle', message: '' });
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -78,12 +82,18 @@ export function ContactForm({ defaultType = 'Print or order question' }: { defau
         email: String(form.get('email') || ''),
         type: String(form.get('type') || 'Creative project'),
         message: String(form.get('message') || ''),
+        location: String(form.get('location') || ''),
+        timeline: String(form.get('timeline') || ''),
+        budget: String(form.get('budget') || ''),
+        details: String(form.get('details') || ''),
+        photo: photoTitle,
         company: String(form.get('company') || ''),
       });
 
       if (result.mode === 'mailto' && result.mailto) {
         window.location.href = result.mailto;
-        setState({ status: 'success', message: 'Your email application should open with the inquiry filled in.' });
+        setMailLink(result.mailto);
+        setState({ status: 'idle', message: 'Your message is prepared. Send it from your email app to complete your inquiry.' });
       } else {
         formElement.reset();
         setState({ status: 'success', message: 'Your inquiry was sent. Expect a reply within two business days.' });
@@ -100,9 +110,10 @@ export function ContactForm({ defaultType = 'Print or order question' }: { defau
         <label>Email<input name="email" type="email" autoComplete="email" maxLength={254} required /></label>
       </div>
       <label>Project type
-        <select name="type" defaultValue={defaultType}>
+        <select name="type" value={projectType} onChange={e=>setProjectType(e.target.value)}>
           <option>Print or order question</option>
           <option>Photography</option>
+          <option>Real estate photography</option>
           <option>Video production</option>
           <option>Social media content</option>
           <option>Graphic design</option>
@@ -110,13 +121,17 @@ export function ContactForm({ defaultType = 'Print or order question' }: { defau
           <option>Image licensing</option>
         </select>
       </label>
+      {photoTitle && <p className="inquiry-context">Photograph: {photoTitle}</p>}
+      {!isPrint && <div className="field-row"><label>{isProperty ? 'Property location' : 'Project location / website'}<input name="location" maxLength={250} autoComplete="off" /></label><label>Timeline<select name="timeline"><option value="">Select a timeframe</option><option>As soon as possible</option><option>Within a month</option><option>1–3 months</option><option>Flexible / exploring</option></select></label></div>}
+      {!isPrint && <div className="field-row"><label>Budget range<select name="budget"><option value="">Prefer to discuss</option><option>Under $500</option><option>$500–$1,500</option><option>$1,500–$3,000</option><option>$3,000–$5,000</option><option>$5,000+</option></select></label><label>{isProperty ? 'Square footage & requested shoot date' : projectType === 'Video production' ? 'Runtime, formats & filming needs' : projectType === 'Social media content' ? 'Platforms & posting frequency' : projectType === 'Image licensing' ? 'Image use, distribution & license term' : 'Deliverables & intended usage'}<input name="details" maxLength={500} /></label></div>}
       <label>Message<textarea name="message" rows={7} minLength={10} maxLength={5000} required /></label>
       <label className="honeypot" aria-hidden="true">Company<input name="company" tabIndex={-1} autoComplete="off" /></label>
+      {mailLink && <p><a className="text-link" href={mailLink}>Open prepared email ↗</a> · <a href="mailto:hello@morsemedia.co">Or email hello@morsemedia.co</a></p>}
       <div className="form-actions">
         <button className="button button--solid" type="submit" disabled={state.status === 'sending'}>
           {state.status === 'sending' ? <><LoaderCircle className="spin" /> Sending</> : <><Mail /> Send inquiry</>}
         </button>
-        {state.status !== 'idle' && <span className={state.status === 'error' ? 'form-note form-error' : 'form-note'} role={state.status === 'error' ? 'alert' : 'status'}>{state.message}</span>}
+        {state.message && <span className={state.status === 'error' ? 'form-note form-error' : 'form-note'} role={state.status === 'error' ? 'alert' : 'status'}>{state.message}</span>}
       </div>
     </form>
   );

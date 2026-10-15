@@ -1,3 +1,4 @@
+import { pageMetadata } from '@/lib/seo';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Camera, Clapperboard, PenTool, Share2 } from 'lucide-react';
@@ -8,11 +9,13 @@ import ProductGrid from '@/components/ProductGrid';
 import { NewsletterForm } from '@/components/Forms';
 import { collections, featuredProducts } from '@/data/site';
 
+export const metadata = pageMetadata('Fine Art Photography & Creative Services in New Hampshire', 'Original landscape photography, fine-art prints, commercial video, social media content and graphic design by Bradley Morse.', '/');
+
 const services = [
-  { icon: Camera, title: 'Photography', copy: 'Brand, product, location and editorial imagery built for the places it will be used.', href: '/services#photography' },
-  { icon: Clapperboard, title: 'Video', copy: 'Cinematic production and editing for brands, businesses and social campaigns.', href: '/services#video-production' },
-  { icon: Share2, title: 'Social Media', copy: 'Strategy, recurring content production and platform-ready creative for consistent visibility.', href: '/services#social-media' },
-  { icon: PenTool, title: 'Design', copy: 'Graphic design, campaign creative and visual systems built to communicate clearly.', href: '/services#graphic-design' },
+  { icon: Camera, title: 'Photography', copy: 'Brand, product, location and editorial imagery built for the places it will be used.', href: '/services/photography' },
+  { icon: Clapperboard, title: 'Video', copy: 'Cinematic production and editing for brands, businesses and social campaigns.', href: '/services/video-production' },
+  { icon: Share2, title: 'Social Media', copy: 'Strategy, recurring content production and platform-ready creative for consistent visibility.', href: '/services/social-media' },
+  { icon: PenTool, title: 'Design', copy: 'Graphic design, campaign creative and visual systems built to communicate clearly.', href: '/services/graphic-design' },
 ];
 
 export default function HomePage() {
@@ -38,7 +41,7 @@ export default function HomePage() {
         <div><strong>{photos.length + recentWork.length}</strong><span>Original photographs</span></div>
         <div><strong>5</strong><span>Curated collections</span></div>
         <div><strong>4</strong><span>Made-to-order finishes</span></div>
-        <div><strong>Secure</strong><span>On-site Stripe checkout</span></div>
+        <div><strong>Personal</strong><span>Print & licensing inquiries</span></div>
       </section>
 
       <section className="content-section latest-work" id="latest-work">

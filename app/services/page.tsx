@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { servicePages } from '@/data/services';
 import {
   ArrowRight,
   Camera,
@@ -11,7 +12,7 @@ import {
 } from 'lucide-react';
 import styles from './services.module.css';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://morsemedia.co';
+const siteUrl = 'https://www.morsemedia.co';
 
 export const metadata: Metadata = {
   title: 'Creative Services',
@@ -279,7 +280,7 @@ export default function ServicesPage() {
                     <span>Best for</span>
                     <p>{bestFor}</p>
                   </div>
-                  <Link href={`/contact?service=${encodeURIComponent(title)}`} className={styles.cardLink}>
+                  <Link href={`/services/${id}`} className={styles.cardLink}>
                     Discuss {title.toLowerCase()} <ArrowRight />
                   </Link>
                 </div>
@@ -360,6 +361,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      <nav className="content-section service-links" aria-label="Service details">{servicePages.map(s=><Link key={s.slug} href={`/services/${s.slug}`}>{s.name} ↗</Link>)}</nav>
       <section className={styles.ctaSection}>
         <div className={styles.container}>
           <div className={styles.ctaCard}>

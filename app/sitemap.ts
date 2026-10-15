@@ -1,10 +1,13 @@
+import { recentWork } from '@/data/recent-work';
+import { servicePages } from '@/data/services';
 import type { MetadataRoute } from 'next';
 import { collections, products } from '@/data/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://morsemedia.co';
+  const siteUrl = 'https://www.morsemedia.co';
   const staticPages = [
     { path: '', priority: 1, changeFrequency: 'monthly' as const },
+    { path: '/print-guide', priority: 0.7, changeFrequency: 'monthly' as const },
     { path: '/shop', priority: 0.9, changeFrequency: 'weekly' as const },
     { path: '/collections', priority: 0.8, changeFrequency: 'monthly' as const },
     { path: '/services', priority: 0.85, changeFrequency: 'monthly' as const },
@@ -18,8 +21,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   return [
-    ...staticPages.map((page) => ({ url: `${siteUrl}${page.path}`, lastModified: new Date(), changeFrequency: page.changeFrequency, priority: page.priority })),
-    ...collections.map((collection) => ({ url: `${siteUrl}/collections/${collection.slug}`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 })),
-    ...products.map((product) => ({ url: `${siteUrl}/shop/${product.slug}`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.75 })),
+    ...servicePages.map(s=>({url:`${siteUrl}/services/${s.slug}`,priority:0.8})),
+    ...recentWork.map(p=>({url:`${siteUrl}/photography/${p.slug}`,images:[siteUrl+p.image],priority:0.7})),
+    ...staticPages.map((page) => ({ url: `${siteUrl}${page.path || "/"}`, changeFrequency: page.changeFrequency, priority: page.priority })),
+    ...collections.map((collection) => ({ url: `${siteUrl}/collections/${collection.slug}`, changeFrequency: 'monthly' as const, priority: 0.7 })),
+    ...products.map((product) => ({ url: `${siteUrl}/shop/${product.slug}`, images: [siteUrl+product.image], changeFrequency: 'monthly' as const, priority: 0.75 })),
   ];
 }

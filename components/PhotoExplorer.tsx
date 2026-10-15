@@ -1,0 +1,10 @@
+'use client';
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { galleryPhotos } from '@/data/discovery';
+export default function PhotoExplorer() {
+ const [query,setQuery]=useState(''); const [subject,setSubject]=useState('All');const [color,setColor]=useState('All');const [orientation,setOrientation]=useState('All');const [location,setLocation]=useState('All');
+ const filtered=galleryPhotos.filter(p=>(subject==='All'||p.subject===subject)&&(color==='All'||p.color===color)&&(orientation==='All'||p.orientation===orientation)&&(location==='All'||p.location===location)&&`${p.title} ${p.alt} ${p.location}`.toLowerCase().includes(query.toLowerCase().trim()));
+ return <><div className="discovery-filters"><label>Search<input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Water, autumn, architecture…" /></label>{([{label:'Subject',value:subject,set:setSubject,options:[...new Set(galleryPhotos.map(p=>p.subject))]},{label:'Color',value:color,set:setColor,options:[...new Set(galleryPhotos.map(p=>p.color))]},{label:'Orientation',value:orientation,set:setOrientation,options:['portrait','landscape']},{label:'Location / series',value:location,set:setLocation,options:[...new Set(galleryPhotos.map(p=>p.location))]}]).map(f=><label key={f.label}>{f.label}<select value={f.value} onChange={e=>f.set(e.target.value)}><option>All</option>{f.options.map(o=><option key={o}>{o}</option>)}</select></label>)}</div><div className="shop-results-bar"><span role="status">{filtered.length} photographs</span><button className="reset-filters" onClick={()=>{setQuery('');setSubject('All');setColor('All');setOrientation('All');setLocation('All');}}>Reset filters</button></div><div className="discovery-grid">{filtered.map(p=><Link href={p.href} key={p.slug}><div><Image src={p.image} alt={p.alt} fill sizes="(max-width:600px) 90vw,(max-width:1000px) 45vw,30vw" /></div><h3>{p.title}</h3><p>{p.subject} · {p.location}</p></Link>)}</div>{!filtered.length&&<p>No photographs match these filters. Try resetting them.</p>}</>;
+}

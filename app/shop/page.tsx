@@ -1,10 +1,11 @@
+import { pageMetadata } from '@/lib/seo';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import ShopCatalog from '@/components/ShopCatalog';
 import { finishOptions } from '@/data/site';
 import { formatCurrency } from '@/lib/format';
 
-export const metadata: Metadata = { title: 'Print Shop', description: 'Shop fine-art photography prints by Morse Media.' };
+export const metadata = pageMetadata('New England Fine Art Photography Prints', 'Browse original New Hampshire, Maine and Adirondack landscape photography. Compare artwork sizes, finishes and coordinated print pairings.', '/shop');
 
 export default function ShopPage() {
   return (
@@ -15,7 +16,7 @@ export default function ShopPage() {
         <div className="page-hero__copy">
           <p className="eyebrow">The print shop</p>
           <h1>Artwork made<br />to live with.</h1>
-          <p>Choose a photograph, size and finish, then complete secure payment directly on the Morse Media website.</p>
+          <p>Explore original photographs, compare sizes and finishes, and enquire about the right piece for your space.</p>
         </div>
       </section>
       <section className="content-section shop-section">

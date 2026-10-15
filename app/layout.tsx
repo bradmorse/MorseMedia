@@ -4,7 +4,7 @@ import './globals.css';
 import { CartProvider } from '@/components/CartProvider';
 import { Footer, Header } from '@/components/SiteChrome';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://morsemedia.co';
+const siteUrl = 'https://www.morsemedia.co';
 
 export const metadata: Metadata = {
   title: {
@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   authors: [{ name: 'Morse Media' }],
   creator: 'Morse Media',
   publisher: 'Morse Media',
+  verification: { google: process.env.GOOGLE_SITE_VERIFICATION || undefined },
   openGraph: {
     title: 'Morse Media | Fine Art Photography',
     description: 'Atmospheric photography and museum-quality prints from New England and beyond.',
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#0c0e0f',
+  themeColor: '#0d1412',
   colorScheme: 'dark',
 };
 

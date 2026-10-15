@@ -3,16 +3,18 @@
 import Link from 'next/link';
 import { Check, ShieldCheck, ShoppingBag, Truck } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { finishOptions, getSizeOptions, type Product } from '@/data/site';
+import { buildSku, finishOptions, getSizeOptions, type Product } from '@/data/site';
 import { formatCurrency } from '@/lib/format';
 import { useCart } from './CartProvider';
 
-export default function ProductPurchasePanel({ product }: { product: Product }) {
+export default function ProductPurchasePanel({ product, availableSkus }: { product: Product; availableSkus: string[] }) {
   const sizes = getSizeOptions(product.orientation);
   const [size, setSize] = useState(sizes[0]);
   const [finish, setFinish] = useState(finishOptions[0]);
   const { add } = useCart();
   const price = useMemo(() => product.price + size.add + finish.add, [finish, product.price, size]);
+
+  const canOrder = availableSkus.includes(buildSku(product.id, size.label, finish.label));
 
   return (
     <div className="purchase-panel">
@@ -46,15 +48,16 @@ export default function ProductPurchasePanel({ product }: { product: Product }) 
           <small>Best for: {finish.bestFor}</small>
         </div>
       </div>
-      <button className="button button--solid button--wide purchase-panel__add" type="button" onClick={() => add(product.id, { size: size.label, finish: finish.label })}>
+      {canOrder ? <button className="button button--solid button--wide purchase-panel__add" type="button" onClick={() => add(product.id, { size: size.label, finish: finish.label })}>
         <ShoppingBag /> Add to bag · {formatCurrency(price)}
-      </button>
+      </button> : <Link className="button button--solid button--wide" href={`/contact?service=Print%20or%20order%20question&photo=${product.slug}`}>Enquire about this print</Link>}
+      {!canOrder && <p className="form-note">This configuration is available by inquiry while final print specifications are confirmed. No payment is collected here.</p>}
       <div className="purchase-trust">
         <span><ShieldCheck /> Secure on-site Stripe checkout</span>
-        <span><Truck /> Prepared for Printique production</span>
+        <span><Truck /> Made-to-order artwork</span>
       </div>
       <ul className="purchase-notes">
-        <li>Archival, made-to-order production</li>
+        <li><Link href="/print-guide">Compare print sizes and finishes</Link></li>
         <li>Crop is reviewed before the order is submitted for printing</li>
         <li><Link href="/shipping-returns">View shipping and return information</Link></li>
       </ul>

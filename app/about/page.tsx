@@ -1,8 +1,9 @@
+import { pageMetadata } from '@/lib/seo';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export const metadata: Metadata = { title: 'About', description: 'About Morse Media, a New England photography, video and design studio.' };
+export const metadata = pageMetadata('About Bradley Morse — Photography, Video & Design', 'Meet Bradley Morse, the New Hampshire creative behind Morse Media photography, video production and design.', '/about');
 
 export default function AboutPage() {
   return (

@@ -11,7 +11,7 @@ import { useBodyScrollLock } from './useBodyScrollLock';
 
 const navItems = [
   { label: 'Print Shop', href: '/shop' },
-  { label: 'Collections', href: '/collections' },
+  { label: 'Photography', href: '/photography' },
   { label: 'Services', href: '/services' },
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'About', href: '/about' },
@@ -168,7 +168,7 @@ export function Footer() {
       </div>
       <div>
         <h4>Shop</h4>
-        <Link href="/shop">All prints</Link>
+        <Link href="/shop">All prints</Link><Link href="/print-guide">Size & finish guide</Link>
         <Link href="/collections/new-hampshire">New Hampshire</Link>
         <Link href="/collections/forgotten-places">Forgotten Places</Link>
         <Link href="/shipping-returns">Shipping & returns</Link>
