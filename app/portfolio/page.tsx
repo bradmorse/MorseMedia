@@ -234,6 +234,7 @@ export default function PortfolioPage() {
         <div className={styles.heroGlow} aria-hidden="true" />
         <div className={styles.container}>
           <p className={styles.eyebrow}>Commercial portfolio</p>
+          <Link className="text-link" href="/photography">Explore latest landscape photography ↗</Link>
           <h1>Creative work built to move brands forward.</h1>
           <p className={styles.heroCopy}>
             A selection of social media, video production, photography and graphic
