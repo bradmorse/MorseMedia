@@ -73,7 +73,7 @@ const faqs = [
   { question: 'Where are you available?', answer: 'Morse Media is based in New Hampshire and is available for regional assignments and travel. Remote editing, design and content-planning work can be handled from anywhere.' },
   { question: 'Can services be combined?', answer: 'Yes. Many projects are strongest when photography, video, social content and graphic design are planned together. A custom scope can combine only the services the project actually needs.' },
   { question: 'Do you offer ongoing social media support?', answer: 'Yes. Ongoing support can include content planning, recurring production, platform-ready assets, posting assistance and performance reporting.' },
-  { question: 'How are projects priced?', answer: 'Pricing depends on scope, production time, travel, usage and final deliverables. After a brief conversation, you will receive a clear project estimate before work begins.' },
+  { question: 'How are projects priced?', answer: 'Starting prices for typical projects are listed above. Final pricing depends on scope, production time, travel, usage and deliverables, and you will receive a clear written estimate before any work begins.' },
 ];
 
 const serviceSchema = {
@@ -203,34 +203,50 @@ export default function ServicesPage() {
       </section>
 
       {servicePackages.length > 0 && (
-        <section className="proof-section" aria-labelledby="packages-heading">
+        <section className={styles.packageSection} aria-labelledby="packages-heading">
           <div className={styles.container}>
-            <p className={styles.sectionLabel}>Packages</p>
-            <h2 id="packages-heading">Starting points, scoped to your project.</h2>
-            <div className="proof-grid">
+            <div className={styles.sectionHeading}>
+              <div>
+                <p className={styles.sectionLabel}>Starting points</p>
+                <h2 id="packages-heading">Clear starting prices, scoped to your project.</h2>
+              </div>
+              <p>Typical projects in New Hampshire. Every quote is confirmed in writing before work begins.</p>
+            </div>
+            <div className={styles.packageGrid}>
               {servicePackages.map((pkg) => (
-                <article className="proof-card" key={pkg.name}>
+                <article className={styles.packageCard} key={pkg.name}>
+                  <span className={styles.packageKicker}>{pkg.kicker}</span>
                   <h3>{pkg.name}</h3>
-                  <p className="proof-card__price">{pkg.startingAt || 'Custom quote'}</p>
-                  <p>{pkg.description}</p>
-                  <ul>{pkg.includes.map((item) => <li key={item}>{item}</li>)}</ul>
+                  <p className={styles.packagePrice}>{pkg.startingAt || 'Custom quote'}</p>
+                  <p className={styles.packageCopy}>{pkg.description}</p>
+                  <ul>
+                    {pkg.includes.map((item) => (
+                      <li key={item}><Check aria-hidden="true" /><span>{item}</span></li>
+                    ))}
+                  </ul>
+                  <Link className={styles.cardLink} href={`/contact?service=${encodeURIComponent(pkg.inquiry)}`}>Request a quote <ArrowRight /></Link>
                 </article>
               ))}
             </div>
+            <p className={styles.packageNote}>Travel beyond the local area, licensing beyond standard business use, rush delivery and additional shooting time are quoted separately. Combined projects are scoped together.</p>
           </div>
         </section>
       )}
 
       {testimonials.length > 0 && (
-        <section className="proof-section" aria-labelledby="testimonials-heading">
+        <section className={styles.packageSection} aria-labelledby="testimonials-heading">
           <div className={styles.container}>
-            <p className={styles.sectionLabel}>Kind words</p>
-            <h2 id="testimonials-heading">What clients say.</h2>
-            <div className="proof-grid">
+            <div className={styles.sectionHeading}>
+              <div>
+                <p className={styles.sectionLabel}>Kind words</p>
+                <h2 id="testimonials-heading">What clients say.</h2>
+              </div>
+            </div>
+            <div className={styles.quoteGrid}>
               {testimonials.map((item) => (
-                <figure className="proof-card proof-quote" key={item.name}>
+                <figure className={styles.quoteCard} key={item.name}>
                   <blockquote>{item.quote}</blockquote>
-                  <figcaption>{item.name}{item.role ? `, ${item.role}` : ''}</figcaption>
+                  <figcaption>{item.name}{item.role ? ` · ${item.role}` : ''}</figcaption>
                 </figure>
               ))}
             </div>

@@ -45,14 +45,5 @@ h1, h2 { overflow-wrap: anywhere; }
 /* Honeypot: invisible to people and screen readers, still present for bots. */
 .honeypot { position: absolute !important; left: -9999px; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
 
-/* Services: packages and testimonials (rendered only when data/proof.ts has entries). */
-.proof-section { padding: clamp(56px, 8vw, 104px) 0; border-top: 1px solid var(--line-strong); }
-.proof-section h2 { margin: 8px 0 32px; }
-.proof-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-.proof-card { padding: 28px; border: 1px solid var(--line-strong); background: var(--panel); color: var(--text); }
-.proof-card h3 { margin: 0 0 6px; }
-.proof-card__price { color: var(--accent); letter-spacing: .08em; text-transform: uppercase; font-size: 12px; margin: 0 0 14px; }
-.proof-card ul { margin: 16px 0 0; padding-left: 18px; line-height: 1.7; }
-.proof-quote { margin: 0; }
-.proof-quote blockquote { margin: 0 0 16px; font-size: 18px; line-height: 1.6; }
-.proof-quote figcaption { color: var(--accent); font-size: 13px; letter-spacing: .06em; }
+/* Service detail pages: starting-price line under the intro. */
+.detail-from { margin: 6px 0 22px; color: var(--accent); font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; }
