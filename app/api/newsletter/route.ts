@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { postWebhook, sendOwnerEmail } from '@/lib/mail';
+import { postWebhook, saveSubscriber, sendOwnerEmail } from '@/lib/mail';
 
 export const runtime = 'nodejs';
 
@@ -21,9 +21,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: true, mode: 'webhook' });
     }
 
-    if (await sendOwnerEmail({ subject: 'New Morse Media newsletter sign-up', text: `Please add ${email} to the Morse Media email list.`, replyTo: email })) {
-      return NextResponse.json({ ok: true, mode: 'email' });
-    }
+    // Save to a real list when Resend contacts are configured, and let the owner know either way.
+    const saved = await saveSubscriber(email);
+    const notified = await sendOwnerEmail({
+      subject: saved ? 'New Morse Media newsletter subscriber' : 'New Morse Media newsletter sign-up',
+      text: saved ? `${email} was added to your Resend contacts.` : `Please add ${email} to the Morse Media email list.`,
+      replyTo: email,
+    }).catch(() => false);
+    if (saved || notified) return NextResponse.json({ ok: true, mode: saved ? 'list' : 'email' });
 
     const subject = encodeURIComponent('Morse Media newsletter subscription');
     const mailBody = encodeURIComponent(`Please add ${email} to the Morse Media email list.`);

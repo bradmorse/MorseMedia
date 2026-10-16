@@ -4,7 +4,7 @@ import { FormEvent, useState } from 'react';
 import { Check, LoaderCircle, Mail } from 'lucide-react';
 
 type SubmitState = { status: 'idle' | 'sending' | 'success' | 'error'; message: string };
-type SubmitResult = { ok: boolean; mode?: 'webhook' | 'email' | 'mailto'; mailto?: string };
+type SubmitResult = { ok: boolean; mode?: 'webhook' | 'email' | 'list' | 'mailto'; mailto?: string };
 
 async function submitJson(url: string, payload: Record<string, string>) {
   const response = await fetch(url, {

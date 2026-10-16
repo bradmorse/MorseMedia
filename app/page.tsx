@@ -81,7 +81,7 @@ export default function HomePage() {
       </section>
 
       <section className="editorial-split">
-        <div className="editorial-split__image"><Image src="/images/photos/old-hill-window.webp" alt="Abandoned brick complex viewed through a dark wooden window frame" fill sizes="(max-width: 900px) 100vw, 60vw" /></div>
+        <div className="editorial-split__image"><Image src="/images/photos/road-to-old-hill.webp" alt="Black and white view of an abandoned building beyond a discarded tire" fill sizes="(max-width: 900px) 100vw, 60vw" /></div>
         <div className="editorial-split__copy">
           <p className="eyebrow">Featured collection</p>
           <h2>Beauty remains after people leave.</h2>

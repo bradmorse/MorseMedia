@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { servicePages } from '@/data/services';
+import { servicePackages, testimonials } from '@/data/proof';
 import { ArrowRight, Camera, Check, Clapperboard, LineChart, PenTool, Share2 } from 'lucide-react';
 import { jsonLd, pageMetadata, siteUrl } from '@/lib/seo';
 import styles from './services.module.css';
@@ -57,6 +58,8 @@ const services = [
     bestFor: 'Sales campaigns, social media, in-store materials, events and brand refreshes.',
   },
 ];
+
+const bookingUrl = process.env.NEXT_PUBLIC_BOOKING_URL?.trim();
 
 const workflow = [
   { number: '01', title: 'Discover', copy: 'Clarify the audience, objective, scope, timeline and where the final work will be used.' },
@@ -199,6 +202,42 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {servicePackages.length > 0 && (
+        <section className="proof-section" aria-labelledby="packages-heading">
+          <div className={styles.container}>
+            <p className={styles.sectionLabel}>Packages</p>
+            <h2 id="packages-heading">Starting points, scoped to your project.</h2>
+            <div className="proof-grid">
+              {servicePackages.map((pkg) => (
+                <article className="proof-card" key={pkg.name}>
+                  <h3>{pkg.name}</h3>
+                  <p className="proof-card__price">{pkg.startingAt || 'Custom quote'}</p>
+                  <p>{pkg.description}</p>
+                  <ul>{pkg.includes.map((item) => <li key={item}>{item}</li>)}</ul>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {testimonials.length > 0 && (
+        <section className="proof-section" aria-labelledby="testimonials-heading">
+          <div className={styles.container}>
+            <p className={styles.sectionLabel}>Kind words</p>
+            <h2 id="testimonials-heading">What clients say.</h2>
+            <div className="proof-grid">
+              {testimonials.map((item) => (
+                <figure className="proof-card proof-quote" key={item.name}>
+                  <blockquote>{item.quote}</blockquote>
+                  <figcaption>{item.name}{item.role ? `, ${item.role}` : ''}</figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className={styles.faqSection}>
         <div className={styles.container}>
           <div className={styles.faqGrid}>
@@ -228,6 +267,7 @@ export default function ServicesPage() {
             <div>
               <p>Share the project, goal and approximate timeline. Morse Media will follow up with the right questions and a clear next step.</p>
               <Link className={styles.primaryButton} href="/contact">Start a project <ArrowRight /></Link>
+              {bookingUrl && <a className={styles.secondaryButton} href={bookingUrl} target="_blank" rel="noopener noreferrer">Book a call <ArrowRight /></a>}
             </div>
           </div>
         </div>

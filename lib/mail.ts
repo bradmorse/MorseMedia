@@ -31,3 +31,26 @@ export async function postWebhook(endpoint: string, payload: unknown) {
   });
   if (!response.ok) throw new Error(`Webhook delivery returned ${response.status}.`);
 }
+
+/**
+ * Saves a newsletter subscriber as a Resend contact so there is a real, sendable list.
+ * Needs RESEND_CONTACTS_API_KEY (a Resend key with Full access; the sending-only key cannot manage contacts).
+ * Returns false when not configured or when Resend refuses, so sign-ups never fail because of it.
+ */
+export async function saveSubscriber(email: string) {
+  const apiKey = process.env.RESEND_CONTACTS_API_KEY?.trim();
+  if (!apiKey) return false;
+  try {
+    const response = await fetch('https://api.resend.com/contacts', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, unsubscribed: false }),
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!response.ok) console.error(`[Morse Media] Saving subscriber returned ${response.status}.`);
+    return response.ok;
+  } catch (error) {
+    console.error('[Morse Media] Saving subscriber failed:', error instanceof Error ? error.message : 'unknown error');
+    return false;
+  }
+}
