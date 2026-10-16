@@ -91,15 +91,7 @@ export default function CheckoutClient({ publishableKey }: { publishableKey: str
         <div className="checkout-payment">
           {!stripeReady || !stripePromise ? (
             <div className="checkout-setup-card">
-              <p className="eyebrow">Stripe setup required</p>
-              <h2>The storefront is built. Add your Stripe test keys to activate payment.</h2>
-              <ol>
-                <li>Create or sign in to your Stripe account.</li>
-                <li>Copy <code>.env.example</code> to <code>.env.local</code>.</li>
-                <li>Add the test publishable key and secret key.</li>
-                <li>Restart <code>npm run dev</code> and return to this page.</li>
-              </ol>
-              <p>The full setup commands are included in the project README.</p>
+              <p className="eyebrow">Print inquiries</p><h2>Let’s find the right print for you.</h2><p>Online payment is not available yet. Contact Morse Media to confirm your selected photograph, size and finish.</p><Link className="button" href="/contact?service=Print%20or%20order%20question">Ask about your prints</Link>
             </div>
           ) : (
             <EmbeddedCheckoutProvider stripe={stripePromise} options={{ fetchClientSecret }}>

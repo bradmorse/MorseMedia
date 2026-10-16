@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
 import type Stripe from 'stripe';
 import { getStripe } from '@/lib/stripe';
+import { fulfillSession } from '@/lib/fulfillment';
+import { orderEmail } from '@/lib/order-email';
 
 export const runtime = 'nodejs';
+export const maxDuration = 60;
 
 const fulfillmentEvents = new Set<string>([
   'checkout.session.completed',
@@ -31,49 +34,14 @@ export async function POST(request: Request) {
 
   try {
     const session = event.data.object as Stripe.Checkout.Session;
-    const expanded = await stripe.checkout.sessions.retrieve(session.id, { expand: ['line_items.data.price.product'] });
-    if (expanded.payment_status !== 'paid') return NextResponse.json({ received: true, fulfillment: 'waiting-for-payment' });
-
-    const manifest = {
-      eventId: event.id,
-      eventType: event.type,
-      orderId: expanded.id,
-      paymentStatus: expanded.payment_status,
-      customer: expanded.customer_details,
-      shipping: expanded.collected_information?.shipping_details || null,
-      amountTotal: expanded.amount_total,
-      currency: expanded.currency,
-      sessionMetadata: expanded.metadata,
-      items: expanded.line_items?.data.map((line) => ({
-        description: line.description,
-        quantity: line.quantity,
-        amountTotal: line.amount_total,
-        productMetadata: typeof line.price?.product === 'object' && line.price.product && 'metadata' in line.price.product
-          ? line.price.product.metadata
-          : {},
-      })) || [],
-    };
-
-    console.info('[Morse Media fulfillment manifest]', JSON.stringify(manifest));
-
-    const handoffUrl = process.env.PRINTIQUE_ORDER_WEBHOOK_URL?.trim();
-    if (handoffUrl) {
-      const response = await fetch(handoffUrl, {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          'idempotency-key': expanded.id,
-          ...(process.env.FULFILLMENT_WEBHOOK_SECRET ? { authorization: `Bearer ${process.env.FULFILLMENT_WEBHOOK_SECRET}` } : {}),
-        },
-        body: JSON.stringify(manifest),
-        signal: AbortSignal.timeout(9000),
-      });
-      if (!response.ok) throw new Error(`Fulfillment handoff returned ${response.status}.`);
-    }
-
-    return NextResponse.json({ received: true, fulfillment: handoffUrl ? 'handed-off' : 'manifest-logged' });
+    const fulfillment = await fulfillSession(stripe, session.id);
+    return NextResponse.json({ received: true, fulfillment });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Webhook processing failed.';
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error('[Morse Media] Paid-order handoff failed; retry required.', { eventId: event.id, reason: error instanceof Error ? error.message : 'unknown' });
+    try {
+      const session = await stripe.checkout.sessions.retrieve((event.data.object as Stripe.Checkout.Session).id);
+      if (session.metadata?.storefront === 'morse-media') await orderEmail(stripe, session, 'handoff-failed', process.env.ORDER_ALERT_EMAIL || '', 'Morse Media paid order needs attention', `Order ${session.id} could not complete fulfillment. Check Stripe webhook delivery and Prodigi, fix the configuration, then resend the original Stripe event — do not recreate the lab order by hand.`);
+    } catch { console.error('[Morse Media] Order alert could not be delivered.'); }
+    return NextResponse.json({ error: 'Order processing failed; please retry.' }, { status: 500 });
   }
 }

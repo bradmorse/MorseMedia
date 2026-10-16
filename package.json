@@ -1,28 +1,31 @@
 {
   "name": "morse-media-nextjs",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "check": "tsc --noEmit",
-    "verify": "npm run check && npm run build"
+    "verify": "npm run check && npm run build",
+    "test": "tsx --test tests/*.test.ts",
+    "catalog:checklist": "node --import tsx scripts/print-catalog.ts"
   },
   "dependencies": {
+    "@next/third-parties": "^16.0.11",
+    "@stripe/react-stripe-js": "6.7.0",
+    "@stripe/stripe-js": "9.9.0",
     "lucide-react": "^0.468.0",
     "next": "16.0.11",
     "react": "19.2.1",
     "react-dom": "19.2.1",
-    "stripe": "22.3.1",
-    "@stripe/stripe-js": "9.9.0",
-    "@stripe/react-stripe-js": "6.7.0",
-    "@next/third-parties": "^16.0.11"
+    "stripe": "^22.6.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.3",
     "@types/react-dom": "^19.0.2",
+    "tsx": "^4.23.15",
     "typescript": "^5.7.2"
   },
   "engines": {

@@ -1,8 +1,12 @@
+import { availablePrintSkus } from '@/lib/store-readiness';
+import { siteUrl, breadcrumbs, jsonLd } from '@/lib/seo';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import PrintVisualizer from '@/components/PrintVisualizer';
+import { describePhoto } from '@/data/discovery';
 import ProductGrid from '@/components/ProductGrid';
 import ProductPurchasePanel from '@/components/ProductPurchasePanel';
 import { calculateUnitPrice, finishOptions, getCollection, getProduct, getSizeOptions, products } from '@/data/site';
@@ -15,11 +19,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const product = getProduct(slug);
   if (!product) return {};
+  const title = `${product.title} — Fine Art Print`;
+  const description = `${product.description} An original ${product.location || 'New England'} photograph by Bradley Morse, available as a fine-art print.`;
   return {
-    title: product.title,
-    description: `${product.description} Available as a fine-art photography print from Morse Media.`,
-    alternates: { canonical: `/shop/${product.slug}` },
-    openGraph: { title: product.title, description: product.description, images: [{ url: product.image, alt: product.alt }] },
+    title,
+    description,
+    alternates: { canonical: `${siteUrl}/shop/${product.slug}` },
+    openGraph: { title, description, url: `${siteUrl}/shop/${product.slug}`, images: [{ url: product.image, alt: product.alt }] },
+    twitter: { card: 'summary_large_image', title, description, images: [product.image] },
   };
 }
 
@@ -28,14 +35,20 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const product = getProduct(slug);
   if (!product) notFound();
   const collection = getCollection(product.collection);
-  const related = products.filter((entry) => entry.collection === product.collection && entry.id !== product.id).slice(0, 3);
+  const color = describePhoto(product.slug).color;
+  const related = products
+    .filter((entry) => entry.id !== product.id)
+    .sort((a, b) =>
+      Number(describePhoto(b.slug).color === color) - Number(describePhoto(a.slug).color === color) ||
+      Number(b.collection === product.collection) - Number(a.collection === product.collection))
+    .slice(0, 3);
   const sizes = getSizeOptions(product.orientation);
   const prices = sizes.flatMap((size) => finishOptions.map((finish) => calculateUnitPrice(product, size.label, finish.label) || product.price));
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://morsemedia.co';
+  const availableSkus = availablePrintSkus(product);
   const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: product.title,
+    name: `${product.title} — Fine Art Print`,
     image: [`${siteUrl}${product.image}`],
     description: product.description,
     brand: { '@type': 'Brand', name: 'Morse Media' },
@@ -47,13 +60,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       lowPrice: Math.min(...prices),
       highPrice: Math.max(...prices),
       offerCount: prices.length,
-      availability: 'https://schema.org/InStock',
+      availability: availableSkus.length ? 'https://schema.org/InStock' : 'https://schema.org/PreOrder',
     },
   };
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema).replace(/</g, '\\u003c') }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(productSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(breadcrumbs([{ name: 'Home', path: '/' }, { name: 'Print Shop', path: '/shop' }, { name: product.title, path: `/shop/${product.slug}` }])) }} />
       <section className="product-detail">
         <div className={`product-detail__image product-detail__image--${product.orientation}`}>
           <Image src={product.image} alt={product.alt} fill priority quality={90} sizes="(max-width: 900px) 100vw, 58vw" />
@@ -63,16 +77,20 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <p className="eyebrow">{product.type} · {product.location}</p>
           <h1>{product.title}</h1>
           <p className="product-detail__description">{product.description}</p>
-          <ProductPurchasePanel product={product} />
+          <ProductPurchasePanel product={product} availableSkus={availableSkus} />
         </div>
       </section>
+      <PrintVisualizer product={product} />
       <section className="product-story content-section">
         <div><p className="eyebrow">The photograph</p><h2>A piece of the journey.</h2></div>
-        <div><p>This image belongs to the <Link href={`/collections/${product.collection}`}>{collection?.name}</Link> collection. Each piece is produced to order so the final material, scale and crop can be chosen for the room where it will live.</p><p>Screen colors may vary slightly from the final print. Shipping details and payment are completed securely on this website; production is routed through the configured fulfillment workflow.</p></div>
+        <div>
+          <p>This image belongs to the <Link href={`/collections/${product.collection}`}>{collection?.name}</Link> collection. Each piece is produced to order so the material, scale and crop suit the room where it will live.</p>
+          <p>Screen colors can vary slightly from the finished print. Interested in using this image commercially? <Link href={`/contact?service=Image%20licensing&photo=${product.slug}`}>Ask about licensing</Link>.</p>
+        </div>
       </section>
       {related.length > 0 && (
         <section className="content-section related-products">
-          <div className="section-heading"><div><p className="eyebrow">From the same collection</p><h2>Continue exploring.</h2></div></div>
+          <div className="section-heading"><div><p className="eyebrow">Pairs well with</p><h2>Build a collection.</h2></div></div>
           <ProductGrid products={related} />
         </section>
       )}

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import type Stripe from 'stripe';
 import { getStripe } from '@/lib/stripe';
 import { validateCheckoutItems } from '@/lib/store';
+import { assertFulfillmentReady, printMapping } from '@/lib/prodigi';
 
 export const runtime = 'nodejs';
 
@@ -10,30 +11,41 @@ export async function POST(request: Request) {
     const body = await request.json();
     const items = validateCheckoutItems(body?.items);
     const stripe = getStripe();
+    assertFulfillmentReady(/^(sk|rk)_live_/.test(process.env.STRIPE_SECRET_KEY || ''));
+    const mappings = new Map(items.map(item => [item.sku, printMapping(item.sku)]));
     const origin = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || new URL(request.url).origin;
     const shippingCents = Number.parseInt(process.env.STORE_SHIPPING_RATE_CENTS || '', 10);
     const enableTax = process.env.STRIPE_AUTOMATIC_TAX === 'true';
 
-    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item) => ({
-      quantity: item.qty,
-      price_data: {
-        currency: 'usd',
-        unit_amount: item.unitPrice * 100,
-        product_data: {
-          name: item.title,
-          description: `${item.size} · ${item.finish}`,
-          metadata: {
-            photo_id: item.id,
-            size: item.size,
-            finish: item.finish,
-            sku: item.sku,
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item) => {
+      const mapping = mappings.get(item.sku)!;
+      return {
+        quantity: item.qty,
+        price_data: {
+          currency: 'usd',
+          unit_amount: item.unitPrice * 100,
+          ...(enableTax ? { tax_behavior: 'exclusive' as const } : {}),
+          product_data: {
+            name: item.title,
+            description: `${item.size} · ${item.finish}`,
+            metadata: {
+              photo_id: item.id,
+              size: item.size,
+              finish: item.finish,
+              sku: item.sku,
+              prodigi_sku: mapping.sku,
+              print_asset: mapping.assetUrl,
+              print_sizing: mapping.sizing,
+              print_attributes: JSON.stringify(mapping.attributes),
+            },
           },
         },
-      },
-    }));
+      };
+    });
 
     const params: Stripe.Checkout.SessionCreateParams = {
       ui_mode: 'embedded_page',
+      integration_identifier: 'morse_media_prodigi_vqmtbxra',
       mode: 'payment',
       return_url: `${origin}/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
       customer_creation: 'always',
@@ -45,7 +57,7 @@ export async function POST(request: Request) {
       line_items: lineItems,
       metadata: {
         storefront: 'morse-media',
-        fulfillment_provider: 'printique-pending-connection',
+        fulfillment_provider: 'prodigi',
       },
       custom_text: {
         shipping_address: {
@@ -61,7 +73,7 @@ export async function POST(request: Request) {
       params.shipping_options = [{
         shipping_rate_data: {
           type: 'fixed_amount',
-          display_name: shippingCents === 0 ? 'Complimentary standard shipping' : 'Standard insured shipping',
+          display_name: shippingCents === 0 ? 'Complimentary standard shipping' : 'Standard tracked shipping',
           fixed_amount: { amount: shippingCents, currency: 'usd' },
           delivery_estimate: {
             minimum: { unit: 'business_day', value: 5 },
@@ -75,7 +87,9 @@ export async function POST(request: Request) {
     if (!session.client_secret) throw new Error('Stripe did not return a checkout client secret.');
     return NextResponse.json({ clientSecret: session.client_secret });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unable to start checkout.';
+    // Log the reason (never customer data) so configuration problems are visible in Vercel logs.
+    console.error('[Morse Media] Checkout unavailable:', error instanceof Error ? error.message : 'unknown error');
+    const message = 'Checkout is temporarily unavailable for these prints. Please contact Morse Media for help.';
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }

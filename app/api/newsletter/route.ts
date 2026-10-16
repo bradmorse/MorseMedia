@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { postWebhook, sendOwnerEmail } from '@/lib/mail';
 
 export const runtime = 'nodejs';
 
@@ -16,23 +17,19 @@ export async function POST(request: Request) {
 
     const endpoint = process.env.NEWSLETTER_WEBHOOK_URL?.trim();
     if (endpoint) {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          ...(process.env.FORM_WEBHOOK_SECRET ? { authorization: `Bearer ${process.env.FORM_WEBHOOK_SECRET}` } : {}),
-        },
-        body: JSON.stringify({ email, source: 'morse-media-newsletter', submittedAt: new Date().toISOString() }),
-        signal: AbortSignal.timeout(8000),
-      });
-      if (!response.ok) throw new Error(`Newsletter delivery returned ${response.status}.`);
+      await postWebhook(endpoint, { email, source: 'morse-media-newsletter', submittedAt: new Date().toISOString() });
       return NextResponse.json({ ok: true, mode: 'webhook' });
+    }
+
+    if (await sendOwnerEmail({ subject: 'New Morse Media newsletter sign-up', text: `Please add ${email} to the Morse Media email list.`, replyTo: email })) {
+      return NextResponse.json({ ok: true, mode: 'email' });
     }
 
     const subject = encodeURIComponent('Morse Media newsletter subscription');
     const mailBody = encodeURIComponent(`Please add ${email} to the Morse Media email list.`);
     return NextResponse.json({ ok: true, mode: 'mailto', mailto: `mailto:hello@morsemedia.co?subject=${subject}&body=${mailBody}` });
-  } catch {
-    return NextResponse.json({ error: 'Subscription could not be prepared. Please email hello@morsemedia.co.' }, { status: 500 });
+  } catch (error) {
+    console.error('[Morse Media] Newsletter delivery failed:', error instanceof Error ? error.message : 'unknown error');
+    return NextResponse.json({ error: 'Subscription could not be completed. Please email hello@morsemedia.co.' }, { status: 500 });
   }
 }

@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'Fine-art photography, cinematic video and thoughtful design.',
     start_url: '/',
     display: 'standalone',
-    background_color: '#0c0e0f',
-    theme_color: '#0c0e0f',
+    background_color: '#0d1412',
+    theme_color: '#0d1412',
     icons: [{ src: '/icon.png', sizes: '512x512', type: 'image/png' }],
   };
 }
