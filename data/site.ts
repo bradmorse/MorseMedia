@@ -163,7 +163,7 @@ export const photos: Photo[] = [
     slug: 'granite-run',
     title: 'Granite Run',
     image: '/images/photos/granite-run.webp',
-    alt: 'Autumn river and wooden bridge surrounded by granite boulders',
+    alt: 'Long-exposure river rapids flowing beneath a railroad trestle in early autumn',
     collection: 'new-hampshire',
     orientation: 'portrait',
   },

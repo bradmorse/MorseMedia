@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
 export default async function CheckoutReturnPage({ searchParams }: { searchParams: Promise<{ session_id?: string }> }) {
   const { session_id: sessionId } = await searchParams;
 
-  if (!sessionId || !stripeIsConfigured()) {
+  if (!sessionId || !/^cs_(test_|live_)?[A-Za-z0-9]+$/.test(sessionId) || !stripeIsConfigured()) {
     return (
       <section className="order-result content-section">
         <CircleAlert />
@@ -46,13 +46,13 @@ export default async function CheckoutReturnPage({ searchParams }: { searchParam
         <CheckCircle2 />
         <p className="eyebrow">Order received</p>
         <h1>Thank you for supporting Morse Media.</h1>
-        <p>Payment was completed for <strong>{session.customer_details?.email || 'the email used at checkout'}</strong>. Your print selections are now ready for the production workflow.</p>
+        <p>Payment was completed for <strong>{session.customer_details?.email || 'the email used at checkout'}</strong>. Your print is now being prepared for production.</p>
         <div className="order-result__details">
           <div><span>Order reference</span><strong title={session.id}>{session.id.slice(-14).toUpperCase()}</strong></div>
           <div><span>Paid total</span><strong>{formatCurrency((session.amount_total || 0) / 100, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></div>
           <div><span>Items</span><strong>{session.line_items?.data.reduce((total, item) => total + (item.quantity || 0), 0) || 0}</strong></div>
         </div>
-        <p className="order-result__fineprint">A payment receipt is sent by Stripe. Morse Media will review the crop and production details before the artwork enters the fulfillment workflow.</p>
+        <p className="order-result__fineprint">Stripe emails your payment receipt now. You will receive a separate email with tracking as soon as your print ships. Questions? Reply to either email or contact Morse Media with your order reference.</p>
         <div className="order-result__actions">
           <Link className="button button--solid" href="/collections">Explore collections</Link>
           <Link className="button" href="/contact">Contact Morse Media</Link>
@@ -65,7 +65,7 @@ export default async function CheckoutReturnPage({ searchParams }: { searchParam
         <CircleAlert />
         <p className="eyebrow">Order status unavailable</p>
         <h1>We could not confirm this order.</h1>
-        <p>Check the Stripe dashboard before attempting payment again.</p>
+        <p>Please don’t pay again yet — contact Morse Media and we will check your order status for you.</p>
         <Link className="button button--solid" href="/contact">Contact support</Link>
       </section>
     );

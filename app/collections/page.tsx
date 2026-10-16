@@ -1,25 +1,24 @@
 import { pageMetadata } from '@/lib/seo';
-import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { collections } from '@/data/site';
 
-export const metadata = pageMetadata('New England Photography Collections', 'Explore original photographs of New Hampshire, Maine, the Adirondacks, forgotten architecture and the night sky.', '/collections');
+export const metadata = pageMetadata('New England Photography Collections', 'Explore original photographs of New Hampshire, Maine, the Adirondacks, forgotten architecture and the night sky.', '/collections', '/images/photos/mountain-veil.webp');
 
 export default function CollectionsPage() {
   return (
     <>
       <section className="page-hero page-hero--tall">
-        <Image src="/images/photos/mountain-veil.webp" alt="Foggy autumn mountains and lake" fill priority sizes="100vw" />
+        <Image src="/images/photos/mountain-veil.webp" alt="Foggy autumn mountains and lake framed by pine branches" fill priority sizes="100vw" />
         <div className="page-hero__shade" />
         <div className="page-hero__copy"><p className="eyebrow">Photography collections</p><h1>Wild places.<br />Quiet moments.</h1><p>Curated bodies of work organized by place, atmosphere and subject.</p></div>
       </section>
       <section className="collection-index content-section">
         {collections.map((collection, index) => (
           <article className="collection-index__item" key={collection.slug}>
-            <Link href={`/collections/${collection.slug}`} className="collection-index__image">
-              <Image src={collection.image} alt={collection.name} fill sizes="(max-width: 900px) 100vw, 60vw" />
+            <Link href={`/collections/${collection.slug}`} className="collection-index__image" aria-label={`View the ${collection.name} collection`}>
+              <Image src={collection.image} alt="" fill sizes="(max-width: 900px) 100vw, 60vw" />
             </Link>
             <div className="collection-index__copy">
               <span className="index-number">0{index + 1}</span>

@@ -17,27 +17,31 @@ export async function POST(request: Request) {
     const shippingCents = Number.parseInt(process.env.STORE_SHIPPING_RATE_CENTS || '', 10);
     const enableTax = process.env.STRIPE_AUTOMATIC_TAX === 'true';
 
-    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item) => ({
-      quantity: item.qty,
-      price_data: {
-        currency: 'usd',
-        unit_amount: item.unitPrice * 100,
-        product_data: {
-          name: item.title,
-          description: `${item.size} · ${item.finish}`,
-          metadata: {
-            photo_id: item.id,
-            size: item.size,
-            finish: item.finish,
-            sku: item.sku,
-            prodigi_sku: mappings.get(item.sku)!.sku,
-            print_asset: mappings.get(item.sku)!.assetUrl,
-            print_sizing: mappings.get(item.sku)!.sizing,
-            print_attributes: JSON.stringify(mappings.get(item.sku)!.attributes),
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item) => {
+      const mapping = mappings.get(item.sku)!;
+      return {
+        quantity: item.qty,
+        price_data: {
+          currency: 'usd',
+          unit_amount: item.unitPrice * 100,
+          ...(enableTax ? { tax_behavior: 'exclusive' as const } : {}),
+          product_data: {
+            name: item.title,
+            description: `${item.size} · ${item.finish}`,
+            metadata: {
+              photo_id: item.id,
+              size: item.size,
+              finish: item.finish,
+              sku: item.sku,
+              prodigi_sku: mapping.sku,
+              print_asset: mapping.assetUrl,
+              print_sizing: mapping.sizing,
+              print_attributes: JSON.stringify(mapping.attributes),
+            },
           },
         },
-      },
-    }));
+      };
+    });
 
     const params: Stripe.Checkout.SessionCreateParams = {
       ui_mode: 'embedded_page',
@@ -69,7 +73,7 @@ export async function POST(request: Request) {
       params.shipping_options = [{
         shipping_rate_data: {
           type: 'fixed_amount',
-          display_name: shippingCents === 0 ? 'Complimentary standard shipping' : 'Standard insured shipping',
+          display_name: shippingCents === 0 ? 'Complimentary standard shipping' : 'Standard tracked shipping',
           fixed_amount: { amount: shippingCents, currency: 'usd' },
           delivery_estimate: {
             minimum: { unit: 'business_day', value: 5 },
@@ -83,6 +87,8 @@ export async function POST(request: Request) {
     if (!session.client_secret) throw new Error('Stripe did not return a checkout client secret.');
     return NextResponse.json({ clientSecret: session.client_secret });
   } catch (error) {
+    // Log the reason (never customer data) so configuration problems are visible in Vercel logs.
+    console.error('[Morse Media] Checkout unavailable:', error instanceof Error ? error.message : 'unknown error');
     const message = 'Checkout is temporarily unavailable for these prints. Please contact Morse Media for help.';
     return NextResponse.json({ error: message }, { status: 400 });
   }

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Check, ShieldCheck, ShoppingBag, Truck } from 'lucide-react';
+import { Check, Mail, ShieldCheck, ShoppingBag, Truck } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { buildSku, finishOptions, getSizeOptions, type Product } from '@/data/site';
 import { formatCurrency } from '@/lib/format';
@@ -13,12 +13,13 @@ export default function ProductPurchasePanel({ product, availableSkus }: { produ
   const [finish, setFinish] = useState(finishOptions[0]);
   const { add } = useCart();
   const price = useMemo(() => product.price + size.add + finish.add, [finish, product.price, size]);
-
+  const storeOpen = availableSkus.length > 0;
   const canOrder = availableSkus.includes(buildSku(product.id, size.label, finish.label));
+  const inquiryHref = `/contact?service=${encodeURIComponent('Print or order question')}&photo=${product.slug}`;
 
   return (
     <div className="purchase-panel">
-      <div className="purchase-panel__price"><span>Configured price</span><strong>{formatCurrency(price)}</strong></div>
+      <div className="purchase-panel__price"><span>{canOrder ? 'Configured price' : 'Price for this option'}</span><strong>{formatCurrency(price)}</strong></div>
       <div className="option-group">
         <div className="option-group__header"><span>Size</span><small>{product.orientation === 'landscape' ? 'Landscape ratio' : 'Portrait ratio'}</small></div>
         <div className="option-grid">
@@ -48,17 +49,27 @@ export default function ProductPurchasePanel({ product, availableSkus }: { produ
           <small>Best for: {finish.bestFor}</small>
         </div>
       </div>
-      {canOrder ? <button className="button button--solid button--wide purchase-panel__add" type="button" onClick={() => add(product.id, { size: size.label, finish: finish.label })}>
-        <ShoppingBag /> Add to bag · {formatCurrency(price)}
-      </button> : <Link className="button button--solid button--wide" href={`/contact?service=Print%20or%20order%20question&photo=${product.slug}`}>Enquire about this print</Link>}
-      {!canOrder && <p className="form-note">This configuration is available by inquiry while final print specifications are confirmed. No payment is collected here.</p>}
+      {canOrder ? (
+        <button className="button button--solid button--wide purchase-panel__add" type="button" onClick={() => add(product.id, { size: size.label, finish: finish.label })}>
+          <ShoppingBag /> Add to bag · {formatCurrency(price)}
+        </button>
+      ) : (
+        <Link className="button button--solid button--wide purchase-panel__add" href={inquiryHref}><Mail /> Request this print</Link>
+      )}
+      {!canOrder && (
+        <p className="form-note">
+          {storeOpen
+            ? 'This size and finish is available by request. Send a note and you will receive a confirmed quote — nothing is charged here.'
+            : 'Prints are currently made by request. Send your preferred size and finish and you will receive a confirmed quote and timeline — nothing is charged here.'}
+        </p>
+      )}
       <div className="purchase-trust">
-        <span><ShieldCheck /> Secure on-site Stripe checkout</span>
+        {canOrder ? <span><ShieldCheck /> Secure Stripe checkout</span> : <span><Mail /> Personal reply within two business days</span>}
         <span><Truck /> Made-to-order artwork</span>
       </div>
       <ul className="purchase-notes">
         <li><Link href="/print-guide">Compare print sizes and finishes</Link></li>
-        <li>Crop is reviewed before the order is submitted for printing</li>
+        <li>Some sizes crop the original frame slightly — ask if an edge detail matters to you</li>
         <li><Link href="/shipping-returns">View shipping and return information</Link></li>
       </ul>
     </div>

@@ -1,0 +1,43 @@
+/* Refinement pass — October 2026. Loaded after globals.css. */
+
+/* Search results without a thumbnail (services). */
+.search-result__mark {
+  width: 100%; height: 100%; display: grid; place-items: center;
+  background: var(--panel); color: var(--accent);
+  font-size: 10px; letter-spacing: .14em;
+}
+.search-hint a { color: var(--accent); border-bottom: 1px solid var(--line-strong); }
+
+/* Contact success state replaces the form. */
+.contact-success {
+  min-height: 220px; padding: 32px; align-items: flex-start;
+  border: 1px solid var(--line-strong); background: var(--panel); color: var(--text);
+  font-size: 17px; line-height: 1.6;
+}
+.contact-success svg { flex: 0 0 auto; margin-top: 4px; color: var(--accent); }
+
+/* Purchase panel: the inquiry button carries an icon too. */
+.purchase-panel__add svg { width: 16px; height: 16px; }
+
+/* Photo story pages: keep tall portraits from dominating short screens. */
+.photo-story > img { max-height: min(85vh, 980px); }
+.photo-story .button { margin-top: 12px; }
+
+/* Room preview: give the art a subtle mat on paper finish, and soften on small screens. */
+.room-art--paper { outline-width: 4px; }
+@media (max-width: 700px) {
+  .room-art { box-shadow: 2px 5px 10px #0003; }
+}
+
+/* Consistent keyboard focus inside module-styled pages. */
+[class*="portfolio-module"] a:focus-visible,
+[class*="services-module"] a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Portfolio hero secondary link sits below the capability chips. */
+.portfolio-hero-link { display: inline-flex; margin-top: 34px; }
+
+/* Avoid horizontal scroll from long words on narrow phones. */
+h1, h2 { overflow-wrap: anywhere; }
+@media (max-width: 380px) {
+  .hero h1, .page-hero h1, .collection-hero h1 { font-size: 44px; }
+}

@@ -1,12 +1,13 @@
+/* Evergreen palette (Oct 2026): gold/charcoal values replaced with the site-wide sage/forest tokens. */
 .page {
-  --accent: #d7b878;
-  --accent-soft: rgba(215, 184, 120, 0.13);
-  --panel: #111415;
-  --panel-light: #171a1b;
-  --line: rgba(255, 255, 255, 0.14);
-  --muted: #a7aaa8;
-  background: #0c0e0f;
-  color: #f2f2ee;
+  --accent: #b6c9a5;
+  --accent-soft: rgba(182, 201, 165, 0.13);
+  --panel: #121c17;
+  --panel-light: #19241e;
+  --line: rgba(203, 212, 200, 0.17);
+  --muted: #a8b5aa;
+  background: #0d1412;
+  color: #f2f1e9;
   overflow: hidden;
 }
 
@@ -41,9 +42,9 @@
   inset: 0;
   z-index: -3;
   background:
-    linear-gradient(180deg, rgba(12, 14, 15, 0.25), rgba(12, 14, 15, 0.95)),
-    radial-gradient(circle at 78% 22%, rgba(215, 184, 120, 0.17), transparent 34%),
-    #0c0e0f;
+    linear-gradient(180deg, rgba(13, 20, 18, 0.25), rgba(13, 20, 18, 0.95)),
+    radial-gradient(circle at 78% 22%, rgba(182, 201, 165, 0.17), transparent 34%),
+    #0d1412;
   content: '';
 }
 
@@ -65,14 +66,14 @@
   z-index: -1;
   width: min(45vw, 680px);
   aspect-ratio: 1;
-  border: 1px solid rgba(215, 184, 120, 0.26);
+  border: 1px solid rgba(182, 201, 165, 0.26);
   border-radius: 50%;
 }
 
 .heroOrb::before,
 .heroOrb::after {
   position: absolute;
-  border: 1px solid rgba(215, 184, 120, 0.12);
+  border: 1px solid rgba(182, 201, 165, 0.12);
   border-radius: 50%;
   content: '';
 }
@@ -145,12 +146,12 @@
 
 .primaryButton {
   background: var(--accent);
-  color: #101213;
+  color: #0d1412;
 }
 
 .secondaryButton {
   background: transparent;
-  color: #f2f2ee;
+  color: #f2f1e9;
 }
 
 .primaryButton svg,
@@ -169,13 +170,13 @@
 
 .primaryButton:hover {
   background: transparent;
-  color: #f2f2ee;
+  color: #f2f1e9;
 }
 
 .secondaryButton:hover,
 .cardLink:hover {
   background: var(--accent);
-  color: #101213;
+  color: #0d1412;
 }
 
 .overviewSection,
@@ -226,7 +227,7 @@
 .overviewStats > div {
   min-height: 160px;
   padding: 26px;
-  background: #0c0e0f;
+  background: #0d1412;
 }
 
 .overviewStats strong,
@@ -318,7 +319,7 @@
 .serviceTitle p {
   max-width: 440px;
   margin: 0;
-  color: #dadbd7;
+  color: #d7dfd3;
   font-size: 1.04rem;
   line-height: 1.7;
 }
@@ -344,7 +345,7 @@
   grid-template-columns: 18px 1fr;
   gap: 10px;
   align-items: start;
-  color: #d5d7d3;
+  color: #d2dacd;
   font-size: 0.88rem;
   line-height: 1.55;
 }
@@ -374,7 +375,7 @@
 
 .bestFor p {
   margin: 8px 0 0;
-  color: #d5d7d3;
+  color: #d2dacd;
   line-height: 1.6;
 }
 
@@ -384,8 +385,8 @@
 
 .reportingSection {
   background:
-    radial-gradient(circle at 8% 0%, rgba(215, 184, 120, 0.13), transparent 35%),
-    #0c0e0f;
+    radial-gradient(circle at 8% 0%, rgba(182, 201, 165, 0.13), transparent 35%),
+    #0d1412;
 }
 
 .reportingCard {
@@ -394,8 +395,8 @@
   gap: 50px;
   align-items: center;
   padding: clamp(36px, 6vw, 72px);
-  border: 1px solid rgba(215, 184, 120, 0.42);
-  background: rgba(17, 20, 21, 0.72);
+  border: 1px solid rgba(182, 201, 165, 0.42);
+  background: rgba(18, 28, 23, 0.72);
 }
 
 .reportingIcon {
@@ -436,7 +437,7 @@
 .processGrid article {
   min-height: 330px;
   padding: 30px;
-  background: #0c0e0f;
+  background: #0d1412;
 }
 
 .processGrid span {
@@ -544,9 +545,9 @@
   grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
   gap: 70px;
   padding: clamp(42px, 7vw, 86px);
-  border: 1px solid rgba(215, 184, 120, 0.48);
+  border: 1px solid rgba(182, 201, 165, 0.48);
   background:
-    radial-gradient(circle at 85% 0%, rgba(215, 184, 120, 0.16), transparent 42%),
+    radial-gradient(circle at 85% 0%, rgba(182, 201, 165, 0.16), transparent 42%),
     var(--panel);
 }
 

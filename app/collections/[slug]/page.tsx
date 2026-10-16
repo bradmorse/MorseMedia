@@ -5,6 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import ProductGrid from '@/components/ProductGrid';
 import { collections, getCollection, getPhotosForCollection, products } from '@/data/site';
+import { breadcrumbs, jsonLd, pageMetadata } from '@/lib/seo';
 
 export function generateStaticParams() {
   return collections.map((collection) => ({ slug: collection.slug }));
@@ -14,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const collection = getCollection(slug);
   if (!collection) return {};
-  return { title: collection.name, description: collection.description, openGraph: { images: [collection.image] } };
+  return pageMetadata(`${collection.name} Photography Collection`, collection.description, `/collections/${slug}`, collection.image);
 }
 
 export default async function CollectionPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -26,15 +27,16 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(breadcrumbs([{ name: 'Home', path: '/' }, { name: 'Collections', path: '/collections' }, { name: collection.name, path: `/collections/${slug}` }])) }} />
       <section className="collection-hero">
-        <Image src={collection.image} alt={collection.name} fill priority sizes="100vw" />
+        <Image src={collection.image} alt="" fill priority sizes="100vw" />
         <div className="collection-hero__shade" />
         <div className="collection-hero__copy">
           <Link href="/collections" className="back-link">All collections</Link>
           <p className="eyebrow">{collection.eyebrow}</p>
           <h1>{collection.name}</h1>
           <p>{collection.description}</p>
-          {collectionProducts.length > 0 && <Link className="button button--solid" href="#available-prints">Shop the collection</Link>}
+          {collectionProducts.length > 0 && <Link className="button button--solid" href="#available-prints">See the prints</Link>}
         </div>
       </section>
 
@@ -54,7 +56,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
 
       {collectionProducts.length > 0 && (
         <section id="available-prints" className="content-section collection-products">
-          <div className="section-heading"><div><p className="eyebrow">Available prints</p><h2>Bring this collection home.</h2></div><Link className="text-link" href="/shop">Shop all prints <ArrowRight /></Link></div>
+          <div className="section-heading"><div><p className="eyebrow">Available prints</p><h2>Bring this collection home.</h2></div><Link className="text-link" href="/shop">All prints <ArrowRight /></Link></div>
           <ProductGrid products={collectionProducts} />
         </section>
       )}

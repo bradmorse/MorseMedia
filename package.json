@@ -1,6 +1,6 @@
 {
   "name": "morse-media-nextjs",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,7 +8,7 @@
     "start": "next start",
     "check": "tsc --noEmit",
     "verify": "npm run check && npm run build",
-    "test": "node --import tsx --test tests/*.test.ts",
+    "test": "tsx --test tests/*.test.ts",
     "catalog:checklist": "node --import tsx scripts/print-catalog.ts"
   },
   "dependencies": {

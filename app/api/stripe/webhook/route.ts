@@ -37,10 +37,10 @@ export async function POST(request: Request) {
     const fulfillment = await fulfillSession(stripe, session.id);
     return NextResponse.json({ received: true, fulfillment });
   } catch (error) {
-    console.error('[Morse Media] Paid-order handoff failed; retry required.', { eventId: event.id });
+    console.error('[Morse Media] Paid-order handoff failed; retry required.', { eventId: event.id, reason: error instanceof Error ? error.message : 'unknown' });
     try {
       const session = await stripe.checkout.sessions.retrieve((event.data.object as Stripe.Checkout.Session).id);
-      if (session.metadata?.storefront === 'morse-media') await orderEmail(stripe, session, 'handoff-failed', process.env.ORDER_ALERT_EMAIL || '', 'Morse Media paid order needs attention', `Order ${session.id} could not complete fulfillment. Check Stripe webhook delivery and Prodigi before retrying manually.`);
+      if (session.metadata?.storefront === 'morse-media') await orderEmail(stripe, session, 'handoff-failed', process.env.ORDER_ALERT_EMAIL || '', 'Morse Media paid order needs attention', `Order ${session.id} could not complete fulfillment. Check Stripe webhook delivery and Prodigi, fix the configuration, then resend the original Stripe event — do not recreate the lab order by hand.`);
     } catch { console.error('[Morse Media] Order alert could not be delivered.'); }
     return NextResponse.json({ error: 'Order processing failed; please retry.' }, { status: 500 });
   }
