@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/seo';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,7 +10,10 @@ import { collections, featuredProducts, finishOptions, photos } from '@/data/sit
 import { recentWork } from '@/data/recent-work';
 import { storeIsOpen } from '@/lib/store-readiness';
 
-export const metadata = pageMetadata('Fine Art Photography & Creative Services in New Hampshire', 'Original landscape photography, fine-art prints, commercial video, social media content and graphic design by Bradley Morse.', '/');
+export const metadata: Metadata = {
+  ...pageMetadata('Morse Media | Fine Art Photography & Creative Services in New Hampshire', 'Original New England landscape photography and fine-art prints, plus brand and real estate photography, video, social content and design for New Hampshire businesses.', '/'),
+  title: { absolute: 'Morse Media | Fine Art Photography & Creative Services in New Hampshire' },
+};
 
 const services = [
   { icon: Camera, title: 'Photography', copy: 'Brand, product, location and editorial imagery built for the places it will be used.', href: '/services/photography' },
@@ -96,7 +100,10 @@ export default function HomePage() {
           <p className="eyebrow">Creative studio</p>
           <h2>Capturing moments.<br />Telling stories.</h2>
           <p>Morse Media brings the same considered visual approach to photography, cinematic video and design for businesses.</p>
-          <Link className="text-link" href="/services">Explore creative services <ArrowRight /></Link>
+          <div className="detail-actions">
+            <Link className="text-link" href="/services">Explore creative services <ArrowRight /></Link>
+            <Link className="text-link" href="/real-estate">Real estate photography <ArrowRight /></Link>
+          </div>
         </div>
         <div className="studio-services">
           {services.map(({ icon: Icon, title, copy, href }) => (

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { postWebhook, sendOwnerEmail } from '@/lib/mail';
+import { looksLikeSpam, rateLimited, submittedTooFast } from '@/lib/spam';
 
 export const runtime = 'nodejs';
 
@@ -17,7 +18,10 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const honeypot = clean(body?.company, 100);
-    if (honeypot) return NextResponse.json({ ok: true });
+    if (honeypot || submittedTooFast(body?.startedAt)) return NextResponse.json({ ok: true, mode: 'email' });
+    if (rateLimited(request, 'contact', 5)) {
+      return NextResponse.json({ error: `Too many messages in a short time. Please wait a few minutes or email ${CONTACT_ADDRESS}.` }, { status: 429 });
+    }
 
     const name = clean(body?.name, 120).replace(/[\r\n]+/g, ' ');
     const email = clean(body?.email, 254).toLowerCase();
@@ -28,6 +32,8 @@ export async function POST(request: Request) {
     if (!name || !isEmail(email) || message.length < 10) {
       return NextResponse.json({ error: 'Please provide your name, a valid email and a little more project detail.' }, { status: 400 });
     }
+
+    if (looksLikeSpam(message, details.details, details.location)) return NextResponse.json({ ok: true, mode: 'email' });
 
     const detailLines = Object.entries(details).filter(([,v])=>v).map(([k,v])=>`${k[0].toUpperCase()}${k.slice(1)}: ${v}`).join('\n');
     const text = `Name: ${name}\nEmail: ${email}\nProject type: ${type}\n${detailLines}\n\n${message}`;

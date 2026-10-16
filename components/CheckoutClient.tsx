@@ -8,12 +8,14 @@ import { ArrowLeft, CheckCircle2, LoaderCircle, LockKeyhole, PackageCheck, Shopp
 import { useCallback, useMemo } from 'react';
 import { products } from '@/data/site';
 import { formatCurrency } from '@/lib/format';
+import { applySetPricing } from '@/lib/sets';
 import { useCart } from './CartProvider';
 
 export default function CheckoutClient({ publishableKey }: { publishableKey: string }) {
   const { items, subtotal, hydrated } = useCart();
   const stripeReady = publishableKey.startsWith('pk_') && !publishableKey.includes('REPLACE_ME') && publishableKey.length > 20;
   const stripePromise = useMemo(() => stripeReady ? loadStripe(publishableKey) : null, [publishableKey, stripeReady]);
+  const pricedItems = useMemo(() => applySetPricing(items), [items]);
   const itemCount = useMemo(() => items.reduce((total, item) => total + item.qty, 0), [items]);
 
   const checkoutItems = useMemo(() => items.map(({ id, qty, size, finish }) => ({ id, qty, size, finish })), [items]);
@@ -67,13 +69,13 @@ export default function CheckoutClient({ publishableKey }: { publishableKey: str
             <strong>{formatCurrency(subtotal)}</strong>
           </div>
           <div className="checkout-summary__items">
-            {items.map((item) => {
+            {pricedItems.map((item) => {
               const product = products.find((entry) => entry.id === item.id);
               if (!product) return null;
               return (
                 <div className="checkout-summary__item" key={item.key}>
                   <div className="checkout-summary__image"><Image src={product.image} alt="" fill sizes="88px" /></div>
-                  <div><strong>{product.title}</strong><span>{item.size} · {item.finish}</span><small>Quantity {item.qty}</small></div>
+                  <div><strong>{product.title}</strong><span>{item.size} · {item.finish}</span><small>Quantity {item.qty}{item.set ? ` · ${item.set.name} set, ${item.set.percent}% off` : ''}</small></div>
                   <b>{formatCurrency(item.unitPrice * item.qty)}</b>
                 </div>
               );

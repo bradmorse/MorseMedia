@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { postWebhook, saveSubscriber, sendOwnerEmail } from '@/lib/mail';
+import { rateLimited, submittedTooFast } from '@/lib/spam';
+import { sendWelcomeEmail } from '@/lib/welcome-email';
 
 export const runtime = 'nodejs';
 
@@ -12,7 +14,10 @@ export async function POST(request: Request) {
     const body = await request.json();
     const email = typeof body?.email === 'string' ? body.email.trim().toLowerCase().slice(0, 254) : '';
     const honeypot = typeof body?.company === 'string' ? body.company.trim() : '';
-    if (honeypot) return NextResponse.json({ ok: true });
+    if (honeypot || submittedTooFast(body?.startedAt)) return NextResponse.json({ ok: true, mode: 'list' });
+    if (rateLimited(request, 'newsletter', 5)) {
+      return NextResponse.json({ error: 'Too many sign-ups in a short time. Please try again in a few minutes.' }, { status: 429 });
+    }
     if (!isEmail(email)) return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 400 });
 
     const endpoint = process.env.NEWSLETTER_WEBHOOK_URL?.trim();
@@ -28,7 +33,10 @@ export async function POST(request: Request) {
       text: saved ? `${email} was added to your Resend contacts.` : `Please add ${email} to the Morse Media email list.`,
       replyTo: email,
     }).catch(() => false);
-    if (saved || notified) return NextResponse.json({ ok: true, mode: saved ? 'list' : 'email' });
+    if (saved || notified) {
+      await sendWelcomeEmail(email);
+      return NextResponse.json({ ok: true, mode: saved ? 'list' : 'email' });
+    }
 
     const subject = encodeURIComponent('Morse Media newsletter subscription');
     const mailBody = encodeURIComponent(`Please add ${email} to the Morse Media email list.`);

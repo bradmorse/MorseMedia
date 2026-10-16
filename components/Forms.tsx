@@ -1,10 +1,17 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { Check, LoaderCircle, Mail } from 'lucide-react';
 
 type SubmitState = { status: 'idle' | 'sending' | 'success' | 'error'; message: string };
 type SubmitResult = { ok: boolean; mode?: 'webhook' | 'email' | 'list' | 'mailto'; mailto?: string };
+
+/** Records when the form appeared, so the server can ignore bots that submit instantly. */
+function useStartedAt() {
+  const startedAt = useRef(0);
+  useEffect(() => { startedAt.current = Date.now(); }, []);
+  return startedAt;
+}
 
 async function submitJson(url: string, payload: Record<string, string>) {
   const response = await fetch(url, {
@@ -21,12 +28,13 @@ export function NewsletterForm() {
   const [email, setEmail] = useState('');
   const [company, setCompany] = useState('');
   const [state, setState] = useState<SubmitState>({ status: 'idle', message: '' });
+  const startedAt = useStartedAt();
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setState({ status: 'sending', message: 'Submitting…' });
     try {
-      const result = await submitJson('/api/newsletter', { email, company });
+      const result = await submitJson('/api/newsletter', { email, company, startedAt: String(startedAt.current) });
       if (result.mode === 'mailto' && result.mailto) {
         window.location.href = result.mailto;
         setState({ status: 'success', message: 'Your email app should open — press send to finish subscribing.' });
@@ -64,7 +72,7 @@ export function NewsletterForm() {
   );
 }
 
-const projectTypes = [
+export const projectTypes = [
   'Print or order question',
   'Photography',
   'Real estate photography',
@@ -73,6 +81,7 @@ const projectTypes = [
   'Graphic design',
   'Combined creative campaign',
   'Image licensing',
+  'Gift certificate',
 ];
 
 function detailsLabel(type: string) {
@@ -80,6 +89,7 @@ function detailsLabel(type: string) {
   if (type === 'Video production') return 'Runtime, formats & filming needs';
   if (type === 'Social media content') return 'Platforms & posting frequency';
   if (type === 'Image licensing') return 'Image use, distribution & license term';
+  if (type === 'Gift certificate') return 'Amount, recipient & delivery date';
   return 'Deliverables & intended usage';
 }
 
@@ -89,6 +99,7 @@ export function ContactForm({ defaultType = 'Print or order question', photoTitl
   const isPrint = projectType === 'Print or order question';
   const isProperty = projectType === 'Real estate photography';
   const [state, setState] = useState<SubmitState>({ status: 'idle', message: '' });
+  const startedAt = useStartedAt();
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -108,6 +119,7 @@ export function ContactForm({ defaultType = 'Print or order question', photoTitl
         details: String(form.get('details') || ''),
         photo: photoTitle,
         company: String(form.get('company') || ''),
+        startedAt: String(startedAt.current),
       });
 
       if (result.mode === 'mailto' && result.mailto) {

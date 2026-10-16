@@ -1,16 +1,22 @@
 import { recentWork } from '@/data/recent-work';
 import { servicePages } from '@/data/services';
+import { areas } from '@/data/areas';
+import { caseStudies } from '@/data/case-studies';
 import type { MetadataRoute } from 'next';
 import { collections, products } from '@/data/site';
 
 const siteUrl = 'https://www.morsemedia.co';
-const lastModified = new Date('2026-10-15');
+const lastModified = new Date('2026-10-16');
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
     { path: '', priority: 1, changeFrequency: 'monthly' as const },
     { path: '/shop', priority: 0.9, changeFrequency: 'weekly' as const },
     { path: '/services', priority: 0.85, changeFrequency: 'monthly' as const },
+    { path: '/real-estate', priority: 0.85, changeFrequency: 'monthly' as const },
+    { path: '/areas', priority: 0.6, changeFrequency: 'monthly' as const },
+    { path: '/gift-cards', priority: 0.5, changeFrequency: 'yearly' as const },
+    ...(caseStudies.length ? [{ path: '/work', priority: 0.75, changeFrequency: 'monthly' as const }] : []),
     { path: '/collections', priority: 0.8, changeFrequency: 'monthly' as const },
     { path: '/photography', priority: 0.8, changeFrequency: 'monthly' as const },
     { path: '/portfolio', priority: 0.8, changeFrequency: 'monthly' as const },
@@ -25,6 +31,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...staticPages.map((page) => ({ url: `${siteUrl}${page.path || '/'}`, lastModified, changeFrequency: page.changeFrequency, priority: page.priority })),
     ...servicePages.map((s) => ({ url: `${siteUrl}/services/${s.slug}`, lastModified, changeFrequency: 'monthly' as const, priority: 0.8 })),
+    ...areas.map((area) => ({ url: `${siteUrl}/areas/${area.slug}`, lastModified, changeFrequency: 'monthly' as const, priority: 0.7 })),
+    ...caseStudies.map((study) => ({ url: `${siteUrl}/work/${study.slug}`, lastModified, images: [siteUrl + study.cover.src], changeFrequency: 'yearly' as const, priority: 0.7 })),
     ...collections.map((collection) => ({ url: `${siteUrl}/collections/${collection.slug}`, lastModified, changeFrequency: 'monthly' as const, priority: 0.7 })),
     ...recentWork.map((p) => ({ url: `${siteUrl}/photography/${p.slug}`, lastModified, images: [siteUrl + p.image], priority: 0.7 })),
     ...products.map((product) => ({ url: `${siteUrl}/shop/${product.slug}`, lastModified, images: [siteUrl + product.image], changeFrequency: 'monthly' as const, priority: 0.75 })),

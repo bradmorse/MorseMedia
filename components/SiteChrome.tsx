@@ -78,8 +78,13 @@ export function Header({ storeOpen = false }: { storeOpen?: boolean }) {
       .map((collection) => ({ label: collection.name, meta: 'Photography collection', href: `/collections/${collection.slug}`, image: collection.image }));
     const serviceResults = servicePages
       .filter((service) => matches(service.name, service.type, service.intro, service.deliverables.join(' ')))
-      .map((service) => ({ label: service.name, meta: 'Creative service', href: `/services/${service.slug}` }));
-    return [...collectionResults, ...serviceResults, ...photoResults, ...productResults].slice(0, 10);
+      .map((service) => ({ label: service.name, meta: 'Creative service', href: service.slug === 'real-estate' ? '/real-estate' : `/services/${service.slug}` }));
+    const pageResults = [
+      { label: 'Gift certificates', meta: 'Give a print', href: '/gift-cards', terms: 'gift card certificate present voucher' },
+      { label: 'Curated print sets', meta: 'Save on a complete set', href: '/shop#sets', terms: 'set bundle pair trio wall gallery discount' },
+      { label: 'Areas served', meta: 'Across New Hampshire', href: '/areas', terms: 'seacoast portsmouth lakes laconia white mountains north conway manchester nashua concord keene monadnock' },
+    ].filter((page) => matches(page.label, page.terms)).map(({ label, meta, href }) => ({ label, meta, href }));
+    return [...collectionResults, ...serviceResults, ...pageResults, ...photoResults, ...productResults].slice(0, 10);
   }, [query]);
 
   function openSearch() {
@@ -186,12 +191,15 @@ export function Footer() {
         <Link href="/print-guide">Size & finish guide</Link>
         <Link href="/collections">Collections</Link>
         <Link href="/shipping-returns">Shipping & returns</Link>
+        <Link href="/gift-cards">Gift certificates</Link>
       </div>
       <div>
         <h4>Explore</h4>
         <Link href="/photography">Latest photography</Link>
         <Link href="/services">Services</Link>
+        <Link href="/real-estate">Real estate photography</Link>
         <Link href="/portfolio">Portfolio</Link>
+        <Link href="/areas">Areas served</Link>
         <Link href="/about">About</Link>
       </div>
       <div>

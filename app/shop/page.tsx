@@ -1,6 +1,7 @@
 import { pageMetadata } from '@/lib/seo';
 import Image from 'next/image';
 import ShopCatalog from '@/components/ShopCatalog';
+import SetCards from '@/components/SetCards';
 import { finishOptions } from '@/data/site';
 import { formatCurrency } from '@/lib/format';
 import { storeIsOpen } from '@/lib/store-readiness';
@@ -29,6 +30,7 @@ export default function ShopPage() {
         </div>
         <ShopCatalog />
       </section>
+      <SetCards storeOpen={storeOpen} />
       <section className="material-guide content-section">
         <div className="section-heading">
           <div><p className="eyebrow">Choose your finish</p><h2>Four ways to live with the work.</h2></div>
@@ -52,6 +54,10 @@ export default function ShopPage() {
         {storeOpen
           ? <div><span>03</span><h3>Secure checkout</h3><p>Stripe securely collects payment and shipping details without leaving the site.</p></div>
           : <div><span>03</span><h3>A personal quote</h3><p>Send the photograph, size and finish you have in mind and receive a confirmed price and timeline.</p></div>}
+      </section>
+      <section className="content-section gift-band">
+        <div><p className="eyebrow">Gift certificates</p><h2>Give the choice of a print.</h2><p>A Morse Media gift certificate lets someone pick the photograph, size and finish themselves.</p></div>
+        <a className="button" href="/gift-cards">About gift certificates</a>
       </section>
     </>
   );

@@ -1,4 +1,5 @@
 import { assertFulfillmentReady, printMapping } from './prodigi';
+import { isPrintReady } from './print-quality';
 import { buildSku, finishOptions, getSizeOptions, products, type Product } from '@/data/site';
 
 function stripeKeyMode(): 'test' | 'live' | null {
@@ -13,7 +14,8 @@ export function availablePrintSkus(product: Product): string[] {
     const mode = stripeKeyMode();
     if (!mode) return [];
     assertFulfillmentReady(mode === 'live');
-    return getSizeOptions(product.orientation).flatMap(size=>finishOptions.flatMap(finish=>{
+    // Sizes the print master cannot hold sharply are never offered, whatever the lab catalog says.
+    return getSizeOptions(product.orientation).filter(size=>isPrintReady(product.id,size.label)).flatMap(size=>finishOptions.flatMap(finish=>{
       const sku=buildSku(product.id,size.label,finish.label);
       try {printMapping(sku);return [sku];} catch {return [];}
     }));

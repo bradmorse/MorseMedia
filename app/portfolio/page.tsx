@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import RecentGallery from '@/components/RecentGallery';
+import CaseStudyGrid from '@/components/CaseStudyGrid';
+import { caseStudies } from '@/data/case-studies';
 import { pageMetadata } from '@/lib/seo';
 import styles from './portfolio.module.css';
 
@@ -225,6 +227,8 @@ export default function PortfolioPage() {
           </article>
         ))}
       </div>
+
+      <CaseStudyGrid studies={caseStudies} eyebrow="In-depth projects" heading="From the brief to the finished work." />
 
       <section className="content-section">
         <div className="section-heading"><div><p className="eyebrow">Personal photography</p><h2>The eye behind the work.</h2></div><Link className="text-link" href="/photography">Explore the archive ↗</Link></div>

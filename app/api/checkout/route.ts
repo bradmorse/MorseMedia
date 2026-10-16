@@ -3,13 +3,19 @@ import type Stripe from 'stripe';
 import { getStripe } from '@/lib/stripe';
 import { validateCheckoutItems } from '@/lib/store';
 import { assertFulfillmentReady, printMapping } from '@/lib/prodigi';
+import { printReadiness } from '@/lib/print-quality';
+import { applySetPricing } from '@/lib/sets';
 
 export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const items = validateCheckoutItems(body?.items);
+    const items = applySetPricing(validateCheckoutItems(body?.items));
+    for (const item of items) {
+      const quality = printReadiness(item.id, item.size);
+      if (!quality.ready) throw new Error(`${item.sku} is not print-ready: ${quality.reason}`);
+    }
     const stripe = getStripe();
     assertFulfillmentReady(/^(sk|rk)_live_/.test(process.env.STRIPE_SECRET_KEY || ''));
     const mappings = new Map(items.map(item => [item.sku, printMapping(item.sku)]));
@@ -23,16 +29,17 @@ export async function POST(request: Request) {
         quantity: item.qty,
         price_data: {
           currency: 'usd',
-          unit_amount: item.unitPrice * 100,
+          unit_amount: Math.round(item.unitPrice * 100),
           ...(enableTax ? { tax_behavior: 'exclusive' as const } : {}),
           product_data: {
             name: item.title,
-            description: `${item.size} · ${item.finish}`,
+            description: `${item.size} · ${item.finish}${item.set ? ` · ${item.set.name} set price (${item.set.percent}% off)` : ''}`,
             metadata: {
               photo_id: item.id,
               size: item.size,
               finish: item.finish,
               sku: item.sku,
+              ...(item.set ? { print_set: item.set.slug, list_price: String(item.originalUnitPrice) } : {}),
               prodigi_sku: mapping.sku,
               print_asset: mapping.assetUrl,
               print_sizing: mapping.sizing,

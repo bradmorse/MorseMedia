@@ -203,7 +203,7 @@ export default function ServicesPage() {
       </section>
 
       {servicePackages.length > 0 && (
-        <section className={styles.packageSection} aria-labelledby="packages-heading">
+        <section className={styles.packageSection} id="packages" aria-labelledby="packages-heading">
           <div className={styles.container}>
             <div className={styles.sectionHeading}>
               <div>
@@ -272,7 +272,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <nav className="content-section service-links" aria-label="Service details">{servicePages.map(s => <Link key={s.slug} href={`/services/${s.slug}`}>{s.name} ↗</Link>)}</nav>
+      <nav className="content-section service-links" aria-label="Service details">{servicePages.map(s => <Link key={s.slug} href={s.slug === 'real-estate' ? '/real-estate' : `/services/${s.slug}`}>{s.name} ↗</Link>)}<Link href="/areas">Areas served ↗</Link></nav>
       <section className={styles.ctaSection}>
         <div className={styles.container}>
           <div className={styles.ctaCard}>

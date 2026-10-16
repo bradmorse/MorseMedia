@@ -6,6 +6,7 @@ import { createContext, useContext, useEffect, useMemo, useRef, useState } from 
 import { Minus, Plus, ShoppingBag, Trash2, X } from 'lucide-react';
 import { calculateUnitPrice, finishOptions, getSizeOptions, products } from '@/data/site';
 import { formatCurrency } from '@/lib/format';
+import { applySetPricing, incompleteSets } from '@/lib/sets';
 import { useBodyScrollLock } from './useBodyScrollLock';
 
 type AddOptions = {
@@ -118,7 +119,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const remove = (key: string) => setItems((current) => current.filter((item) => item.key !== key));
   const clear = () => setItems([]);
   const count = useMemo(() => items.reduce((total, item) => total + item.qty, 0), [items]);
-  const subtotal = useMemo(() => items.reduce((total, item) => total + item.unitPrice * item.qty, 0), [items]);
+  // Complete-set pricing mirrors what checkout charges (checkout recalculates it on the server).
+  const priced = useMemo(() => applySetPricing(items), [items]);
+  const subtotal = useMemo(() => priced.reduce((total, item) => total + item.unitPrice * item.qty, 0), [priced]);
+  const savings = useMemo(() => priced.reduce((total, item) => total + (item.originalUnitPrice - item.unitPrice) * item.qty, 0), [priced]);
+  const nudges = useMemo(() => incompleteSets(items.map((item) => item.id)), [items]);
 
   return (
     <CartContext.Provider value={{ items, add, increment, decrement, remove, clear, count, subtotal, open, setOpen, hydrated }}>
@@ -145,7 +150,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             ) : (
               <>
                 <div className="cart-items">
-                  {items.map((item) => {
+                  {priced.map((item) => {
                     const product = products.find((entry) => entry.id === item.id);
                     if (!product) return null;
                     return (
@@ -156,6 +161,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                         <div className="cart-row__copy">
                           <strong>{product.title}</strong>
                           <small>{item.size} · {item.finish}</small>
+                          {item.set && <small className="cart-row__set">{item.set.name} set · {item.set.percent}% off</small>}
                           <div className="quantity-control" aria-label={`Quantity for ${product.title}`}>
                             <button type="button" onClick={() => decrement(item.key)} aria-label="Decrease quantity"><Minus /></button>
                             <span aria-live="polite">{item.qty}</span>
@@ -163,7 +169,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                           </div>
                         </div>
                         <div className="cart-row__price">
-                          <span>{formatCurrency(item.unitPrice * item.qty)}</span>
+                          <span>
+                            {item.set && <s className="cart-row__was">{formatCurrency(item.originalUnitPrice * item.qty)}</s>}
+                            {formatCurrency(item.unitPrice * item.qty)}
+                          </span>
                           <button type="button" onClick={() => remove(item.key)} aria-label={`Remove ${product.title}`}><Trash2 /></button>
                         </div>
                       </div>
@@ -171,6 +180,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
                   })}
                 </div>
                 <div className="cart-summary">
+                  {nudges.map(({ set, missing }) => {
+                    const next = products.find((entry) => entry.id === missing[0]);
+                    return (
+                      <p className="cart-nudge" key={set.slug}>
+                        Add {missing.length === 1 ? 'one more print' : `${missing.length} more prints`} to complete the <strong>{set.name}</strong> set and save on every piece.
+                        {next && <> <Link href={`/shop/${next.slug}`} onClick={() => setOpen(false)}>See {next.title} →</Link></>}
+                      </p>
+                    );
+                  })}
+                  {savings > 0 && <div className="cart-savings"><span>Set savings</span><strong>−{formatCurrency(savings)}</strong></div>}
                   <div><span>Estimated subtotal</span><strong>{formatCurrency(subtotal)}</strong></div>
                   <p>Shipping details and secure payment are completed without leaving the Morse Media website.</p>
                   <Link className="button button--solid button--wide" href="/checkout" onClick={() => setOpen(false)}>Secure checkout</Link>

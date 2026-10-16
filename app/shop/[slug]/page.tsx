@@ -1,5 +1,5 @@
 import { availablePrintSkus } from '@/lib/store-readiness';
-import { siteUrl, breadcrumbs, jsonLd } from '@/lib/seo';
+import { siteUrl, breadcrumbs, jsonLd, shareImage } from '@/lib/seo';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,6 +9,9 @@ import PrintVisualizer from '@/components/PrintVisualizer';
 import { describePhoto } from '@/data/discovery';
 import ProductGrid from '@/components/ProductGrid';
 import ProductPurchasePanel from '@/components/ProductPurchasePanel';
+import { SetCard } from '@/components/SetCards';
+import { setForProduct } from '@/lib/sets';
+import { storeIsOpen } from '@/lib/store-readiness';
 import { calculateUnitPrice, finishOptions, getCollection, getProduct, getSizeOptions, products } from '@/data/site';
 
 export function generateStaticParams() {
@@ -25,8 +28,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title,
     description,
     alternates: { canonical: `${siteUrl}/shop/${product.slug}` },
-    openGraph: { title, description, url: `${siteUrl}/shop/${product.slug}`, images: [{ url: product.image, alt: product.alt }] },
-    twitter: { card: 'summary_large_image', title, description, images: [product.image] },
+    openGraph: { title, description, url: `${siteUrl}/shop/${product.slug}`, type: 'website', siteName: 'Morse Media', images: [shareImage(product.image, product.alt)] },
+    twitter: { card: 'summary_large_image', title, description, images: [shareImage(product.image).url] },
   };
 }
 
@@ -36,8 +39,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   if (!product) notFound();
   const collection = getCollection(product.collection);
   const color = describePhoto(product.slug).color;
+  const set = setForProduct(product.id);
   const related = products
-    .filter((entry) => entry.id !== product.id)
+    .filter((entry) => entry.id !== product.id && !set?.pieces.includes(entry.id))
     .sort((a, b) =>
       Number(describePhoto(b.slug).color === color) - Number(describePhoto(a.slug).color === color) ||
       Number(b.collection === product.collection) - Number(a.collection === product.collection))
@@ -53,6 +57,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     description: product.description,
     brand: { '@type': 'Brand', name: 'Morse Media' },
     category: 'Fine Art Photography Print',
+    material: finishOptions.map((finish) => finish.label).join(', '),
+    sku: product.id,
     offers: {
       '@type': 'AggregateOffer',
       url: `${siteUrl}/shop/${product.slug}`,
@@ -88,6 +94,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <p>Screen colors can vary slightly from the finished print. Interested in using this image commercially? <Link href={`/contact?service=Image%20licensing&photo=${product.slug}`}>Ask about licensing</Link>.</p>
         </div>
       </section>
+      {set && (
+        <section className="content-section product-set">
+          <div className="section-heading"><div><p className="eyebrow">Part of a set</p><h2>Made to hang together.</h2></div><p>{set.hangingNote}</p></div>
+          <SetCard set={set} storeOpen={storeIsOpen()} />
+        </section>
+      )}
       {related.length > 0 && (
         <section className="content-section related-products">
           <div className="section-heading"><div><p className="eyebrow">Pairs well with</p><h2>Build a collection.</h2></div></div>

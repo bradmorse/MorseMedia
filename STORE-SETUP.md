@@ -71,6 +71,37 @@ If this catalog outgrows environment-variable size limits, move it to private
 versioned storage before expanding. Each asset URL must fit Stripe's 500-character
 metadata limit. Metadata access should be limited to staff who handle orders.
 
+## Print masters and the readiness guard
+
+A size is only offered for sale when its print master has at least 150 pixels per inch
+at that size (`PRINT_MIN_PPI` changes the floor). This applies even if the size is mapped
+in `PRODIGI_CATALOG_JSON`, and checkout re-checks it.
+
+1. Export full-resolution masters from your originals into one folder, each named after
+   its photo (e.g. `forest-current.jpg`). JPEG, PNG and TIFF are supported.
+2. Run `npm run masters:check -- "C:\path\to\masters"`. It lists every size with its
+   ppi and prints lines to paste into `data/print-masters.ts`.
+3. `npm run catalog:checklist` now shows `printReady`, `masterPpi` and `pixelsNeeded`
+   for every store SKU.
+
+Rough guide at 150 ppi: 8 × 10 needs 1200 × 1500 px; 18 × 24 needs 2700 × 3600 px;
+24 × 36 needs 3600 × 5400 px.
+
+## Curated sets
+
+Sets live in `data/sets.ts`. When every piece of a set is in the bag (any size or
+finish), each of those prints is discounted by `SET_DISCOUNT_PERCENT` (10%), rounded
+to whole dollars. Checkout calculates this on the server; the bag only displays it.
+Stripe line items carry `print_set` and `list_price` metadata for set orders.
+
+## Gift certificates
+
+Gift certificates are requested through the contact form ("Gift certificate").
+Take payment by Stripe invoice or payment link, then create a Stripe promotion
+code for the amount (Products → Coupons) and send it with the certificate.
+Checkout already accepts promotion codes. Use a fixed-amount coupon limited to one
+redemption; Stripe does not carry an unused balance forward, so mention that on the certificate.
+
 ## Preview setup
 
 Use `.env.example` as the complete settings checklist. Add values to Vercel's

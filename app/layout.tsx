@@ -5,8 +5,10 @@ import './refinements.css';
 import { CartProvider } from '@/components/CartProvider';
 import { Footer, Header } from '@/components/SiteChrome';
 import { storeIsOpen } from '@/lib/store-readiness';
+import { shareImage } from '@/lib/seo';
 
 const siteUrl = 'https://www.morsemedia.co';
+const homeShare = shareImage('/images/photos/autumn-overlook.webp', 'Autumn valley and lake in the Adirondacks framed by pine branches');
 const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim() || 'G-Q60YZCS3S9';
 
 export const metadata: Metadata = {
@@ -29,13 +31,13 @@ export const metadata: Metadata = {
     siteName: 'Morse Media',
     url: '/',
     locale: 'en_US',
-    images: [{ url: '/images/photos/autumn-overlook.webp', width: 1440, height: 960, alt: 'Autumn valley and lake in the Adirondacks framed by pine branches' }],
+    images: [homeShare],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Morse Media | Fine Art Photography',
     description: 'Atmospheric photography and fine-art prints from New England and beyond.',
-    images: ['/images/photos/autumn-overlook.webp'],
+    images: [homeShare.url],
   },
   robots: { index: true, follow: true },
 };
@@ -49,14 +51,33 @@ export const viewport: Viewport = {
 
 const organizationSchema = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'Morse Media',
-  url: siteUrl,
-  logo: `${siteUrl}/images/morse-media-logo.png`,
-  description: 'A New Hampshire creative studio offering fine-art photography prints, photography, video and design.',
-  email: 'hello@morsemedia.co',
-  founder: { '@type': 'Person', name: 'Bradley Morse' },
-  areaServed: 'New England',
+  '@graph': [
+    {
+      '@type': ['Organization', 'ProfessionalService'],
+      '@id': `${siteUrl}/#business`,
+      name: 'Morse Media',
+      url: siteUrl,
+      logo: `${siteUrl}/images/morse-media-logo.png`,
+      image: `${siteUrl}/images/og/autumn-overlook.jpg`,
+      description: 'A New Hampshire creative studio offering fine-art photography prints, brand and real estate photography, video production, social media content and design.',
+      email: 'hello@morsemedia.co',
+      founder: { '@type': 'Person', name: 'Bradley Morse' },
+      address: { '@type': 'PostalAddress', addressRegion: 'NH', addressCountry: 'US' },
+      areaServed: [
+        { '@type': 'State', name: 'New Hampshire' },
+        { '@type': 'Place', name: 'New England' },
+      ],
+      knowsAbout: ['Fine art photography', 'Brand photography', 'Real estate photography', 'Video production', 'Social media content', 'Graphic design'],
+      priceRange: '$$',
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: siteUrl,
+      name: 'Morse Media',
+      publisher: { '@id': `${siteUrl}/#business` },
+    },
+  ],
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

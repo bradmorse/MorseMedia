@@ -1,33 +1,12 @@
+import { Suspense } from 'react';
 import { pageMetadata } from '@/lib/seo';
 import Image from 'next/image';
-import { galleryPhotos } from '@/data/discovery';
 import { ContactForm } from '@/components/Forms';
+import ContactFormFromQuery from '@/components/ContactFormFromQuery';
 
-export const metadata = pageMetadata('Contact Morse Media — Project & Print Inquiries', 'Request photography, video, graphic design, social content or real-estate services. Ask about original prints and image licensing.', '/contact', '/images/photos/coastline-dusk.webp');
+export const metadata = pageMetadata('Contact Morse Media — Project & Print Inquiries', 'Request photography, video, graphic design, social content or real-estate services. Ask about original prints, gift certificates and image licensing.', '/contact', '/images/photos/coastline-dusk.webp');
 
-const allowedProjectTypes = new Set([
-  'Print or order question',
-  'Photography',
-  'Real estate photography',
-  'Video production',
-  'Social media content',
-  'Graphic design',
-  'Combined creative campaign',
-  'Image licensing',
-]);
-
-const serviceTypeMap: Record<string, string> = {
-  Photography: 'Photography',
-  'Video Production': 'Video production',
-  'Social Media Content': 'Social media content',
-  'Graphic Design': 'Graphic design',
-};
-
-export default async function ContactPage({ searchParams }: { searchParams: Promise<{ service?: string; photo?: string }> }) {
-  const params = await searchParams;
-  const requestedType = params.service ? serviceTypeMap[params.service] || params.service : 'Print or order question';
-  const defaultType = allowedProjectTypes.has(requestedType) ? requestedType : 'Print or order question';
-  const photoTitle = galleryPhotos.find((photo) => photo.slug === params.photo)?.title;
+export default function ContactPage() {
   return (
     <>
       <section className="page-hero">
@@ -43,7 +22,9 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
           <a className="contact-email" href="mailto:hello@morsemedia.co">hello@morsemedia.co</a>
           <div className="contact-details"><span>Based in New Hampshire</span><span>Available for travel</span></div>
         </div>
-        <ContactForm key={defaultType + (params.photo || '')} defaultType={defaultType} photoTitle={photoTitle} />
+        <Suspense fallback={<ContactForm />}>
+          <ContactFormFromQuery />
+        </Suspense>
       </section>
     </>
   );
