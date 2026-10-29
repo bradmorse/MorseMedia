@@ -3,6 +3,7 @@ import RecentGallery from '@/components/RecentGallery';
 import CaseStudyGrid from '@/components/CaseStudyGrid';
 import { caseStudies } from '@/data/case-studies';
 import { pageMetadata } from '@/lib/seo';
+import { PRINT_SHOP_ENABLED } from '@/data/features';
 import styles from './portfolio.module.css';
 
 export const metadata = pageMetadata(
@@ -142,7 +143,7 @@ export default function PortfolioPage() {
             <span>Short-form social</span>
             <span>Real estate</span>
           </div>
-          <Link className="text-link portfolio-hero-link" href="/photography">Looking for landscape photography? See the latest work ↗</Link>
+          <Link className="text-link portfolio-hero-link" href={PRINT_SHOP_ENABLED ? '/photography' : '/services'}>{PRINT_SHOP_ENABLED ? 'Looking for landscape photography? See the latest work ↗' : 'See services and starting prices ↗'}</Link>
         </div>
       </section>
 
@@ -231,7 +232,7 @@ export default function PortfolioPage() {
       <CaseStudyGrid studies={caseStudies} eyebrow="In-depth projects" heading="From the brief to the finished work." />
 
       <section className="content-section">
-        <div className="section-heading"><div><p className="eyebrow">Personal photography</p><h2>The eye behind the work.</h2></div><Link className="text-link" href="/photography">Explore the archive ↗</Link></div>
+        <div className="section-heading"><div><p className="eyebrow">Personal photography</p><h2>The eye behind the work.</h2></div>{PRINT_SHOP_ENABLED && <Link className="text-link" href="/photography">Explore the archive ↗</Link>}</div>
         <RecentGallery />
       </section>
       <section className={styles.ctaSection}>

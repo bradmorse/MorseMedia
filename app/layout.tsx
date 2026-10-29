@@ -8,6 +8,9 @@ import { storeIsOpen } from '@/lib/store-readiness';
 import { shareImage } from '@/lib/seo';
 import { areaServedSchema, business } from '@/data/business';
 import { servicePages, servicePath } from '@/data/services';
+import { PRINT_SHOP_ENABLED } from '@/data/features';
+
+const printsNote = PRINT_SHOP_ENABLED ? ' — plus original fine-art prints' : '';
 
 const siteUrl = 'https://www.morsemedia.co';
 const homeShare = shareImage('/images/photos/autumn-overlook.webp', 'Autumn valley and lake in the Adirondacks framed by pine branches');
@@ -18,17 +21,17 @@ export const metadata: Metadata = {
     default: 'Morse Media | Nashville Photography & Video',
     template: '%s | Morse Media',
   },
-  description: 'Nashville photographer and videographer Bradley Morse: brand, headshot, event and real estate photography, cinematic video and monthly content for Middle Tennessee businesses — plus original fine-art prints.',
+  description: `Nashville photographer and videographer Bradley Morse: brand, headshot, event and real estate photography, cinematic video and monthly content for Middle Tennessee businesses${printsNote}.`,
   metadataBase: new URL(siteUrl),
   applicationName: 'Morse Media',
-  keywords: ['Nashville photographer', 'Nashville videographer', 'Nashville real estate photography', 'Nashville brand photography', 'Nashville headshots', 'Franklin TN photographer', 'Middle Tennessee video production', 'fine art prints', 'Morse Media', 'Bradley Morse'],
+  keywords: ['Nashville photographer', 'Nashville videographer', 'Nashville real estate photography', 'Nashville brand photography', 'Nashville headshots', 'Franklin TN photographer', 'Middle Tennessee video production', 'Nashville event photographer', 'Morse Media', 'Bradley Morse'],
   authors: [{ name: 'Bradley Morse', url: siteUrl }],
   creator: 'Bradley Morse',
   publisher: 'Morse Media',
   verification: { google: process.env.GOOGLE_SITE_VERIFICATION || undefined },
   openGraph: {
     title: 'Morse Media | Nashville Photography & Video',
-    description: 'Brand, real estate and event photography and cinematic video in Nashville and Middle Tennessee — plus original fine-art prints.',
+    description: `Brand, real estate and event photography and cinematic video in Nashville and Middle Tennessee${printsNote}.`,
     type: 'website',
     siteName: 'Morse Media',
     url: '/',
@@ -38,7 +41,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Morse Media | Nashville Photography & Video',
-    description: 'Brand, real estate and event photography and cinematic video in Nashville and Middle Tennessee — plus original fine-art prints.',
+    description: `Brand, real estate and event photography and cinematic video in Nashville and Middle Tennessee${printsNote}.`,
     images: [homeShare.url],
   },
   robots: { index: true, follow: true },
@@ -61,7 +64,7 @@ const organizationSchema = {
       url: siteUrl,
       logo: `${siteUrl}/images/morse-media-logo.png`,
       image: `${siteUrl}/images/og/autumn-overlook.jpg`,
-      description: `A ${business.city} photography and video studio offering brand, headshot, event and real estate photography, video production, monthly content and fine-art photography prints.`,
+      description: `A ${business.city} photography and video studio offering brand, headshot, event and real estate photography, video production and monthly content${PRINT_SHOP_ENABLED ? ', plus fine-art photography prints' : ''}.`,
       email: business.email,
       founder: { '@type': 'Person', name: business.owner },
       address: { '@type': 'PostalAddress', addressLocality: business.city, addressRegion: business.stateCode, addressCountry: 'US' },

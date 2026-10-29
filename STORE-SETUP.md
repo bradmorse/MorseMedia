@@ -1,5 +1,24 @@
 # Morse Media automated print store
 
+## Paused on the public site (October 29, 2026)
+
+The print shop is switched off so the site can focus on photo and video clients. Nothing was
+deleted: the shop, product pages, collections, the photography archive, print sets, the print
+guide, shipping & returns, the bag and checkout are all still in the code, with their data in
+`data/site.ts`, `data/sets.ts`, `data/print-masters.ts`, `data/recent-work.ts` and `data/discovery.ts`.
+
+While paused (`PRINT_SHOP_ENABLED` is false in `data/features.ts`):
+- `/shop`, `/collections`, `/photography`, `/print-guide`, `/shipping-returns` and `/checkout`
+  (and their sub-pages) temporarily redirect to `/portfolio` (302, so search engines keep the URLs);
+- they are left out of the sitemap, menu, footer, site search and home page;
+- "Print or order question" is hidden from the contact form, the bag is hidden and
+  `/api/checkout` refuses orders.
+
+**To relaunch:** Vercel → Project → Settings → Environment Variables → add
+`NEXT_PUBLIC_PRINT_SHOP` = `on` for Production, then redeploy (Deployments → … → Redeploy).
+Every print page, link and section returns exactly as before. Then finish the checklist below
+before taking real orders.
+
 ## Current status
 
 Prepared on `feat/prodigi-fulfillment`, based on GitHub main commit

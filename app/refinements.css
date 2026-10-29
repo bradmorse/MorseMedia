@@ -306,3 +306,27 @@ html { scroll-padding-top: calc(var(--header-height) + 16px); }
 /* Footer: areas served. */
 .site-footer__areas { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 14px; font-size: 12px; }
 .site-footer__areas a { margin: 0; color: var(--muted); }
+
+/* ── Update 7 — business focus, print shop paused — October 29, 2026 ─────── */
+
+/* Header: "Get a quote" button on wide screens; inside the mobile menu on small ones. */
+.header-cta { min-height: 38px; margin-right: 10px; padding: 0 18px; font-size: 10px; white-space: nowrap; }
+.mobile-menu__cta { display: inline-flex; margin-bottom: 18px; }
+.mobile-menu__footer a.mobile-menu__cta { color: var(--bg); border-bottom-color: var(--accent); }
+@media (max-width: 1100px) { .header-cta { display: none; } }
+
+/* Home: booking process, reasons to book and the closing call to action. */
+.home-process { border-top: 1px solid var(--line); }
+.home-why { padding-top: 0; }
+.home-cta { margin: 0 var(--page-pad) clamp(50px, 6vw, 90px); padding: clamp(36px, 5vw, 70px); display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 80px); align-items: end; border: 1px solid var(--line-strong); background: var(--panel); }
+.home-cta h2 { margin: 10px 0 0; font-size: clamp(32px, 4vw, 58px); font-weight: 300; line-height: 1.05; letter-spacing: -.03em; }
+.home-cta p:not(.eyebrow) { margin: 0 0 22px; color: var(--muted-light); }
+.home-cta .detail-actions { margin-top: 0; }
+.home-cta__email { display: inline-block; margin-top: 18px; color: var(--muted); font-size: 14px; border-bottom: 1px solid var(--line-strong); }
+@media (max-width: 900px) { .home-cta { grid-template-columns: 1fr; align-items: start; } }
+
+/* Contact: what happens after an inquiry. */
+.contact-next { margin: 26px 0 0; padding: 0; list-style: none; counter-reset: next; border-top: 1px solid var(--line); }
+.contact-next li { counter-increment: next; display: grid; grid-template-columns: 34px 1fr; gap: 6px; padding: 14px 0; border-bottom: 1px solid var(--line); color: var(--muted-light); font-size: 14px; line-height: 1.55; }
+.contact-next li::before { content: "0" counter(next); color: var(--accent); font-size: 10px; letter-spacing: .14em; padding-top: 3px; }
+.contact-next strong { display: block; color: var(--text); font-weight: 400; }

@@ -6,6 +6,7 @@ import { useRef, useState } from 'react';
 import { ArrowUpRight, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { recentWork } from '@/data/recent-work';
 import { useBodyScrollLock } from './useBodyScrollLock';
+import { PRINT_SHOP_ENABLED } from '@/data/features';
 
 export default function RecentGallery() {
   const [active, setActive] = useState(0);
@@ -28,7 +29,7 @@ export default function RecentGallery() {
       {open && <div className="recent-dialog__content">
         <button className="icon-button recent-dialog__close" onClick={close} aria-label="Close photograph" autoFocus><X /></button>
         <Image src={photo.image} alt={photo.alt} width={750} height={1000} sizes="(max-width: 600px) 90vw, 60vw" />
-        <div className="recent-dialog__caption"><button className="icon-button" onClick={() => move(-1)} aria-label="Previous photograph"><ChevronLeft /></button><div aria-live="polite"><small>{active + 1} / {recentWork.length}</small><h2 id="recent-title">{photo.title}</h2><Link href={`/photography/${photo.slug}`}>View photograph story ↗</Link></div><button className="icon-button" onClick={() => move(1)} aria-label="Next photograph"><ChevronRight /></button></div>
+        <div className="recent-dialog__caption"><button className="icon-button" onClick={() => move(-1)} aria-label="Previous photograph"><ChevronLeft /></button><div aria-live="polite"><small>{active + 1} / {recentWork.length}</small><h2 id="recent-title">{photo.title}</h2>{PRINT_SHOP_ENABLED && <Link href={`/photography/${photo.slug}`}>View photograph story ↗</Link>}</div><button className="icon-button" onClick={() => move(1)} aria-label="Next photograph"><ChevronRight /></button></div>
       </div>}
     </dialog>
   </>;

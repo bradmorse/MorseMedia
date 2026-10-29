@@ -8,6 +8,13 @@ const securityHeaders = [
   { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains' },
 ];
 
+// Mirrors PRINT_SHOP_ENABLED in data/features.ts (set NEXT_PUBLIC_PRINT_SHOP=on to relaunch the shop).
+const printShopEnabled = process.env.NEXT_PUBLIC_PRINT_SHOP === 'on';
+const pausedPrintShopRedirects = printShopEnabled
+  ? []
+  : ['/shop', '/shop/:path*', '/collections', '/collections/:path*', '/photography', '/photography/:path*', '/print-guide', '/shipping-returns', '/checkout', '/checkout/:path*', '/prints', '/store', '/gallery', '/gift', '/gift-cards']
+      .map((source) => ({ source, destination: '/portfolio', permanent: false }));
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   compress: true,
@@ -27,6 +34,8 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // While the print shop is paused these win (first match), and are temporary so search engines keep the URLs.
+      ...pausedPrintShopRedirects,
       { source: '/prints', destination: '/shop', permanent: true },
       { source: '/store', destination: '/shop', permanent: true },
       { source: '/gallery', destination: '/photography', permanent: true },

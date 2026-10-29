@@ -4,9 +4,13 @@ import { areas } from '@/data/areas';
 import { caseStudies } from '@/data/case-studies';
 import type { MetadataRoute } from 'next';
 import { collections, products } from '@/data/site';
+import { PRINT_SHOP_ENABLED, printShopPaths } from '@/data/features';
 
 const siteUrl = 'https://www.morsemedia.co';
-const lastModified = new Date('2026-10-28');
+const lastModified = new Date('2026-10-29');
+
+/** True for URLs that belong to the paused print shop (see data/features.ts). */
+const isPrintShopUrl = (path: string) => printShopPaths.some((base) => path === base || path.startsWith(`${base}/`));
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
@@ -27,7 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/terms', priority: 0.2, changeFrequency: 'yearly' as const },
   ];
 
-  return [
+  const entries: MetadataRoute.Sitemap = [
     ...staticPages.map((page) => ({ url: `${siteUrl}${page.path || '/'}`, lastModified, changeFrequency: page.changeFrequency, priority: page.priority })),
     ...servicePages.filter((s) => s.slug !== 'real-estate').map((s) => ({ url: `${siteUrl}/services/${s.slug}`, lastModified, changeFrequency: 'monthly' as const, priority: 0.85 })),
     ...areas.map((area) => ({ url: `${siteUrl}/areas/${area.slug}`, lastModified, changeFrequency: 'monthly' as const, priority: 0.7 })),
@@ -36,4 +40,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...recentWork.map((p) => ({ url: `${siteUrl}/photography/${p.slug}`, lastModified, images: [siteUrl + p.image], priority: 0.7 })),
     ...products.map((product) => ({ url: `${siteUrl}/shop/${product.slug}`, lastModified, images: [siteUrl + product.image], changeFrequency: 'monthly' as const, priority: 0.75 })),
   ];
+  return PRINT_SHOP_ENABLED ? entries : entries.filter((entry) => !isPrintShopUrl(entry.url.replace(siteUrl, '')));
 }

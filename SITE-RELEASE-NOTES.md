@@ -1,3 +1,23 @@
+# Morse Media — Update 7 (October 29, 2026)
+
+Version 7.0.0. The site now focuses entirely on photo and video clients. The print shop is paused, not deleted.
+
+## New in Update 7
+
+**1. Print shop paused behind one switch** (`data/features.ts`)
+- `/shop`, `/collections`, `/photography`, `/print-guide`, `/shipping-returns` and `/checkout` (and sub-pages) temporarily redirect (302) to `/portfolio`, and are left out of the sitemap, menu, footer, site search and home page. The bag is hidden, "Print or order question" is hidden from the contact form, and `/api/checkout` refuses orders.
+- All print code and data is kept. **To relaunch:** set `NEXT_PUBLIC_PRINT_SHOP=on` in Vercel (Production) and redeploy — every print page, link and home-page section comes back as before. See `STORE-SETUP.md`.
+
+**2. Built for winning clients**
+- "Get a quote" button in the header (wide screens) and the mobile menu; every main call to action now says "Get a quote".
+- Home page ends with "How booking works" (three steps), three reasons to book, and a "Tell me about your next shoot" call to action in place of the prints, collections and newsletter.
+- Contact page opens on "Photo + video project" and explains what happens next (reply within two business days, written quote, one planned shoot).
+- About, contact, 404, footer, site description and share text no longer mention prints while the shop is paused.
+
+**3. Checks** — `tests/print-shop.test.ts` confirms the print data is kept, that paused print pages stay out of the sitemap and contact form, that the redirects are temporary, and that shared links are gated. The suite passes with the shop both off and on.
+
+---
+
 # Morse Media — Update 6 (October 28, 2026)
 
 Version 6.0.0. Morse Media is now based in Nashville, Tennessee, graphic design is gone, and the site leads with photography and video services. Update 5 notes follow below.

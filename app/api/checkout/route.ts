@@ -5,10 +5,12 @@ import { validateCheckoutItems } from '@/lib/store';
 import { assertFulfillmentReady, printMapping } from '@/lib/prodigi';
 import { printReadiness } from '@/lib/print-quality';
 import { applySetPricing } from '@/lib/sets';
+import { PRINT_SHOP_ENABLED } from '@/data/features';
 
 export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
+  if (!PRINT_SHOP_ENABLED) return NextResponse.json({ error: 'The print shop is not open right now.' }, { status: 404 });
   try {
     const body = await request.json();
     const items = applySetPricing(validateCheckoutItems(body?.items));

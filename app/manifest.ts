@@ -1,10 +1,11 @@
 import type { MetadataRoute } from 'next';
+import { PRINT_SHOP_ENABLED } from '@/data/features';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Morse Media',
     short_name: 'Morse Media',
-    description: 'Nashville photography and cinematic video, plus original fine-art prints.',
+    description: PRINT_SHOP_ENABLED ? 'Nashville photography and cinematic video, plus original fine-art prints.' : 'Nashville photography and cinematic video for businesses, agents and brands.',
     start_url: '/',
     display: 'standalone',
     background_color: '#0d1412',

@@ -1,6 +1,7 @@
 import { assertFulfillmentReady, printMapping } from './prodigi';
 import { isPrintReady } from './print-quality';
 import { buildSku, finishOptions, getSizeOptions, products, type Product } from '@/data/site';
+import { PRINT_SHOP_ENABLED } from '@/data/features';
 
 function stripeKeyMode(): 'test' | 'live' | null {
   const key = process.env.STRIPE_SECRET_KEY?.trim() || '';
@@ -24,5 +25,6 @@ export function availablePrintSkus(product: Product): string[] {
 
 /** True when at least one print configuration can be bought online right now. */
 export function storeIsOpen(): boolean {
+  if (!PRINT_SHOP_ENABLED) return false;
   return products.some((product) => availablePrintSkus(product).length > 0);
 }

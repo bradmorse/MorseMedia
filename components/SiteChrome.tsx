@@ -10,6 +10,7 @@ import { recentWork } from '@/data/recent-work';
 import { servicePages, servicePath } from '@/data/services';
 import { areas } from '@/data/areas';
 import { business } from '@/data/business';
+import { PRINT_SHOP_ENABLED } from '@/data/features';
 import { useCart } from './CartProvider';
 import { useBodyScrollLock } from './useBodyScrollLock';
 
@@ -17,10 +18,12 @@ const navItems = [
   { label: 'Services', href: '/services' },
   { label: 'Real Estate', href: '/real-estate' },
   { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Prints', href: '/shop' },
+  ...(PRINT_SHOP_ENABLED ? [{ label: 'Prints', href: '/shop' }] : []),
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ];
+
+const quoteHref = '/contact?service=Photo%20%2B%20video%20project';
 
 const areaTerms = areas.flatMap((area) => [area.name, ...area.towns]).join(' ');
 
@@ -38,7 +41,7 @@ export function Header({ storeOpen = false }: { storeOpen?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const searchTriggerRef = useRef<HTMLButtonElement>(null);
   const { count, setOpen: setCartOpen } = useCart();
-  const showBag = storeOpen || count > 0;
+  const showBag = PRINT_SHOP_ENABLED && (storeOpen || count > 0);
 
   useBodyScrollLock(menuOpen || searchOpen);
 
@@ -87,11 +90,13 @@ export function Header({ storeOpen = false }: { storeOpen?: boolean }) {
       .filter((area) => matches(area.name, area.towns.join(' ')))
       .map((area) => ({ label: area.name, meta: 'Area served', href: `/areas/${area.slug}`, image: area.image }));
     const pageResults = [
-      { label: 'Curated print sets', meta: 'Save on a complete set', href: '/shop#sets', terms: 'set bundle pair trio wall gallery discount' },
+      ...(PRINT_SHOP_ENABLED ? [{ label: 'Curated print sets', meta: 'Save on a complete set', href: '/shop#sets', terms: 'set bundle pair trio wall gallery discount' }] : []),
+      { label: 'Get a quote', meta: 'Tell me about your project', href: quoteHref, terms: 'contact quote book booking hire availability email' },
       { label: 'Services & pricing', meta: 'Packages and starting prices', href: '/services#packages', terms: 'price pricing cost rates packages quote headshots headshot portraits event events wedding conference' },
       { label: 'Areas served', meta: `Nashville & ${business.region}`, href: '/areas', terms: `nashville tennessee tn middle ${areaTerms}` },
     ].filter((page) => matches(page.label, page.terms)).map(({ label, meta, href }) => ({ label, meta, href }));
-    return [...serviceResults, ...pageResults, ...areaResults, ...collectionResults, ...photoResults, ...productResults].slice(0, 10);
+    const printResults = PRINT_SHOP_ENABLED ? [...collectionResults, ...photoResults, ...productResults] : [];
+    return [...serviceResults, ...pageResults, ...areaResults, ...printResults].slice(0, 10);
   }, [query]);
 
   function openSearch() {
@@ -124,6 +129,7 @@ export function Header({ storeOpen = false }: { storeOpen?: boolean }) {
           })}
         </nav>
         <div className="header-actions">
+          <Link className="button button--solid header-cta" href={quoteHref}>Get a quote</Link>
           <button ref={searchTriggerRef} className="icon-button" type="button" onClick={openSearch} aria-label="Search the site"><Search /></button>
           {showBag && (
             <button className="bag-button" type="button" onClick={() => { setMenuOpen(false); setSearchOpen(false); setCartOpen(true); }} aria-label={`Open shopping bag with ${count} item${count === 1 ? '' : 's'}`}>
@@ -145,6 +151,7 @@ export function Header({ storeOpen = false }: { storeOpen?: boolean }) {
           ))}
         </nav>
         <div className="mobile-menu__footer">
+          <Link className="button button--solid mobile-menu__cta" href={quoteHref} onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}>Get a quote</Link>
           <p>Photography and cinematic video · {business.baseShort}</p>
           <a href={`mailto:${business.email}`} tabIndex={menuOpen ? 0 : -1}>{business.email}</a>
         </div>
@@ -155,17 +162,17 @@ export function Header({ storeOpen = false }: { storeOpen?: boolean }) {
           <button className="icon-button search-overlay__close" type="button" onClick={closeSearch} aria-label="Close search"><X /></button>
           <div className="search-overlay__inner">
             <p id="search-title" className="eyebrow">Search Morse Media</p>
-            <label className="sr-only" htmlFor="site-search">Search photographs, prints, collections and services</label>
+            <label className="sr-only" htmlFor="site-search">{PRINT_SHOP_ENABLED ? 'Search photographs, prints, collections and services' : 'Search services, areas and pricing'}</label>
             <input
               id="site-search"
               type="search"
               autoFocus
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search photographs, places, services…"
+              placeholder={PRINT_SHOP_ENABLED ? "Search photographs, places, services…" : "Search services, areas, pricing…"}
               autoComplete="off"
             />
-            {!query && <p className="search-hint">Try “headshots,” “real estate,” “video,” “Franklin,” or “waterfall.”</p>}
+            {!query && <p className="search-hint">Try “headshots,” “real estate,” “video,” “Franklin,” or “pricing.”</p>}
             {query && (
               <div className="search-results" aria-live="polite">
                 {results.length ? results.map((result) => (
@@ -189,7 +196,7 @@ export function Footer() {
     <footer className="site-footer">
       <div className="site-footer__brand">
         <Image src="/images/morse-media-logo.png" alt="Morse Media" width={377} height={152} />
-        <p>Photography and cinematic video for Nashville businesses, agents and brands — plus original fine-art prints.</p>
+        <p>Photography and cinematic video for Nashville businesses, agents and brands{PRINT_SHOP_ENABLED ? ' — plus original fine-art prints' : ''}.</p>
         <span className="site-footer__location">{business.base} · Available for travel</span>
         <nav className="site-footer__areas" aria-label="Areas served">
           {areas.map((area) => <Link key={area.slug} href={`/areas/${area.slug}`}>{area.name}</Link>)}
@@ -199,25 +206,34 @@ export function Footer() {
         <h4>Services</h4>
         {servicePages.map((service) => <Link key={service.slug} href={servicePath(service.slug)}>{service.name}</Link>)}
         <Link href="/services#packages">Packages &amp; pricing</Link>
-        <Link href="/areas">Areas served</Link>
       </div>
-      <div>
-        <h4>Prints &amp; more</h4>
-        <Link href="/portfolio">Portfolio</Link>
-        <Link href="/photography">Latest photography</Link>
-        <Link href="/shop">Print shop</Link>
-        <Link href="/print-guide">Size & finish guide</Link>
-        <Link href="/about">About</Link>
-      </div>
+      {PRINT_SHOP_ENABLED ? (
+        <div>
+          <h4>Prints &amp; more</h4>
+          <Link href="/portfolio">Portfolio</Link>
+          <Link href="/photography">Latest photography</Link>
+          <Link href="/shop">Print shop</Link>
+          <Link href="/print-guide">Size & finish guide</Link>
+          <Link href="/about">About</Link>
+        </div>
+      ) : (
+        <div>
+          <h4>Studio</h4>
+          <Link href="/portfolio">Portfolio</Link>
+          <Link href="/real-estate">For real estate agents</Link>
+          <Link href="/areas">Areas served</Link>
+          <Link href="/about">About</Link>
+        </div>
+      )}
       <div>
         <h4>Contact</h4>
-        <Link href="/contact">Start a project</Link>
+        <Link href={quoteHref}>Get a quote</Link>
         <Link href="/contact?service=Image%20licensing">License an image</Link>
         <a href={`mailto:${business.email}`}><Mail /> {business.email}</a>
       </div>
       <div className="site-footer__bottom">
         <small>© {new Date().getFullYear()} Morse Media · Bradley Morse. All rights reserved.</small>
-        <span className="site-footer__legal"><Link href="/shipping-returns">Shipping & returns</Link><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link></span>
+        <span className="site-footer__legal">{PRINT_SHOP_ENABLED && <Link href="/shipping-returns">Shipping & returns</Link>}<Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link></span>
       </div>
     </footer>
   );

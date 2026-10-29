@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import { galleryPhotos } from '@/data/discovery';
 import { ContactForm } from './Forms';
-import { projectTypes } from '@/data/inquiries';
+import { defaultProjectType, projectTypes } from '@/data/inquiries';
 
 const allowedProjectTypes = new Set(projectTypes);
 
@@ -22,8 +22,8 @@ const serviceTypeMap: Record<string, string> = {
   'Graphic Design': 'Photo + video project',
   'Graphic design': 'Photo + video project',
   'Combined creative campaign': 'Photo + video project',
-  'Gift card': 'Print or order question',
-  'Gift certificate': 'Print or order question',
+  'Gift card': defaultProjectType,
+  'Gift certificate': defaultProjectType,
 };
 
 /**
@@ -34,8 +34,8 @@ export default function ContactFormFromQuery() {
   const params = useSearchParams();
   const service = params.get('service') || '';
   const photo = params.get('photo') || '';
-  const requestedType = service ? serviceTypeMap[service] || service : 'Print or order question';
-  const defaultType = allowedProjectTypes.has(requestedType) ? requestedType : 'Print or order question';
+  const requestedType = service ? serviceTypeMap[service] || service : defaultProjectType;
+  const defaultType = allowedProjectTypes.has(requestedType) ? requestedType : defaultProjectType;
   const photoTitle = galleryPhotos.find((entry) => entry.slug === photo)?.title;
   return <ContactForm key={defaultType + photo} defaultType={defaultType} photoTitle={photoTitle} />;
 }

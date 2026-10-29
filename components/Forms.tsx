@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { Check, LoaderCircle, Mail } from 'lucide-react';
-import { projectTypes } from '@/data/inquiries';
+import { defaultProjectType, PRINT_INQUIRY, projectTypes } from '@/data/inquiries';
 
 type SubmitState = { status: 'idle' | 'sending' | 'success' | 'error'; message: string };
 type SubmitResult = { ok: boolean; mode?: 'webhook' | 'email' | 'list' | 'mailto'; mailto?: string };
@@ -91,10 +91,10 @@ function locationLabel(type: string) {
   return 'Project location / website';
 }
 
-export function ContactForm({ defaultType = 'Print or order question', photoTitle = '' }: { defaultType?: string; photoTitle?: string }) {
+export function ContactForm({ defaultType = defaultProjectType, photoTitle = '' }: { defaultType?: string; photoTitle?: string }) {
   const [projectType, setProjectType] = useState(defaultType);
   const [mailLink, setMailLink] = useState('');
-  const isPrint = projectType === 'Print or order question';
+  const isPrint = projectType === PRINT_INQUIRY;
   const isProject = !isPrint && projectType !== 'Image licensing';
   const [state, setState] = useState<SubmitState>({ status: 'idle', message: '' });
   const startedAt = useStartedAt();
