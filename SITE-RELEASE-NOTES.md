@@ -1,3 +1,17 @@
+# Morse Media — Update 8 (October 29, 2026)
+
+Version 8.0.0. The home page hero is now a film instead of a photograph.
+
+- **Hero film** (`data/hero.ts`, `components/HeroVideo.tsx`): Bradley's 20-second nature film plays silently on a loop behind the headline. Letterbox bars removed and the closing fade trimmed so it loops cleanly.
+- Two cuts: 1920 × 960 for laptops and desktops (`/video/hero-film-wide-v1.mp4`, 5.8 MB) and 720 × 1280 for phones (`/video/hero-film-portrait-v1.mp4`, 3.6 MB). H.264, no audio, web-optimized.
+- The first frame (`/images/hero/hero-film-poster-v1.webp`) loads first, so the page is just as fast; the film fades in once it is playing.
+- A pause/play button sits beside the caption. Visitors who prefer reduced motion start paused; Save-Data connections never download the video; if a phone blocks autoplay (e.g. Low Power Mode) the still frame stays and the play button appears.
+- `/video/*` is cached for a year, so new films get a new version number in the file name.
+- `tests/hero-video.test.ts` checks the files (size, no audio, web-optimized), the player settings and the cache rule.
+- **To change the film:** export a short, steady, silent clip, encode both cuts, add them with a new version number and update `data/hero.ts`.
+
+---
+
 # Morse Media — Update 7.1 (October 29, 2026)
 
 Version 7.1.0. Links to the site now preview with the Morse Media logo.

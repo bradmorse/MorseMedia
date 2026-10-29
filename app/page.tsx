@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { ArrowRight, CalendarDays, Camera, Clapperboard, Home } from 'lucide-react';
 import ProductGrid from '@/components/ProductGrid';
 import VideoEmbed from '@/components/VideoEmbed';
+import HeroVideo from '@/components/HeroVideo';
+import { heroFilm } from '@/data/hero';
 import { NewsletterForm } from '@/components/Forms';
 import { collections, featuredProducts } from '@/data/site';
 import { servicePages, servicePath } from '@/data/services';
@@ -55,7 +57,8 @@ export default function HomePage() {
   return (
     <>
       <section className="hero">
-        <Image className="hero__image" src="/images/photos/autumn-overlook.webp" alt="Autumn valley and lake in the Adirondacks framed by pine branches" fill priority sizes="100vw" />
+        <Image className="hero__image hero__image--film" src={heroFilm.poster} alt={heroFilm.posterAlt} fill priority sizes="100vw" />
+        <HeroVideo />
         <div className="hero__shade" />
         <div className="hero__copy">
           <p className="eyebrow">Photography &amp; video · {business.base}</p>
@@ -67,7 +70,7 @@ export default function HomePage() {
             <Link className="text-link" href="/services">Services &amp; pricing <ArrowRight /></Link>
           </div>
         </div>
-        <span className="hero__caption">Photograph by Bradley Morse · Adirondacks, New York</span>
+        <span className="hero__caption">{heroFilm.caption}</span>
       </section>
 
       <section className="home-proof" aria-label="Morse Media at a glance">

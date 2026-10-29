@@ -30,6 +30,8 @@ const nextConfig: NextConfig = {
     return [
       { source: '/(.*)', headers: securityHeaders },
       { source: '/images/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=604800, stale-while-revalidate=86400' }] },
+      // Hero film files carry a version in their names (data/hero.ts), so they can be cached for a year.
+      { source: '/video/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }] },
     ];
   },
   async redirects() {
