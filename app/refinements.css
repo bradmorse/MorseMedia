@@ -344,3 +344,10 @@ html { scroll-padding-top: calc(var(--header-height) + 16px); }
 .hero .hero__caption { right: calc(var(--page-pad) + 50px); bottom: 32px; }
 @media (max-width: 900px) { .hero__motion { bottom: 24px; } }
 @media (prefers-reduced-motion: reduce) { .hero__video { transition: none; } }
+
+/* ── Update 8.2 — header logo — October 29, 2026 ───────────────────────────── */
+
+/* Compact logo (circle the same height as the lettering). Widths keep the lettering the same size as before,
+   and the whole mark now sits inside the header line, including the shorter scrolled and phone headers. */
+.brand { width: clamp(121px, 12.15vw, 176px); }
+@media (max-width: 900px) { .brand { width: 128px; } }

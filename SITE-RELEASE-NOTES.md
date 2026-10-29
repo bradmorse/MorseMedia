@@ -1,3 +1,13 @@
+# Morse Media — Update 8.2 (October 29, 2026)
+
+Version 8.2.0. Header logo tidied.
+
+- New compact header logo `public/images/morse-media-logo-inline.png`: the circular mark is scaled to exactly the height of the MORSE MEDIA lettering (circle lines thickened slightly so they keep their weight). The lettering is the same size as before.
+- The whole logo now sits inside the header's bottom line on desktop, after scrolling, and on phones (it used to hang below it). The footer keeps the original logo.
+- `tests/header-logo.test.ts` checks the logo fits the header at every size.
+
+---
+
 # Morse Media — Update 8.1 (October 29, 2026)
 
 Version 8.1.0. The hero film now keeps its cinematic letterbox bars.

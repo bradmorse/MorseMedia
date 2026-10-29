@@ -120,7 +120,7 @@ export function Header({ storeOpen = false }: { storeOpen?: boolean }) {
     <>
       <header className={`site-header ${scrolled ? 'site-header--scrolled' : ''}`}>
         <Link href="/" className="brand" aria-label="Morse Media home">
-          <Image src="/images/morse-media-logo.png" alt="Morse Media" width={377} height={152} priority />
+          <Image src="/images/morse-media-logo-inline.png" alt="Morse Media" width={176} height={48} priority />
         </Link>
         <nav className="desktop-nav" aria-label="Primary navigation">
           {navItems.map((item) => {
