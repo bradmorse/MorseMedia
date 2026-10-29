@@ -195,7 +195,7 @@ export function Footer() {
   return (
     <footer className="site-footer">
       <div className="site-footer__brand">
-        <Image src="/images/morse-media-logo.png" alt="Morse Media" width={377} height={152} />
+        <Image src="/images/morse-media-logo-inline.png" alt="Morse Media" width={227} height={61} />
         <p>Photography and cinematic video for Nashville businesses, agents and brands{PRINT_SHOP_ENABLED ? ' — plus original fine-art prints' : ''}.</p>
         <span className="site-footer__location">{business.base} · Available for travel</span>
         <nav className="site-footer__areas" aria-label="Areas served">

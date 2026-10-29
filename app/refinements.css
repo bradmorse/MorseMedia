@@ -351,3 +351,9 @@ html { scroll-padding-top: calc(var(--header-height) + 16px); }
    and the whole mark now sits inside the header line, including the shorter scrolled and phone headers. */
 .brand { width: clamp(121px, 12.15vw, 176px); }
 @media (max-width: 900px) { .brand { width: 128px; } }
+
+/* ── Update 8.3 — footer and home logos — October 29, 2026 ─────────────────── */
+
+/* Same compact logo as the header; widths keep the lettering the size it was with the original artwork. */
+.site-footer__brand img { width: min(227px, 100%); }
+.studio-section__logo img { width: min(100%, 210px); }

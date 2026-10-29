@@ -1,3 +1,9 @@
+# Morse Media — Update 8.3 (October 29, 2026)
+
+Version 8.3.0. The footer and the home page "What Morse Media does" section now use the same compact logo as the header (circle the same height as the lettering). Lettering sizes are unchanged. The About page keeps the large original mark, and the email and search-engine logo are unchanged.
+
+---
+
 # Morse Media — Update 8.2 (October 29, 2026)
 
 Version 8.2.0. Header logo tidied.

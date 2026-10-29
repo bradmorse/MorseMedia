@@ -26,3 +26,12 @@ test('the header logo fits inside the header line at every size', () => {
   assert.ok((desktop * height) / width <= 76 - 24, `desktop logo is ${((desktop * height) / width).toFixed(1)}px tall`);
   assert.ok((phone * height) / width <= 68 - 24, `phone logo is ${((phone * height) / width).toFixed(1)}px tall`);
 });
+
+test('the footer and home page use the same compact logo as the header', () => {
+  const chrome = readFileSync(join(root, 'components', 'SiteChrome.tsx'), 'utf8');
+  const footer = chrome.slice(chrome.indexOf('export function Footer'));
+  assert.ok(footer.includes(`src="${logo}"`), 'footer does not use the compact logo');
+  assert.ok(!chrome.includes('src="/images/morse-media-logo.png"'), 'header or footer still uses the original logo');
+  const home = readFileSync(join(root, 'app', 'page.tsx'), 'utf8');
+  assert.ok(home.includes(`src="${logo}"`), 'home page studio section does not use the compact logo');
+});

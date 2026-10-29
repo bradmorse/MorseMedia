@@ -81,7 +81,7 @@ export default function HomePage() {
       </section>
 
       <section className="studio-section">
-        <div className="studio-section__logo"><Image src="/images/morse-media-logo.png" alt="" width={377} height={152} /></div>
+        <div className="studio-section__logo"><Image src="/images/morse-media-logo-inline.png" alt="" width={210} height={57} /></div>
         <div className="studio-section__intro">
           <p className="eyebrow">What Morse Media does</p>
           <h2>Capturing moments.<br />Telling stories.</h2>
