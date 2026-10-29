@@ -15,7 +15,15 @@ function mp4Info(file: string) {
     const type = buf.toString('latin1', i + 12, i + 16);
     if (/^[a-z]{4}$/.test(type)) handlers.push(type);
   }
-  return { handlers, fastStart: buf.indexOf('moov') !== -1 && buf.indexOf('moov') < buf.indexOf('mdat') };
+  // Display size of the video track, from its track header (16.16 fixed-point width and height).
+  let size = { width: 0, height: 0 };
+  for (let i = buf.indexOf('tkhd'); i !== -1; i = buf.indexOf('tkhd', i + 4)) {
+    const at = i + (buf[i + 4] === 1 ? 92 : 80); // version 1 headers use 64-bit times
+    const width = buf.readUInt32BE(at) / 65536;
+    const height = buf.readUInt32BE(at + 4) / 65536;
+    if (width && height) { size = { width, height }; break; }
+  }
+  return { handlers, size, fastStart: buf.indexOf('moov') !== -1 && buf.indexOf('moov') < buf.indexOf('mdat') };
 }
 
 test('hero film files are on disk, versioned and light enough for a background', () => {
@@ -30,6 +38,12 @@ test('hero film files are on disk, versioned and light enough for a background',
     assert.ok(fastStart, `${path} is not web-optimized (moov after mdat)`);
   }
   assert.ok(existsSync(publicFile(heroFilm.poster)), `${heroFilm.poster} is missing`);
+});
+
+test('the hero film keeps its full frame, cinematic letterbox bars included', () => {
+  // The wide cut is the whole 16:9 frame (bars are part of the picture); the phone cut is a 9:16 centre slice of it.
+  assert.deepEqual(mp4Info(publicFile(heroFilm.wide)).size, { width: 1920, height: 1080 });
+  assert.deepEqual(mp4Info(publicFile(heroFilm.portrait)).size, { width: 720, height: 1280 });
 });
 
 test('the hero film autoplays silently, can be paused and respects reduced motion and Save-Data', () => {

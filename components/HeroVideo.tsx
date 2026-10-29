@@ -20,7 +20,8 @@ export default function HeroVideo() {
   useEffect(() => {
     const connection = (navigator as Navigator & { connection?: NetworkInformation }).connection;
     if (connection?.saveData) return;
-    const tallScreen = window.matchMedia('(max-aspect-ratio: 4/5)').matches;
+    // Phones get the portrait cut; tablets and wider use the full frame so the letterbox bars stay in view.
+    const tallScreen = window.matchMedia('(max-aspect-ratio: 2/3)').matches;
     setPaused(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     setSrc(tallScreen ? heroFilm.portrait : heroFilm.wide);
   }, []);

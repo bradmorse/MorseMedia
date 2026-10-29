@@ -1,3 +1,14 @@
+# Morse Media — Update 8.1 (October 29, 2026)
+
+Version 8.1.0. The hero film now keeps its cinematic letterbox bars.
+
+- New cuts from the full 16:9 frame, bars included: `/video/hero-film-wide-v2.mp4` (1920 × 1080, 5.7 MB) and `/video/hero-film-portrait-v2.mp4` (720 × 1280 centre cut, bars kept, 3.2 MB), plus poster `/images/hero/hero-film-poster-v2.webp`. The v1 files (bars cropped) are removed.
+- The closing fade is still trimmed so the loop is seamless (0–19.8 s).
+- Only phones (screens taller than 2:3) get the portrait cut; tablets and wider use the full frame so the bars stay visible.
+- `tests/hero-video.test.ts` now checks both cuts keep the full frame (1920 × 1080 and 720 × 1280).
+
+---
+
 # Morse Media — Update 8 (October 29, 2026)
 
 Version 8.0.0. The home page hero is now a film instead of a photograph.
