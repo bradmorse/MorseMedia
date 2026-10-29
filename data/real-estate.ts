@@ -19,6 +19,7 @@ export type AddOn = { name: string; description: string; price?: string };
 
 export const addOns: AddOn[] = [
   { name: 'Twilight exteriors', description: 'The front of the home at dusk with interior lights on — the image that stops the scroll on listing sites.' },
+  { name: 'Agent spotlight video', description: 'A short on-camera introduction filmed at the listing, cut vertically for your Reels, TikTok and stories.' },
   { name: 'Detail & lifestyle shots', description: 'Finishes, fixtures, views and the small touches that make a property feel lived-in.' },
   { name: 'Larger homes', description: 'Coverage for homes over 2,500 sq ft, outbuildings or acreage, quoted to the property.' },
 ];
@@ -32,6 +33,8 @@ export const prepChecklist: { area: string; items: string[] }[] = [
 
 export const faqs: { question: string; answer: string }[] = [
   { question: 'How quickly are photos delivered?', answer: 'Standard delivery is within 48 hours of the shoot. If a listing deadline is tighter, mention it when you book and faster turnaround will be confirmed if the schedule allows.' },
+  { question: 'Do you shoot listing video?', answer: 'Yes. The photo + video package adds a 60–90 second cinematic walkthrough, filmed in the same visit, with a vertical cut for social and branded and unbranded versions for the MLS. Video is delivered within three business days.' },
+  { question: 'Which areas do you cover?', answer: 'Nashville and the surrounding counties — including Franklin, Brentwood, Nolensville, Murfreesboro, Smyrna, Hendersonville, Gallatin, Mt. Juliet and Lebanon. Properties farther out are welcome — any travel cost is confirmed before you book.' },
   { question: 'What sizes do the files come in?', answer: 'Every listing comes with MLS-ready files and larger web versions for the brokerage site, social media and print flyers.' },
   { question: 'How long does a shoot take?', answer: 'Most homes up to 2,500 sq ft take about one to two hours on site. Larger homes, outbuildings and add-ons take longer, and the time is confirmed when you book.' },
   { question: 'Can the homeowner be there?', answer: 'Yes. Many sellers prefer to be out during the shoot so rooms stay clear, but it is entirely up to them.' },

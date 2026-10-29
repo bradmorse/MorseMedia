@@ -1,5 +1,5 @@
 import { availablePrintSkus } from '@/lib/store-readiness';
-import { siteUrl, breadcrumbs, jsonLd, shareImage } from '@/lib/seo';
+import { siteUrl, breadcrumbs, jsonLd, shareImage, snippet } from '@/lib/seo';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const product = getProduct(slug);
   if (!product) return {};
   const title = `${product.title} — Fine Art Print`;
-  const description = `${product.description} An original ${product.location || 'New England'} photograph by Bradley Morse, available as a fine-art print.`;
+  const description = snippet(`${product.description} ${product.location || 'New England'} photograph by Bradley Morse. Prints from $${product.price}.`);
   return {
     title,
     description,

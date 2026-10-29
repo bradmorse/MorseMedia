@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const collection = getCollection(slug);
   if (!collection) return {};
-  return pageMetadata(`${collection.name} Photography Collection`, collection.description, `/collections/${slug}`, collection.image);
+  return pageMetadata(`${collection.name} Photography Collection`, `${collection.description} Original photographs by Bradley Morse, available as fine-art prints.`, `/collections/${slug}`, collection.image);
 }
 
 export default async function CollectionPage({ params }: { params: Promise<{ slug: string }> }) {

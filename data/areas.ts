@@ -1,14 +1,17 @@
-// Regional landing pages at /areas/<slug>. Each one is written for the businesses in that region,
-// so search engines treat them as useful pages rather than copies. Edit freely.
+// Area pages at /areas/<slug> for Nashville and Middle Tennessee. Each one is written for the businesses
+// and agents in that part of the metro, so search engines treat them as useful pages rather than copies.
+// Edit freely. When you have photos taken in an area, swap them in as that page's `image`.
 
-export type AreaFocus = { service: 'photography' | 'video-production' | 'social-media' | 'graphic-design' | 'real-estate'; why: string };
+export type AreaFocus = { service: 'photography' | 'video-production' | 'real-estate' | 'monthly-content'; why: string };
 
 export type Area = {
   slug: string;
-  name: string; // short region name
+  name: string; // short area name
   headline: string; // H1
-  title: string; // browser/search title
+  title: string; // browser/search title — keep under ~46 characters (" | Morse Media" is added)
+  description: string; // search snippet — keep under ~155 characters
   towns: string[];
+  neighborhoods?: boolean; // true when `towns` are Nashville neighborhoods rather than separate cities
   image: string; // from /images/photos — used as a backdrop, not a claim about where it was taken
   intro: string;
   focus: AreaFocus[];
@@ -17,79 +20,102 @@ export type Area = {
 
 export const areas: Area[] = [
   {
-    slug: 'seacoast',
-    name: 'Seacoast',
-    headline: 'Seacoast photography & video.',
-    title: 'Photographer & Videographer on the New Hampshire Seacoast',
-    towns: ['Portsmouth', 'Rye', 'Hampton', 'Exeter', 'Stratham', 'Dover', 'Durham', 'Newmarket'],
-    image: '/images/photos/coastline-dusk.webp',
-    intro: 'From downtown Portsmouth restaurants to Hampton’s summer businesses and the growing companies around Dover and Durham, the Seacoast moves quickly and competes on looks. Morse Media helps local businesses keep pace with photography, short-form video and social content made for the way customers actually find them.',
+    slug: 'downtown-midtown',
+    name: 'Downtown & Midtown',
+    headline: 'Downtown & Midtown photography & video.',
+    title: 'Downtown Nashville Photographer & Videographer',
+    description: 'Brand photography, headshots and short-form video for businesses, venues and artists in Downtown Nashville, The Gulch, Midtown, Music Row and Germantown.',
+    towns: ['Downtown', 'The Gulch', 'SoBro', 'Midtown', 'Music Row', 'West End', 'Germantown', 'Wedgewood-Houston'],
+    neighborhoods: true,
+    image: '/images/photos/old-hill-window.webp',
+    intro: 'Nashville’s core moves fast: hotels and restaurants opening every month, offices and healthcare companies competing for talent, and venues and artists that need to look as good online as they sound in person. Morse Media produces brand photography, headshots and short-form video for the businesses and people at the center of it all.',
     focus: [
-      { service: 'social-media', why: 'Restaurants, breweries and shops that need a steady flow of fresh posts through the busy season.' },
-      { service: 'photography', why: 'Menu, interior and team photography for hospitality and retail, built for web, print and social.' },
-      { service: 'real-estate', why: 'Listing photography for coastal homes and condos, where light and views do the selling.' },
+      { service: 'video-production', why: 'Short films and vertical video for hotels, restaurants, venues and artists — made to be watched on a phone.' },
+      { service: 'photography', why: 'Headshots, team portraits and workplace photography for offices, firms and healthcare groups.' },
+      { service: 'monthly-content', why: 'A fresh batch of photos and video every month for restaurants and bars that post every day.' },
     ],
-    planningNote: 'Summer fills up early on the coast. Booking a spring shoot gives you a full image library before the season starts.',
+    planningNote: 'Downtown shoots are planned around parking, loading and crowds — early mornings are often the best time for clean exteriors and empty rooms.',
   },
   {
-    slug: 'lakes-region',
-    name: 'Lakes Region',
-    headline: 'Lakes Region photography & video.',
-    title: 'Lakes Region NH Photographer — Real Estate, Video & Brand',
-    towns: ['Laconia', 'Meredith', 'Wolfeboro', 'Gilford', 'Moultonborough', 'Alton', 'Center Harbor', 'Plymouth'],
-    image: '/images/photos/storm-over-lake.webp',
-    intro: 'Around Winnipesaukee and Squam, business follows the seasons: lakefront listings, vacation rentals, marinas, camps and the restaurants that fill up every summer weekend. Morse Media produces the images and short films that help these businesses book out — and the listing photos that help lake homes sell.',
+    slug: 'east-nashville',
+    name: 'East Nashville',
+    headline: 'East Nashville photography & video.',
+    title: 'East Nashville Photographer & Videographer',
+    description: 'Photography and short video for East Nashville shops, makers and restaurants in Five Points, Lockeland Springs and Inglewood, plus listing photos.',
+    towns: ['Five Points', 'Lockeland Springs', 'Inglewood', 'Cleveland Park', 'Eastwood', 'Riverside Village', 'McFerrin Park', 'Edgefield'],
+    neighborhoods: true,
+    image: '/images/photos/forgotten-house.webp',
+    intro: 'East Nashville runs on independents: coffee shops, makers, restaurants, salons, studios and the people behind them. These businesses have real character, and they deserve images that show it. Morse Media creates photography and short video that capture the space, the craft and the personality — plus listing photos for the neighborhood’s older homes and new builds.',
     focus: [
-      { service: 'real-estate', why: 'Lakefront homes and vacation rentals, photographed to show the water, the views and the space.' },
-      { service: 'video-production', why: 'Short films for resorts, marinas and camps that capture what a summer there feels like.' },
-      { service: 'social-media', why: 'Seasonal content plans that keep a business visible before, during and after the summer rush.' },
+      { service: 'photography', why: 'Product, menu, interior and portrait photography for independent shops, studios and restaurants.' },
+      { service: 'monthly-content', why: 'A manageable monthly rhythm of photos and video for small teams who would rather be running the business.' },
+      { service: 'real-estate', why: 'Listing photos and walkthrough video for bungalows, renovations and new construction.' },
+    ],
+    planningNote: 'Small spaces photograph best when they are empty and well lit, so shoots for shops and restaurants are usually booked before opening.',
+  },
+  {
+    slug: 'franklin-brentwood',
+    name: 'Franklin & Brentwood',
+    headline: 'Franklin & Brentwood photography & video.',
+    title: 'Franklin & Brentwood TN Photographer',
+    description: 'Real estate photography and video, headshots and brand films in Franklin, Brentwood, Cool Springs, Nolensville and across Williamson County, TN.',
+    towns: ['Franklin', 'Brentwood', 'Cool Springs', 'Nolensville', 'Thompson’s Station', 'Spring Hill', 'Leiper’s Fork', 'Fairview'],
+    image: '/images/photos/valley-in-color.webp',
+    intro: 'Williamson County pairs some of the region’s most competitive real estate with corporate offices, medical practices and boutique businesses around downtown Franklin and Cool Springs. Morse Media helps agents list homes that stand out and helps companies show who they are, with polished photography and video made for buyers, clients and new hires.',
+    focus: [
+      { service: 'real-estate', why: 'Listing photography and cinematic walkthroughs for high-end homes, estates and acreage.' },
+      { service: 'photography', why: 'Headshots, team portraits and workplace imagery for corporate offices and professional practices.' },
+      { service: 'video-production', why: 'Brand films, recruiting videos and client testimonials that put a face on a firm.' },
+    ],
+    planningNote: 'Larger homes and acreage take longer to shoot well, and twilight images depend on the sky — exteriors are scheduled around the forecast.',
+  },
+  {
+    slug: 'murfreesboro-smyrna',
+    name: 'Murfreesboro & Smyrna',
+    headline: 'Murfreesboro & Smyrna photography & video.',
+    title: 'Murfreesboro & Smyrna TN Photographer',
+    description: 'Listing and new-construction photography, event coverage and brand video in Murfreesboro, Smyrna, La Vergne and across Rutherford County, TN.',
+    towns: ['Murfreesboro', 'Smyrna', 'La Vergne', 'Rockvale', 'Eagleville', 'Christiana', 'Lascassas'],
+    image: '/images/photos/through-the-mountains.webp',
+    intro: 'Rutherford County is one of the fastest-growing parts of Middle Tennessee, with new neighborhoods, new businesses and a busy calendar of events around Murfreesboro and MTSU. Morse Media works with builders, agents and local companies that need to keep up — listing and model-home photography, event coverage and brand imagery that looks established from day one.',
+    focus: [
+      { service: 'real-estate', why: 'Listing, new-construction and model-home photography for agents and builders.' },
+      { service: 'photography', why: 'Event photography for conferences, campus events, fundraisers and grand openings.' },
+      { service: 'video-production', why: 'Short brand videos and event recaps for growing companies and organizations.' },
+    ],
+    planningNote: 'New construction photographs best once landscaping and final cleaning are done — book the shoot for the week the home is truly finished.',
+  },
+  {
+    slug: 'hendersonville-gallatin',
+    name: 'Hendersonville & Gallatin',
+    headline: 'Hendersonville & Gallatin photography & video.',
+    title: 'Hendersonville & Gallatin TN Photographer',
+    description: 'Lake home and listing photography, brand photos and video in Hendersonville, Gallatin, Goodlettsville and across Sumner County, TN.',
+    towns: ['Hendersonville', 'Gallatin', 'Goodlettsville', 'White House', 'Portland', 'Millersville', 'Castalian Springs'],
+    image: '/images/photos/storm-over-lake.webp',
+    intro: 'Sumner County life centers on Old Hickory Lake, with waterfront homes, marinas and a strong base of family-owned businesses in Hendersonville and Gallatin. Morse Media photographs lake properties so buyers can see the water, the light and the space, and creates photography and video that help local businesses look their best.',
+    focus: [
+      { service: 'real-estate', why: 'Waterfront and lake-view listings, photographed to show the shoreline, the views and the space.' },
+      { service: 'photography', why: 'Brand and team photography for family-owned businesses, practices and restaurants.' },
+      { service: 'monthly-content', why: 'Seasonal photo and video content that keeps a local business visible all year.' },
     ],
     planningNote: 'Water and weather shape every lake shoot. Exterior work is scheduled for calm, clear conditions and moved if the forecast turns.',
   },
   {
-    slug: 'white-mountains',
-    name: 'White Mountains',
-    headline: 'White Mountains photography & video.',
-    title: 'White Mountains Photographer & Videographer — Tourism & Lodging',
-    towns: ['North Conway', 'Jackson', 'Bartlett', 'Lincoln', 'Franconia', 'Littleton', 'Bethlehem', 'Bretton Woods', 'Gorham'],
-    image: '/images/photos/through-the-mountains.webp',
-    intro: 'The White Mountains sell an experience: foliage weekends, ski seasons, trailheads and the inns and restaurants in between. Morse Media brings a landscape photographer’s eye to tourism, lodging and outdoor brands — images and video that make people want to make the drive.',
+    slug: 'mt-juliet-lebanon',
+    name: 'Mt. Juliet & Lebanon',
+    headline: 'Mt. Juliet & Lebanon photography & video.',
+    title: 'Mt. Juliet & Lebanon TN Photographer',
+    description: 'Real estate photography and video, storefront and team photos in Mt. Juliet, Hermitage, Donelson, Old Hickory and Lebanon, TN.',
+    towns: ['Mt. Juliet', 'Hermitage', 'Donelson', 'Old Hickory', 'Lebanon', 'Watertown'],
+    image: '/images/photos/coastline-dusk.webp',
+    intro: 'East along I-40, Donelson, Hermitage, Mt. Juliet and Lebanon combine fast-growing neighborhoods with the shops, restaurants and service businesses that serve the whole eastern side of the metro, with Percy Priest and Old Hickory lakes close by. Morse Media helps agents and local businesses here look as good online as they do in person.',
     focus: [
-      { service: 'video-production', why: 'Destination and lodging films that show the setting, the rooms and the experience in under a minute.' },
-      { service: 'photography', why: 'Lodging, dining and adventure photography that holds up next to the scenery outside.' },
-      { service: 'graphic-design', why: 'Seasonal campaigns for foliage, ski and summer — consistent across web, social and print.' },
+      { service: 'real-estate', why: 'Listing photography and walkthrough video for new subdivisions, family homes and lake-area properties.' },
+      { service: 'photography', why: 'Storefront, product and team photography for retail, restaurants and service businesses.' },
+      { service: 'video-production', why: 'Short promotional videos and event recaps for local businesses and organizations.' },
     ],
-    planningNote: 'Foliage and ski campaigns need their content months ahead. The best time to shoot next autumn’s campaign is this autumn.',
-  },
-  {
-    slug: 'manchester-nashua-concord',
-    name: 'Manchester, Nashua & Concord',
-    headline: 'Southern NH brand photography.',
-    title: 'Manchester, Nashua & Concord NH Brand Photographer & Video',
-    towns: ['Manchester', 'Nashua', 'Concord', 'Bedford', 'Merrimack', 'Londonderry', 'Hooksett', 'Salem'],
-    image: '/images/photos/old-hill-window.webp',
-    intro: 'Southern New Hampshire is home to healthcare groups, tech and manufacturing companies, professional firms and a strong small-business scene. Morse Media helps them look as good as the work they do, with brand photography, recruiting and explainer video, and campaign design that stays consistent across every channel.',
-    focus: [
-      { service: 'photography', why: 'Team portraits, workplace and product photography for websites, recruiting and sales materials.' },
-      { service: 'video-production', why: 'Interview-led brand films, recruiting videos and short explainers for products and services.' },
-      { service: 'graphic-design', why: 'Campaign creative and reusable layouts that keep busy marketing teams on brand.' },
-    ],
-    planningNote: 'Workplace shoots are planned around your team’s schedule, so a half-day on site can cover portraits, workspace and product in one visit.',
-  },
-  {
-    slug: 'monadnock',
-    name: 'Monadnock Region',
-    headline: 'Monadnock photography & content.',
-    title: 'Monadnock Region NH Photographer — Keene, Peterborough & Jaffrey',
-    towns: ['Keene', 'Peterborough', 'Jaffrey', 'Dublin', 'Hancock', 'Rindge', 'Swanzey', 'Walpole'],
-    image: '/images/photos/granite-and-gold.webp',
-    intro: 'The Monadnock Region runs on makers, farms, inns and independent shops — businesses with real stories that deserve better than phone snapshots. Morse Media creates product, place and people photography, plus social content and design, that show the craft behind the business.',
-    focus: [
-      { service: 'photography', why: 'Product, process and place photography for makers, farms, inns and independent retailers.' },
-      { service: 'social-media', why: 'A manageable monthly rhythm of posts for small teams who would rather be running the business.' },
-      { service: 'graphic-design', why: 'Labels, event posters and campaign graphics that match the quality of what you make.' },
-    ],
-    planningNote: 'Farm and maker shoots are timed to the work itself — harvest, production days or a market — so the images show the real thing.',
+    planningNote: 'Shoots east of the city can often be paired with nearby appointments, so mention it if you have more than one location or listing.',
   },
 ];
 

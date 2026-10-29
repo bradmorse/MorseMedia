@@ -7,18 +7,22 @@ import { ArrowRight, Mail, Menu, Search, ShoppingBag, X } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { collections, finishOptions, products } from '@/data/site';
 import { recentWork } from '@/data/recent-work';
-import { servicePages } from '@/data/services';
+import { servicePages, servicePath } from '@/data/services';
+import { areas } from '@/data/areas';
+import { business } from '@/data/business';
 import { useCart } from './CartProvider';
 import { useBodyScrollLock } from './useBodyScrollLock';
 
 const navItems = [
-  { label: 'Print Shop', href: '/shop' },
-  { label: 'Photography', href: '/photography' },
   { label: 'Services', href: '/services' },
+  { label: 'Real Estate', href: '/real-estate' },
   { label: 'Portfolio', href: '/portfolio' },
+  { label: 'Prints', href: '/shop' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ];
+
+const areaTerms = areas.flatMap((area) => [area.name, ...area.towns]).join(' ');
 
 type SearchResult = { label: string; meta: string; href: string; image?: string };
 
@@ -78,13 +82,16 @@ export function Header({ storeOpen = false }: { storeOpen?: boolean }) {
       .map((collection) => ({ label: collection.name, meta: 'Photography collection', href: `/collections/${collection.slug}`, image: collection.image }));
     const serviceResults = servicePages
       .filter((service) => matches(service.name, service.type, service.intro, service.deliverables.join(' ')))
-      .map((service) => ({ label: service.name, meta: 'Creative service', href: service.slug === 'real-estate' ? '/real-estate' : `/services/${service.slug}` }));
+      .map((service) => ({ label: service.name, meta: 'Photo & video service', href: servicePath(service.slug) }));
+    const areaResults = areas
+      .filter((area) => matches(area.name, area.towns.join(' ')))
+      .map((area) => ({ label: area.name, meta: 'Area served', href: `/areas/${area.slug}`, image: area.image }));
     const pageResults = [
-      { label: 'Gift certificates', meta: 'Give a print', href: '/gift-cards', terms: 'gift card certificate present voucher' },
       { label: 'Curated print sets', meta: 'Save on a complete set', href: '/shop#sets', terms: 'set bundle pair trio wall gallery discount' },
-      { label: 'Areas served', meta: 'Across New Hampshire', href: '/areas', terms: 'seacoast portsmouth lakes laconia white mountains north conway manchester nashua concord keene monadnock' },
+      { label: 'Services & pricing', meta: 'Packages and starting prices', href: '/services#packages', terms: 'price pricing cost rates packages quote headshots headshot portraits event events wedding conference' },
+      { label: 'Areas served', meta: `Nashville & ${business.region}`, href: '/areas', terms: `nashville tennessee tn middle ${areaTerms}` },
     ].filter((page) => matches(page.label, page.terms)).map(({ label, meta, href }) => ({ label, meta, href }));
-    return [...collectionResults, ...serviceResults, ...pageResults, ...photoResults, ...productResults].slice(0, 10);
+    return [...serviceResults, ...pageResults, ...areaResults, ...collectionResults, ...photoResults, ...productResults].slice(0, 10);
   }, [query]);
 
   function openSearch() {
@@ -138,8 +145,8 @@ export function Header({ storeOpen = false }: { storeOpen?: boolean }) {
           ))}
         </nav>
         <div className="mobile-menu__footer">
-          <p>Fine-art photography, cinematic video and thoughtful design.</p>
-          <a href="mailto:hello@morsemedia.co" tabIndex={menuOpen ? 0 : -1}>hello@morsemedia.co</a>
+          <p>Photography and cinematic video · {business.baseShort}</p>
+          <a href={`mailto:${business.email}`} tabIndex={menuOpen ? 0 : -1}>{business.email}</a>
         </div>
       </div>
 
@@ -158,7 +165,7 @@ export function Header({ storeOpen = false }: { storeOpen?: boolean }) {
               placeholder="Search photographs, places, services…"
               autoComplete="off"
             />
-            {!query && <p className="search-hint">Try “waterfall,” “abandoned,” “Maine,” “video,” or “autumn.”</p>}
+            {!query && <p className="search-hint">Try “headshots,” “real estate,” “video,” “Franklin,” or “waterfall.”</p>}
             {query && (
               <div className="search-results" aria-live="polite">
                 {results.length ? results.map((result) => (
@@ -182,31 +189,31 @@ export function Footer() {
     <footer className="site-footer">
       <div className="site-footer__brand">
         <Image src="/images/morse-media-logo.png" alt="Morse Media" width={377} height={152} />
-        <p>Original fine-art photography, cinematic video and thoughtful design from New England and beyond.</p>
-        <span className="site-footer__location">New Hampshire · Available for travel</span>
+        <p>Photography and cinematic video for Nashville businesses, agents and brands — plus original fine-art prints.</p>
+        <span className="site-footer__location">{business.base} · Available for travel</span>
+        <nav className="site-footer__areas" aria-label="Areas served">
+          {areas.map((area) => <Link key={area.slug} href={`/areas/${area.slug}`}>{area.name}</Link>)}
+        </nav>
       </div>
       <div>
-        <h4>Prints</h4>
-        <Link href="/shop">All prints</Link>
-        <Link href="/print-guide">Size & finish guide</Link>
-        <Link href="/collections">Collections</Link>
-        <Link href="/shipping-returns">Shipping & returns</Link>
-        <Link href="/gift-cards">Gift certificates</Link>
-      </div>
-      <div>
-        <h4>Explore</h4>
-        <Link href="/photography">Latest photography</Link>
-        <Link href="/services">Services</Link>
-        <Link href="/real-estate">Real estate photography</Link>
-        <Link href="/portfolio">Portfolio</Link>
+        <h4>Services</h4>
+        {servicePages.map((service) => <Link key={service.slug} href={servicePath(service.slug)}>{service.name}</Link>)}
+        <Link href="/services#packages">Packages &amp; pricing</Link>
         <Link href="/areas">Areas served</Link>
+      </div>
+      <div>
+        <h4>Prints &amp; more</h4>
+        <Link href="/portfolio">Portfolio</Link>
+        <Link href="/photography">Latest photography</Link>
+        <Link href="/shop">Print shop</Link>
+        <Link href="/print-guide">Size & finish guide</Link>
         <Link href="/about">About</Link>
       </div>
       <div>
         <h4>Contact</h4>
         <Link href="/contact">Start a project</Link>
         <Link href="/contact?service=Image%20licensing">License an image</Link>
-        <a href="mailto:hello@morsemedia.co"><Mail /> hello@morsemedia.co</a>
+        <a href={`mailto:${business.email}`}><Mail /> {business.email}</a>
       </div>
       <div className="site-footer__bottom">
         <small>© {new Date().getFullYear()} Morse Media · Bradley Morse. All rights reserved.</small>

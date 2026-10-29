@@ -1,6 +1,6 @@
 import { pageMetadata } from '@/lib/seo';
 
-export const metadata = { ...pageMetadata('Privacy Policy', 'How Morse Media collects and uses information submitted through this website.', '/privacy'), robots: { index: true, follow: true } };
+export const metadata = { ...pageMetadata('Privacy Policy', 'How Morse Media collects, uses and protects the information you share through this website, including contact inquiries, newsletter sign-ups and orders.', '/privacy'), robots: { index: true, follow: true } };
 
 export default function PrivacyPage() {
   return (

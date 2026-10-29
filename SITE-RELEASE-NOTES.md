@@ -1,3 +1,44 @@
+# Morse Media — Update 6 (October 28, 2026)
+
+Version 6.0.0. Morse Media is now based in Nashville, Tennessee, graphic design is gone, and the site leads with photography and video services. Update 5 notes follow below.
+
+## New in Update 6
+
+**1. Based in Nashville** (`data/business.ts`)
+- One file holds the city, state, region, counties and service-area cities. Titles, descriptions, the business schema (`addressLocality: Nashville`, `addressRegion: TN`, `areaServed`), footer, contact page, service pages, real estate page and welcome email all read from it.
+- Area pages rewritten for Middle Tennessee (`data/areas.ts`): Downtown & Midtown, East Nashville, Franklin & Brentwood, Murfreesboro & Smyrna, Hendersonville & Gallatin, Mt. Juliet & Lebanon. Neighborhood areas use Place schema; city areas use City schema. Old New Hampshire area URLs redirect to `/areas`.
+- Print collections keep their real locations (New Hampshire, Maine, Adirondacks) — those describe where the photographs were taken.
+
+**2. Graphic design removed**
+- Service page, package, contact-form option, home card, portfolio tags and copy are gone. `/services/graphic-design` redirects to `/services`.
+- "Social media content" is now **Monthly Photo & Video Content** (`/services/monthly-content`; the old URL redirects): a monthly shoot delivering photos and vertical video, no graphics or posting management.
+
+**3. Photo and video first**
+- Home page leads with services: new hero, starting prices on each service card, client band, areas served, then prints and collections.
+- Navigation: Services, Real Estate, Portfolio, Prints, About, Contact. Footer lists every service.
+- Nine packages on `/services` (three per row): Brand Photography Session $950, Headshots & Team Portraits $450, Event Photography $600, Short-Form Video $1,800, Commercial & Brand Film $3,500, Event Highlight Film $1,200, Real Estate Listing $275, Listing Photo + Video $650, Monthly Photo & Video $1,400/month. Prices live in `data/proof.ts`; they were set by Claude for the Nashville market and should be reviewed.
+- Real estate page shows both listing packages, an "Agent spotlight video" add-on and new FAQs about listing video and areas covered.
+- Services page: new FAQ answers (photo + video on the same day, delivery times, licensing) with FAQPage structured data.
+- Showreel: paste a YouTube or Vimeo link into `showreel.url` in `data/proof.ts` and it appears on the home page, the services page and the video production page.
+
+**4. Contact form**
+- Project types: Photography, Headshots & team portraits, Event coverage, Video production, Real estate photo & video, Monthly photo & video content, Photo + video project, plus print questions and image licensing (`data/inquiries.ts`).
+- Licensing inquiries show only the fields that apply (no location, timeline or budget).
+- Old links such as `?service=Graphic%20design`, `?service=Social%20media%20content` or `?service=Gift%20card` still land on a sensible option.
+
+**5. Gift certificates retired**
+- The `/gift-cards` page, shop band, footer and search links, contact-form option and styles are removed. `/gift-cards` and `/gift` redirect to `/shop`. Stripe promotion codes still work at checkout.
+
+**6. Search engine optimization**
+- Every title is keyword-first and fits Google's ~60-character limit with " | Morse Media" (e.g. "Nashville Photographer & Videographer | Morse Media"); every description is 120–155 characters. Service and area SEO text lives in `data/services.ts` (`seoTitle`, `seoDescription`, `h1`) and `data/areas.ts` (`title`, `description`).
+- H1s now name Nashville on the services, service and real estate pages.
+- Service pages gained four FAQs each (with FAQPage structured data) and links to the area pages where that service is popular. Footer links to all six area pages.
+- Business schema adds a contact point and an offer catalog of the four services; services and areas pages add breadcrumbs; areas page lists every area (ItemList). `<html lang="en-US">`.
+
+**7. Checks** — `tests/nashville.test.ts` confirms the location, that no design service or gift certificate remains, that every package pre-selects a real form option, that every service has a starting price and that SEO titles and descriptions stay within limits.
+
+---
+
 # Morse Media — Update 5 (October 16, 2026)
 
 Version 5.0.0. This zip includes everything from Update 4 as well, so it can be applied on its own.

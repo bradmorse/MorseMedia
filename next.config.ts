@@ -32,7 +32,16 @@ const nextConfig: NextConfig = {
       { source: '/gallery', destination: '/photography', permanent: true },
       { source: '/pricing', destination: '/services#packages', permanent: true },
       { source: '/realtors', destination: '/real-estate', permanent: true },
-      { source: '/gift', destination: '/gift-cards', permanent: true },
+      // Gift certificates were retired on October 28, 2026.
+      { source: '/gift', destination: '/shop', permanent: true },
+      { source: '/gift-cards', destination: '/shop', permanent: true },
+      // October 28, 2026: moved to Nashville and dropped graphic design. Old URLs land on their closest page.
+      { source: '/services/graphic-design', destination: '/services', permanent: true },
+      { source: '/services/social-media', destination: '/services/monthly-content', permanent: true },
+      { source: '/services/real-estate', destination: '/real-estate', permanent: true },
+      { source: '/areas/:slug(seacoast|lakes-region|white-mountains|manchester-nashua-concord|monadnock)', destination: '/areas', permanent: true },
+      { source: '/headshots', destination: '/services/photography', permanent: true },
+      { source: '/video', destination: '/services/video-production', permanent: true },
     ];
   },
 };

@@ -94,13 +94,11 @@ finish), each of those prints is discounted by `SET_DISCOUNT_PERCENT` (10%), rou
 to whole dollars. Checkout calculates this on the server; the bag only displays it.
 Stripe line items carry `print_set` and `list_price` metadata for set orders.
 
-## Gift certificates
+## Promotion codes
 
-Gift certificates are requested through the contact form ("Gift certificate").
-Take payment by Stripe invoice or payment link, then create a Stripe promotion
-code for the amount (Products → Coupons) and send it with the certificate.
-Checkout already accepts promotion codes. Use a fixed-amount coupon limited to one
-redemption; Stripe does not carry an unused balance forward, so mention that on the certificate.
+Checkout accepts Stripe promotion codes (Products → Coupons), for example for a
+one-off discount for a client. Gift certificates were retired on October 28, 2026;
+`/gift-cards` now redirects to the shop.
 
 ## Preview setup
 

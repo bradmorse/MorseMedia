@@ -13,8 +13,17 @@ export function shareImage(image = defaultShareImage, alt = 'Fine-art photograph
   return { url, width: 1200, height: 630, alt };
 }
 
-export function pageMetadata(title: string, description: string, path: string, image = defaultShareImage, imageAlt?: string): Metadata {
+/** Trims a description to a search-snippet length (~155 characters) at a word boundary. */
+export function snippet(text: string, max = 155) {
+  const clean = text.replace(/\s+/g, ' ').trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max - 1);
+  return `${cut.slice(0, cut.lastIndexOf(' ')).replace(/[\s,;:—–-]+$/, '')}…`;
+}
+
+export function pageMetadata(title: string, fullDescription: string, path: string, image = defaultShareImage, imageAlt?: string): Metadata {
   const url = `${siteUrl}${path}`;
+  const description = snippet(fullDescription);
   const og = shareImage(image, imageAlt || title);
   return {
     title,

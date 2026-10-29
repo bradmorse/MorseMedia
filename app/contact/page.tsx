@@ -3,8 +3,9 @@ import { pageMetadata } from '@/lib/seo';
 import Image from 'next/image';
 import { ContactForm } from '@/components/Forms';
 import ContactFormFromQuery from '@/components/ContactFormFromQuery';
+import { business } from '@/data/business';
 
-export const metadata = pageMetadata('Contact Morse Media — Project & Print Inquiries', 'Request photography, video, graphic design, social content or real-estate services. Ask about original prints, gift certificates and image licensing.', '/contact', '/images/photos/coastline-dusk.webp');
+export const metadata = pageMetadata('Book a Photo or Video Shoot in Nashville', 'Book brand, headshot, event or real estate photography and video in Nashville and Middle Tennessee. Ask about fine-art prints and image licensing, too.', '/contact', '/images/photos/coastline-dusk.webp');
 
 export default function ContactPage() {
   return (
@@ -17,10 +18,10 @@ export default function ContactPage() {
       <section className="contact-layout content-section">
         <div className="contact-layout__intro">
           <p className="eyebrow">Morse Media</p>
-          <h2>Print questions, licensing or creative projects.</h2>
+          <h2>Photo and video projects, prints or licensing.</h2>
           <p>Share what you are working on, the deliverables you need and your ideal timeline. Typical replies arrive within two business days.</p>
-          <a className="contact-email" href="mailto:hello@morsemedia.co">hello@morsemedia.co</a>
-          <div className="contact-details"><span>Based in New Hampshire</span><span>Available for travel</span></div>
+          <a className="contact-email" href={`mailto:${business.email}`}>{business.email}</a>
+          <div className="contact-details"><span>Based in {business.base}</span><span>Serving {business.region}</span><span>Available for travel</span></div>
         </div>
         <Suspense fallback={<ContactForm />}>
           <ContactFormFromQuery />

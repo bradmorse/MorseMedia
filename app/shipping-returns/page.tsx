@@ -1,6 +1,6 @@
 import { pageMetadata } from '@/lib/seo';
 
-export const metadata = pageMetadata('Shipping & Returns', 'Production times, shipping and return information for made-to-order Morse Media prints.', '/shipping-returns');
+export const metadata = pageMetadata('Shipping & Returns', 'Production times, shipping, damage and return information for made-to-order Morse Media fine-art prints on paper, canvas, metal and framed.', '/shipping-returns');
 
 export default function ShippingReturnsPage() {
   return (

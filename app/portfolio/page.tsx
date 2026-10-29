@@ -6,8 +6,8 @@ import { pageMetadata } from '@/lib/seo';
 import styles from './portfolio.module.css';
 
 export const metadata = pageMetadata(
-  'Commercial Portfolio — Social, Video & Design',
-  'Commercial social media, video production, photography and graphic design work by Morse Media for New Hampshire furniture retailers.',
+  'Commercial Photography & Video Portfolio',
+  'Product photography, promotional video and short-form social content by Morse Media for retail brands. Now booking Nashville and Middle Tennessee shoots.',
   '/portfolio',
 );
 
@@ -40,15 +40,15 @@ const brands: Brand[] = [
     shortName: 'LB',
     eyebrow: 'Retail furniture and bedding',
     description:
-      'Brand-focused social content created to support promotions, product education, customer engagement and in-store traffic across video, photography and graphic design.',
-    services: ['Social media strategy', 'Video production', 'Photography', 'Graphic design', 'Campaign creative'],
+      'Brand-focused photo and video content created to support promotions, product education, customer engagement and in-store traffic.',
+    services: ['Video production', 'Photography', 'Short-form social video', 'Social content'],
     links: [
       { platform: 'Facebook', label: "Love's Bedding & Furniture on Facebook", url: 'https://www.facebook.com/LovesBedding/' },
       { platform: 'Instagram', label: "Love's Bedding & Furniture on Instagram", url: 'https://www.instagram.com/lovesbeddingandfurniture/' },
       { platform: 'YouTube', label: "Love's Bedding & Furniture on YouTube", url: 'https://www.youtube.com/@lovesbeddingandfurniture' },
     ],
     highlights: [
-      { title: 'Promotional campaigns', description: 'Sale announcements, product packages and seasonal retail creative designed for fast, clear communication.', linkLabel: 'View campaign content', url: 'https://www.facebook.com/LovesBedding/' },
+      { title: 'Promotion and sale content', description: 'Photo and video content built around sales events, product packages and seasonal promotions.', linkLabel: 'View on Facebook', url: 'https://www.facebook.com/LovesBedding/' },
       { title: 'Video and short-form content', description: 'Commercial videos, product features and social-first edits produced for digital audiences.', linkLabel: 'Watch on YouTube', url: 'https://www.youtube.com/@lovesbeddingandfurniture' },
       { title: 'Brand photography', description: 'Product, showroom and lifestyle imagery created to give the brand a consistent visual presence.', linkLabel: 'View on Instagram', url: 'https://www.instagram.com/lovesbeddingandfurniture/' },
     ],
@@ -59,7 +59,7 @@ const brands: Brand[] = [
     eyebrow: 'Furniture retail',
     description:
       'Social-first creative supporting furniture promotions, product discovery and local brand awareness with a polished, approachable retail style.',
-    services: ['Social content', 'Retail video', 'Product photography', 'Promotional design'],
+    services: ['Retail video', 'Product photography', 'Social content'],
     links: [
       { platform: 'Facebook', label: "Love's Furniture Loft on Facebook", url: 'https://www.facebook.com/lovesfurnitureloft/' },
       { platform: 'Instagram', label: "Love's Furniture Loft on Instagram", url: 'https://www.instagram.com/loves_furniture_loft/' },
@@ -67,7 +67,7 @@ const brands: Brand[] = [
     highlights: [
       { title: 'Retail storytelling', description: 'Content that presents products in a useful, inviting way while keeping the local brand personality front and center.', linkLabel: 'View on Facebook', url: 'https://www.facebook.com/lovesfurnitureloft/' },
       { title: 'Short-form social video', description: 'Fast-moving edits designed for promotions, new arrivals and social engagement.', linkLabel: 'View on Instagram', url: 'https://www.instagram.com/loves_furniture_loft/' },
-      { title: 'Graphic campaign assets', description: 'Consistent promotional graphics built for social feeds, digital advertising and store events.', linkLabel: 'Explore the work', url: 'https://www.facebook.com/lovesfurnitureloft/' },
+      { title: 'Product photography', description: 'Clean, accurate product imagery for new arrivals, social feeds and digital advertising.', linkLabel: 'Explore the work', url: 'https://www.facebook.com/lovesfurnitureloft/' },
     ],
   },
   {
@@ -76,15 +76,15 @@ const brands: Brand[] = [
     eyebrow: 'Value-focused furniture retail',
     description:
       'Direct, energetic social media creative built around product value, timely promotions and an easy-to-understand customer message.',
-    services: ['Social media content', 'Promotional video', 'Product photography', 'Sales graphics'],
+    services: ['Promotional video', 'Product photography', 'Social media content'],
     links: [
       { platform: 'Facebook', label: 'Cash & Carry Furniture on Facebook', url: 'https://www.facebook.com/candcfurniturenh/' },
       { platform: 'Instagram', label: 'Cash & Carry Furniture on Instagram', url: 'https://www.instagram.com/cashandcarryfurniture/' },
     ],
     highlights: [
-      { title: 'Offer-led creative', description: 'Clear, high-impact content designed to communicate price, availability and urgency quickly.', linkLabel: 'View on Facebook', url: 'https://www.facebook.com/candcfurniturenh/' },
+      { title: 'Offer-led video', description: 'Quick, high-energy edits that communicate price, availability and urgency in seconds.', linkLabel: 'View on Facebook', url: 'https://www.facebook.com/candcfurniturenh/' },
       { title: 'Product-focused content', description: 'Photography and video that make individual products easy to understand and shop.', linkLabel: 'View on Instagram', url: 'https://www.instagram.com/cashandcarryfurniture/' },
-      { title: 'Consistent retail branding', description: 'Repeatable visual systems that keep sale content recognizable across platforms.', linkLabel: 'Explore the work', url: 'https://www.facebook.com/candcfurniturenh/' },
+      { title: 'Always-on social content', description: 'A steady stream of photo and video posts that keeps the store visible between sales.', linkLabel: 'Explore the work', url: 'https://www.facebook.com/candcfurniturenh/' },
     ],
   },
 ];
@@ -131,16 +131,16 @@ export default function PortfolioPage() {
         <div className={styles.heroGlow} aria-hidden="true" />
         <div className={styles.container}>
           <p className={styles.eyebrow}>Commercial portfolio</p>
-          <h1>Creative work built to move brands forward.</h1>
+          <h1>Photo and video built to move brands forward.</h1>
           <p className={styles.heroCopy}>
-            A selection of social media, video production, photography and graphic
-            design work produced for New Hampshire furniture retailers.
+            A selection of photography, promotional video and short-form social
+            content produced for regional retail brands.
           </p>
-          <div className={styles.capabilityRow} aria-label="Creative services">
-            <span>Social strategy</span>
+          <div className={styles.capabilityRow} aria-label="Services">
             <span>Video production</span>
             <span>Photography</span>
-            <span>Graphic design</span>
+            <span>Short-form social</span>
+            <span>Real estate</span>
           </div>
           <Link className="text-link portfolio-hero-link" href="/photography">Looking for landscape photography? See the latest work ↗</Link>
         </div>
@@ -151,7 +151,7 @@ export default function PortfolioPage() {
           <div className={styles.introGrid}>
             <p className={styles.sectionLabel}>Selected client work</p>
             <div>
-              <h2>Content designed for real business goals.</h2>
+              <h2>Content made for real business goals.</h2>
               <p>
                 Each brand required a distinct voice while sharing the same core
                 objective: create clear, engaging content that supports promotions,
@@ -163,10 +163,10 @@ export default function PortfolioPage() {
       </section>
 
       <section className="content-section">
-        <div className="section-heading"><div><p className="eyebrow">Creative approach</p><h2>One campaign. Every touchpoint.</h2></div></div>
+        <div className="section-heading"><div><p className="eyebrow">Approach</p><h2>One shoot. Every format.</h2></div></div>
         <div className="workflow-grid">
           <article><span>01 / Plan</span><h3>Start with the message.</h3><p>Define the offer, audience and channels. Build a shot list and asset plan around the campaign objective.</p></article>
-          <article><span>02 / Produce</span><h3>Create a consistent visual language.</h3><p>Bring together filming, photography, editing and graphic design for the formats the campaign needs.</p></article>
+          <article><span>02 / Produce</span><h3>Shoot stills and motion together.</h3><p>Plan photography and filming for the same visit, then edit for every format the campaign needs.</p></article>
           <article><span>03 / Refine</span><h3>Learn from the response.</h3><p>Use reporting and team feedback to inform the next round of content and creative decisions.</p></article>
         </div>
       </section>
@@ -239,11 +239,11 @@ export default function PortfolioPage() {
           <div className={styles.ctaCard}>
             <div>
               <p className={styles.eyebrow}>Work with Morse Media</p>
-              <h2>Need creative that looks good and works hard?</h2>
+              <h2>Need photos and video that work as hard as you do?</h2>
             </div>
             <div className={styles.ctaActions}>
-              <p>Let&apos;s talk about photography, video, social content or design for your next campaign.</p>
-              <Link href="/contact?service=Combined%20creative%20campaign" className={styles.primaryButton}>
+              <p>Now booking photography and video projects across Nashville and Middle Tennessee.</p>
+              <Link href="/contact?service=Photo%20%2B%20video%20project" className={styles.primaryButton}>
                 Start a project
                 <ArrowIcon />
               </Link>

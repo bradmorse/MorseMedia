@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { Check, LoaderCircle, Mail } from 'lucide-react';
+import { projectTypes } from '@/data/inquiries';
 
 type SubmitState = { status: 'idle' | 'sending' | 'success' | 'error'; message: string };
 type SubmitResult = { ok: boolean; mode?: 'webhook' | 'email' | 'list' | 'mailto'; mailto?: string };
@@ -72,32 +73,29 @@ export function NewsletterForm() {
   );
 }
 
-export const projectTypes = [
-  'Print or order question',
-  'Photography',
-  'Real estate photography',
-  'Video production',
-  'Social media content',
-  'Graphic design',
-  'Combined creative campaign',
-  'Image licensing',
-  'Gift certificate',
-];
+export { projectTypes };
 
 function detailsLabel(type: string) {
-  if (type === 'Real estate photography') return 'Square footage & requested shoot date';
+  if (type === 'Real estate photo & video') return 'Square footage, shoot date & video?';
   if (type === 'Video production') return 'Runtime, formats & filming needs';
-  if (type === 'Social media content') return 'Platforms & posting frequency';
+  if (type === 'Monthly photo & video content') return 'Platforms & posting frequency';
+  if (type === 'Headshots & team portraits') return 'Number of people & preferred date';
+  if (type === 'Event coverage') return 'Event date, hours & photo, video or both';
   if (type === 'Image licensing') return 'Image use, distribution & license term';
-  if (type === 'Gift certificate') return 'Amount, recipient & delivery date';
   return 'Deliverables & intended usage';
+}
+
+function locationLabel(type: string) {
+  if (type === 'Real estate photo & video') return 'Property address or town';
+  if (type === 'Event coverage') return 'Venue or city';
+  return 'Project location / website';
 }
 
 export function ContactForm({ defaultType = 'Print or order question', photoTitle = '' }: { defaultType?: string; photoTitle?: string }) {
   const [projectType, setProjectType] = useState(defaultType);
   const [mailLink, setMailLink] = useState('');
   const isPrint = projectType === 'Print or order question';
-  const isProperty = projectType === 'Real estate photography';
+  const isProject = !isPrint && projectType !== 'Image licensing';
   const [state, setState] = useState<SubmitState>({ status: 'idle', message: '' });
   const startedAt = useStartedAt();
 
@@ -157,8 +155,9 @@ export function ContactForm({ defaultType = 'Print or order question', photoTitl
           <label>Ship to (city, state)<input name="location" maxLength={250} autoComplete="address-level2" /></label>
         </div>
       )}
-      {!isPrint && <div className="field-row"><label>{isProperty ? 'Property location' : 'Project location / website'}<input name="location" maxLength={250} autoComplete="off" /></label><label>Timeline<select name="timeline"><option value="">Select a timeframe</option><option>As soon as possible</option><option>Within a month</option><option>1–3 months</option><option>Flexible / exploring</option></select></label></div>}
-      {!isPrint && <div className="field-row"><label>Budget range<select name="budget"><option value="">Prefer to discuss</option><option>Under $500</option><option>$500–$1,500</option><option>$1,500–$3,000</option><option>$3,000–$5,000</option><option>$5,000+</option></select></label><label>{detailsLabel(projectType)}<input name="details" maxLength={500} /></label></div>}
+      {projectType === 'Image licensing' && <label>{detailsLabel(projectType)}<input name="details" maxLength={500} placeholder="e.g. website banner, 1 year" /></label>}
+      {isProject && <div className="field-row"><label>{locationLabel(projectType)}<input name="location" maxLength={250} autoComplete="off" /></label><label>Timeline<select name="timeline"><option value="">Select a timeframe</option><option>As soon as possible</option><option>Within a month</option><option>1–3 months</option><option>Flexible / exploring</option></select></label></div>}
+      {isProject && <div className="field-row"><label>Budget range<select name="budget"><option value="">Prefer to discuss</option><option>Under $500</option><option>$500–$1,500</option><option>$1,500–$3,000</option><option>$3,000–$5,000</option><option>$5,000+</option></select></label><label>{detailsLabel(projectType)}<input name="details" maxLength={500} /></label></div>}
       <label>Message<textarea name="message" rows={7} minLength={10} maxLength={5000} required /></label>
       <label className="honeypot" aria-hidden="true">Company<input name="company" tabIndex={-1} autoComplete="off" /></label>
       {mailLink && <p><a className="text-link" href={mailLink}>Open prepared email ↗</a> · <a href="mailto:hello@morsemedia.co">Or email hello@morsemedia.co</a></p>}

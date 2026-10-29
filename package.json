@@ -1,13 +1,14 @@
 {
   "name": "morse-media-nextjs",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "check": "tsc --noEmit",
-    "verify": "npm run check && npm run build",
+    "clean:types": "node scripts/clean-types.mjs",
+    "verify": "npm run clean:types && npm run check && npm run build",
     "test": "tsx --test tests/*.test.ts",
     "catalog:checklist": "node --import tsx scripts/print-catalog.ts",
     "masters:check": "node --import tsx scripts/check-masters.ts"

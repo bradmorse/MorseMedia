@@ -2,17 +2,28 @@
 
 import { useSearchParams } from 'next/navigation';
 import { galleryPhotos } from '@/data/discovery';
-import { ContactForm, projectTypes } from './Forms';
+import { ContactForm } from './Forms';
+import { projectTypes } from '@/data/inquiries';
 
 const allowedProjectTypes = new Set(projectTypes);
 
+// Older links (and the names of services that no longer exist) still land on a sensible project type.
 const serviceTypeMap: Record<string, string> = {
   Photography: 'Photography',
+  Headshots: 'Headshots & team portraits',
+  Events: 'Event coverage',
+  'Event photography': 'Event coverage',
   'Video Production': 'Video production',
-  'Social Media Content': 'Social media content',
-  'Graphic Design': 'Graphic design',
-  'Real estate': 'Real estate photography',
-  'Gift card': 'Gift certificate',
+  'Real estate': 'Real estate photo & video',
+  'Real estate photography': 'Real estate photo & video',
+  'Social Media Content': 'Monthly photo & video content',
+  'Social media content': 'Monthly photo & video content',
+  'Monthly content': 'Monthly photo & video content',
+  'Graphic Design': 'Photo + video project',
+  'Graphic design': 'Photo + video project',
+  'Combined creative campaign': 'Photo + video project',
+  'Gift card': 'Print or order question',
+  'Gift certificate': 'Print or order question',
 };
 
 /**

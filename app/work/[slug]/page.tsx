@@ -2,8 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { caseStudies, getCaseStudy } from '@/data/case-studies';
-import { servicePages } from '@/data/services';
+import { servicePages, servicePath } from '@/data/services';
 import { breadcrumbs, jsonLd, pageMetadata, siteUrl } from '@/lib/seo';
+import { videoEmbed } from '@/lib/video';
 
 export function generateStaticParams() {
   return caseStudies.map((study) => ({ slug: study.slug }));
@@ -14,15 +15,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const study = getCaseStudy(slug);
   if (!study) return {};
   return pageMetadata(`${study.title} — Case Study`, `${study.summary} ${study.client}${study.location ? `, ${study.location}` : ''}.`, `/work/${slug}`, study.cover.src, study.cover.alt);
-}
-
-function videoEmbed(url?: string) {
-  if (!url) return null;
-  const youtube = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{6,})/.exec(url);
-  if (youtube) return `https://www.youtube-nocookie.com/embed/${youtube[1]}`;
-  const vimeo = /vimeo\.com\/(\d+)/.exec(url);
-  if (vimeo) return `https://player.vimeo.com/video/${vimeo[1]}`;
-  return null;
 }
 
 export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -86,8 +78,8 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         <h2>Planning something similar?</h2>
         <p>Share the goal, timeline and where the work will be used, and you will get a clear scope and quote.</p>
         <div className="detail-actions">
-          <Link className="button button--solid" href={`/contact?service=${encodeURIComponent(service?.type || 'Combined creative campaign')}`}>Start a project</Link>
-          {service && <Link className="text-link" href={`/services/${service.slug}`}>About {service.name.toLowerCase()} ↗</Link>}
+          <Link className="button button--solid" href={`/contact?service=${encodeURIComponent(service?.type || 'Photo + video project')}`}>Start a project</Link>
+          {service && <Link className="text-link" href={servicePath(service.slug)}>About {service.name.toLowerCase()} ↗</Link>}
         </div>
       </section>
     </article>

@@ -55,10 +55,6 @@ export default function ShopPage() {
           ? <div><span>03</span><h3>Secure checkout</h3><p>Stripe securely collects payment and shipping details without leaving the site.</p></div>
           : <div><span>03</span><h3>A personal quote</h3><p>Send the photograph, size and finish you have in mind and receive a confirmed price and timeline.</p></div>}
       </section>
-      <section className="content-section gift-band">
-        <div><p className="eyebrow">Gift certificates</p><h2>Give the choice of a print.</h2><p>A Morse Media gift certificate lets someone pick the photograph, size and finish themselves.</p></div>
-        <a className="button" href="/gift-cards">About gift certificates</a>
-      </section>
     </>
   );
 }

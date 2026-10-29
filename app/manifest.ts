@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Morse Media',
     short_name: 'Morse Media',
-    description: 'Fine-art photography, cinematic video and thoughtful design.',
+    description: 'Nashville photography and cinematic video, plus original fine-art prints.',
     start_url: '/',
     display: 'standalone',
     background_color: '#0d1412',

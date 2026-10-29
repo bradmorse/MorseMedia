@@ -4,7 +4,8 @@ import { notFound } from 'next/navigation';
 import { ArrowRight, MapPin } from 'lucide-react';
 import { areas, getArea } from '@/data/areas';
 import { servicePackages } from '@/data/proof';
-import { servicePages } from '@/data/services';
+import { servicePages, servicePath } from '@/data/services';
+import { business } from '@/data/business';
 import { breadcrumbs, jsonLd, pageMetadata, siteUrl } from '@/lib/seo';
 
 export function generateStaticParams() {
@@ -15,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const area = getArea(slug);
   if (!area) return {};
-  return pageMetadata(area.title, `${area.intro.split('. ')[0]}. Serving ${area.towns.slice(0, 4).join(', ')} and nearby towns.`, `/areas/${slug}`, area.image);
+  return pageMetadata(area.title, area.description, `/areas/${slug}`, area.image);
 }
 
 export default async function AreaPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -31,11 +32,13 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
     {
       '@context': 'https://schema.org',
       '@type': 'Service',
-      name: `Photography, video and design — ${area.name}, New Hampshire`,
+      name: `Photography and video — ${area.name}, ${business.region}`,
       url: `${siteUrl}/areas/${slug}`,
       provider: { '@id': `${siteUrl}/#business` },
       serviceType: focus.map((entry) => entry.service.type),
-      areaServed: area.towns.map((town) => ({ '@type': 'City', name: `${town}, NH` })),
+      areaServed: area.towns.map((town) => (area.neighborhoods
+        ? { '@type': 'Place', name: `${town}, ${business.city}, ${business.stateCode}` }
+        : { '@type': 'City', name: `${town}, ${business.stateCode}` })),
     },
     breadcrumbs([{ name: 'Home', path: '/' }, { name: 'Areas served', path: '/areas' }, { name: area.name, path: `/areas/${slug}` }]),
   ];
@@ -47,18 +50,18 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
         <Image src={area.image} alt="" fill priority sizes="100vw" />
         <div className="page-hero__shade page-hero__shade--strong" />
         <div className="page-hero__copy">
-          <p className="eyebrow"><MapPin aria-hidden="true" className="inline-icon" /> {area.name} · New Hampshire</p>
+          <p className="eyebrow"><MapPin aria-hidden="true" className="inline-icon" /> {area.name} · {business.region}</p>
           <h1>{area.headline}</h1>
         </div>
       </section>
 
       <section className="about-intro content-section">
-        <div><p className="eyebrow">Morse Media in the {area.name}</p><h2>Local work, made to a high standard.</h2></div>
+        <div><p className="eyebrow">Morse Media in {area.name}</p><h2>Local work, made to a high standard.</h2></div>
         <div>
           <p>{area.intro}</p>
-          <p className="area-towns"><strong>Towns served include</strong> {area.towns.join(' · ')}</p>
+          <p className="area-towns"><strong>{area.neighborhoods ? 'Neighborhoods' : 'Towns'} served include</strong> {area.towns.join(' · ')}</p>
           <div className="detail-actions">
-            <Link className="button button--solid" href={`/contact?service=${encodeURIComponent(focus[0]?.service.type || 'Combined creative campaign')}`}>Start a project</Link>
+            <Link className="button button--solid" href={`/contact?service=${encodeURIComponent(focus[0]?.service.type || 'Photo + video project')}`}>Start a project</Link>
             <Link className="text-link" href="/portfolio">See client work ↗</Link>
           </div>
         </div>
@@ -72,7 +75,7 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
               <span>0{index + 1}</span>
               <h3>{entry.service.name}</h3>
               <p>{entry.why}</p>
-              <Link className="text-link" href={entry.service.slug === 'real-estate' ? '/real-estate' : `/services/${entry.service.slug}`}>Explore the service <ArrowRight /></Link>
+              <Link className="text-link" href={servicePath(entry.service.slug)}>Explore the service <ArrowRight /></Link>
             </article>
           ))}
         </div>

@@ -1,7 +1,10 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { servicePages } from '@/data/services';
-import { servicePackages } from '@/data/proof';
+import { servicePages, servicePath } from '@/data/services';
+import { servicePackages, showreel } from '@/data/proof';
+import { areaServedSchema, business } from '@/data/business';
+import { areas } from '@/data/areas';
+import VideoEmbed from '@/components/VideoEmbed';
 import { caseStudiesForService } from '@/data/case-studies';
 import CaseStudyGrid from '@/components/CaseStudyGrid';
 import { pageMetadata, siteUrl, jsonLd, breadcrumbs, startingPrice } from '@/lib/seo';
@@ -9,22 +12,20 @@ import { pageMetadata, siteUrl, jsonLd, breadcrumbs, startingPrice } from '@/lib
 const serviceImages: Record<string, string> = {
   photography: '/images/photos/granite-run.webp',
   'video-production': '/images/photos/storm-over-lake.webp',
-  'social-media': '/images/photos/valley-in-color.webp',
-  'graphic-design': '/images/photos/old-hill-window.webp',
   'real-estate': '/images/photos/forgotten-house.webp',
+  'monthly-content': '/images/photos/valley-in-color.webp',
 };
 
 export function generateStaticParams() {
-  return servicePages.map((s) => ({ slug: s.slug }));
+  // Real estate has its own landing page at /real-estate (next.config.ts redirects the old path).
+  return servicePages.filter((s) => s.slug !== 'real-estate').map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const s = servicePages.find((entry) => entry.slug === slug);
   if (!s) return {};
-  const from = servicePackages.find((p) => p.service === slug && p.startingAt)?.startingAt;
-  const description = `${s.intro} ${from ? `${from}. ` : ''}Based in New Hampshire and available across New England.`;
-  return pageMetadata(`${s.name} in New Hampshire`, description, `/services/${slug}`, serviceImages[slug]);
+  return pageMetadata(s.seoTitle, s.seoDescription, `/services/${slug}`, serviceImages[slug]);
 }
 
 export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -53,19 +54,25 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       description: `${s.intro} ${s.copy}`,
       url: `${siteUrl}/services/${slug}`,
       provider: { '@id': `${siteUrl}/#business` },
-      areaServed: [{ '@type': 'State', name: 'New Hampshire' }, { '@type': 'Place', name: 'New England' }],
+      areaServed: areaServedSchema(),
       ...(offers.length ? { offers } : {}),
     },
+    ...(s.faqs?.length ? [{
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: s.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })),
+    }] : []),
     breadcrumbs([{ name: 'Home', path: '/' }, { name: 'Services', path: '/services' }, { name: s.name, path: `/services/${slug}` }]),
   ];
   const contactHref = `/contact?service=${encodeURIComponent(s.type)}`;
+  const localAreas = areas.filter((area) => area.focus.some((entry) => entry.service === slug));
 
   return (
     <article className="detail-page content-section">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />
       <nav className="breadcrumb" aria-label="Breadcrumb"><Link href="/">Home</Link> / <Link href="/services">Services</Link> / <span>{s.name}</span></nav>
-      <p className="eyebrow">New Hampshire · Available for travel</p>
-      <h1>{s.name}</h1>
+      <p className="eyebrow">{business.base} · {business.region}</p>
+      <h1>{s.h1}</h1>
       <p className="detail-lead">{s.intro}</p>
       {packages.length > 0 && (
         <p className="detail-from">{packages.map((p) => `${p.name} · ${p.startingAt || 'Custom quote'}`).join('  /  ')}</p>
@@ -95,14 +102,35 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           ))}
         </section>
       )}
+      {slug === 'video-production' && showreel.url && (
+        <section className="detail-reel" aria-label="Showreel"><VideoEmbed url={showreel.url} title={showreel.title} /></section>
+      )}
       <CaseStudyGrid studies={caseStudiesForService(slug)} eyebrow="Recent projects" heading={`${s.type[0].toUpperCase()}${s.type.slice(1)} in practice.`} />
+      {s.faqs && s.faqs.length > 0 && (
+        <section className="service-faq" aria-labelledby="service-faq-heading">
+          <h2 id="service-faq-heading">Questions about {s.name.toLowerCase()}.</h2>
+          {s.faqs.map((faq) => (
+            <details key={faq.question}><summary>{faq.question}</summary><p>{faq.answer}</p></details>
+          ))}
+        </section>
+      )}
+      {localAreas.length > 0 && (
+        <section className="service-areas" aria-label={`${s.name} by area`}>
+          <p className="eyebrow">Popular across {business.region}</p>
+          <p>{s.name} for businesses in {localAreas.map((area) => area.name).join(', ')} — and anywhere else in the {business.city} area.</p>
+          <nav className="service-links" aria-label="Areas served">
+            {localAreas.map((area) => <Link key={area.slug} href={`/areas/${area.slug}`}>{area.name} ↗</Link>)}
+          </nav>
+        </section>
+      )}
       <section className="editorial-note">
         <h2>Before we start.</h2>
         <p>{s.faq}</p>
-        <Link className="text-link" href={slug === 'real-estate' ? '/contact?service=Real%20estate%20photography' : '/portfolio'}>{slug === 'real-estate' ? 'Ask about availability' : 'Explore selected client work'} ↗</Link>
+        <Link className="text-link" href={slug === 'real-estate' ? '/contact?service=Real%20estate%20photo%20%26%20video' : '/portfolio'}>{slug === 'real-estate' ? 'Ask about availability' : 'Explore selected client work'} ↗</Link>
       </section>
       <nav className="service-links" aria-label="Other creative services">
-        {servicePages.filter((p) => p.slug !== slug).map((p) => <Link key={p.slug} href={`/services/${p.slug}`}>{p.name} ↗</Link>)}
+        {servicePages.filter((p) => p.slug !== slug).map((p) => <Link key={p.slug} href={servicePath(p.slug)}>{p.name} ↗</Link>)}
+        <Link href="/areas">Areas served ↗</Link>
       </nav>
     </article>
   );

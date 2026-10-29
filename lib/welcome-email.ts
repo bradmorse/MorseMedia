@@ -23,10 +23,11 @@ export function welcomeEmailContent() {
     '',
     `Browse the print shop: ${siteUrl}/shop`,
     '',
-    'Have a project in mind? Just reply to this email.',
+    `Planning a shoot in Nashville or Middle Tennessee? See services and starting prices: ${siteUrl}/services`,
+    'Or just reply to this email.',
     '',
     'Bradley Morse',
-    'Morse Media · New Hampshire',
+    'Morse Media · Nashville, Tennessee',
     '',
     'You received this because you signed up at morsemedia.co. To unsubscribe, reply with "unsubscribe".',
   ].join('\n');
@@ -43,7 +44,7 @@ export function welcomeEmailContent() {
 <tr><td style="padding:24px 0 8px"><p style="margin:0 6px 12px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#b6c9a5">The latest work</p><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>${latest.map((photo) => card(`${siteUrl}/photography/${photo.slug}`, photo.image.replace('/images/photos/', '/images/og/').replace('.webp', '.jpg'), photo.title, 'Autumn studies')).join('')}</tr></table></td></tr>
 <tr><td style="padding:20px 0 8px"><p style="margin:0 6px 12px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#b6c9a5">Prints made to order</p><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>${prints.map((product) => card(`${siteUrl}/shop/${product.slug}`, product.image.replace('/images/photos/', '/images/og/').replace('.webp', '.jpg'), product.title, `From $${product.price}`)).join('')}</tr></table></td></tr>
 <tr><td style="padding:24px 6px"><a href="${siteUrl}/shop" style="display:inline-block;padding:14px 22px;background:#b6c9a5;color:#0d1412;text-decoration:none;font-size:12px;letter-spacing:.14em;text-transform:uppercase">Browse the print shop</a></td></tr>
-<tr><td style="padding:8px 6px 0;font-size:14px;line-height:1.6;color:#cbd4c8">Have a project in mind? Just reply to this email.<br><br>Bradley Morse<br>Morse Media · New Hampshire</td></tr>
+<tr><td style="padding:8px 6px 0;font-size:14px;line-height:1.6;color:#cbd4c8">Planning a shoot in Nashville or Middle Tennessee? <a href="${siteUrl}/services" style="color:#b6c9a5">See photo and video services</a>, or just reply to this email.<br><br>Bradley Morse<br>Morse Media · Nashville, Tennessee</td></tr>
 <tr><td style="padding:28px 6px 0;font-size:11px;line-height:1.6;color:#7d8a80">You received this because you signed up at morsemedia.co. To unsubscribe, reply with “unsubscribe”.</td></tr>
 </table></td></tr></table></body></html>`;
 

@@ -3,7 +3,7 @@ import CaseStudyGrid from '@/components/CaseStudyGrid';
 import { caseStudies } from '@/data/case-studies';
 import { pageMetadata } from '@/lib/seo';
 
-export const metadata = pageMetadata('Client Work & Case Studies', 'Photography, video, social media and design projects for New Hampshire businesses, from the brief to the finished work.', '/work');
+export const metadata = pageMetadata('Client Work & Case Studies', 'Photography and video projects for businesses in Nashville and beyond, from the brief to the finished work.', '/work');
 
 export default function WorkPage() {
   if (!caseStudies.length) redirect('/portfolio');

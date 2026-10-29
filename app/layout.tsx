@@ -6,6 +6,8 @@ import { CartProvider } from '@/components/CartProvider';
 import { Footer, Header } from '@/components/SiteChrome';
 import { storeIsOpen } from '@/lib/store-readiness';
 import { shareImage } from '@/lib/seo';
+import { areaServedSchema, business } from '@/data/business';
+import { servicePages, servicePath } from '@/data/services';
 
 const siteUrl = 'https://www.morsemedia.co';
 const homeShare = shareImage('/images/photos/autumn-overlook.webp', 'Autumn valley and lake in the Adirondacks framed by pine branches');
@@ -13,20 +15,20 @@ const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim() || 'G-Q60YZCS3S9';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Morse Media | Fine Art Photography & Creative Studio',
+    default: 'Morse Media | Nashville Photography & Video',
     template: '%s | Morse Media',
   },
-  description: 'Fine-art landscape, wildlife and architectural photography by Bradley Morse, plus photography, video, social content and design for New Hampshire businesses.',
+  description: 'Nashville photographer and videographer Bradley Morse: brand, headshot, event and real estate photography, cinematic video and monthly content for Middle Tennessee businesses — plus original fine-art prints.',
   metadataBase: new URL(siteUrl),
   applicationName: 'Morse Media',
-  keywords: ['fine art photography', 'New England photography', 'New Hampshire photographer', 'landscape prints', 'Morse Media', 'Bradley Morse'],
+  keywords: ['Nashville photographer', 'Nashville videographer', 'Nashville real estate photography', 'Nashville brand photography', 'Nashville headshots', 'Franklin TN photographer', 'Middle Tennessee video production', 'fine art prints', 'Morse Media', 'Bradley Morse'],
   authors: [{ name: 'Bradley Morse', url: siteUrl }],
   creator: 'Bradley Morse',
   publisher: 'Morse Media',
   verification: { google: process.env.GOOGLE_SITE_VERIFICATION || undefined },
   openGraph: {
-    title: 'Morse Media | Fine Art Photography',
-    description: 'Atmospheric photography and fine-art prints from New England and beyond.',
+    title: 'Morse Media | Nashville Photography & Video',
+    description: 'Brand, real estate and event photography and cinematic video in Nashville and Middle Tennessee — plus original fine-art prints.',
     type: 'website',
     siteName: 'Morse Media',
     url: '/',
@@ -35,8 +37,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Morse Media | Fine Art Photography',
-    description: 'Atmospheric photography and fine-art prints from New England and beyond.',
+    title: 'Morse Media | Nashville Photography & Video',
+    description: 'Brand, real estate and event photography and cinematic video in Nashville and Middle Tennessee — plus original fine-art prints.',
     images: [homeShare.url],
   },
   robots: { index: true, follow: true },
@@ -59,15 +61,21 @@ const organizationSchema = {
       url: siteUrl,
       logo: `${siteUrl}/images/morse-media-logo.png`,
       image: `${siteUrl}/images/og/autumn-overlook.jpg`,
-      description: 'A New Hampshire creative studio offering fine-art photography prints, brand and real estate photography, video production, social media content and design.',
-      email: 'hello@morsemedia.co',
-      founder: { '@type': 'Person', name: 'Bradley Morse' },
-      address: { '@type': 'PostalAddress', addressRegion: 'NH', addressCountry: 'US' },
-      areaServed: [
-        { '@type': 'State', name: 'New Hampshire' },
-        { '@type': 'Place', name: 'New England' },
-      ],
-      knowsAbout: ['Fine art photography', 'Brand photography', 'Real estate photography', 'Video production', 'Social media content', 'Graphic design'],
+      description: `A ${business.city} photography and video studio offering brand, headshot, event and real estate photography, video production, monthly content and fine-art photography prints.`,
+      email: business.email,
+      founder: { '@type': 'Person', name: business.owner },
+      address: { '@type': 'PostalAddress', addressLocality: business.city, addressRegion: business.stateCode, addressCountry: 'US' },
+      areaServed: areaServedSchema(),
+      contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', email: business.email, areaServed: 'US', availableLanguage: 'English' },
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Photography & video services',
+        itemListElement: servicePages.map((service) => ({
+          '@type': 'Offer',
+          itemOffered: { '@type': 'Service', name: service.name, url: siteUrl + servicePath(service.slug) },
+        })),
+      },
+      knowsAbout: ['Brand photography', 'Headshot photography', 'Event photography', 'Real estate photography', 'Real estate video', 'Video production', 'Videography', 'Fine art photography'],
       priceRange: '$$',
     },
     {
@@ -83,7 +91,7 @@ const organizationSchema = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const storeOpen = storeIsOpen();
   return (
-    <html lang="en">
+    <html lang="en-US">
       <body>
         <a className="skip-link" href="#main-content">Skip to main content</a>
         <script

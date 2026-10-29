@@ -217,15 +217,6 @@ html { scroll-padding-top: calc(var(--header-height) + 16px); }
 .set-card .text-link { margin-top: auto; padding-top: 8px; }
 .product-set .set-card { max-width: 560px; }
 
-/* Gift certificates */
-.gift-band { display: flex; align-items: center; justify-content: space-between; gap: 30px; border-top: 1px solid var(--line); }
-.gift-band h2 { margin: 8px 0; }
-.gift-band p:not(.eyebrow) { margin: 0; color: var(--muted-light); }
-.gift-steps { margin: 20px 0 0; padding-left: 20px; line-height: 1.8; }
-.gift-steps li { margin-bottom: 10px; }
-.gift-amounts article { min-height: 220px; }
-.gift-amounts h3 { margin-top: auto; }
-
 /* Bag: set pricing */
 .cart-row__set { display: block; margin-top: 2px; color: var(--accent); font-size: 10px; letter-spacing: .08em; }
 .cart-row__was { display: block; color: var(--muted); font-size: 11px; text-align: right; }
@@ -241,7 +232,6 @@ html { scroll-padding-top: calc(var(--header-height) + 16px); }
 }
 @media (max-width: 760px) {
   .re-package { grid-template-columns: 1fr; }
-  .gift-band { flex-direction: column; align-items: flex-start; }
   .case-study-page__gallery { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
@@ -250,3 +240,69 @@ html { scroll-padding-top: calc(var(--header-height) + 16px); }
   .set-card__images { height: 150px; }
 }
 @media (max-width: 640px) { .re-hero h1 br { display: none; } }
+
+/* ── Update 6 — Nashville, photo & video focus — October 28, 2026 ─────── */
+
+/* Home: starting price on each service card. */
+.studio-services__from { margin: 0 0 4px; color: var(--accent) !important; font-size: 10px !important; letter-spacing: .14em; text-transform: uppercase; }
+
+/* Home: client band. */
+.client-band { border-top: 1px solid var(--line); }
+.client-band__body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: clamp(28px, 6vw, 100px); align-items: start; }
+.client-band__body > p { margin: 0; max-width: 560px; color: var(--muted-light); font-size: clamp(16px, 1.4vw, 19px); line-height: 1.65; }
+.client-band ul { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.client-band li { padding: 18px 0; border-bottom: 1px solid var(--line); font-size: clamp(20px, 2vw, 30px); font-weight: 300; letter-spacing: -.02em; }
+
+/* Home: areas strip sits tight under the client band. */
+.area-strip { padding-top: 0; }
+.area-strip .service-links { padding: 4px 0 0; }
+
+/* Home: collections follow the print feature without a second rule. */
+.home-collections { padding-top: 0; }
+
+/* Video players (showreel, case studies). */
+.video-embed { position: relative; aspect-ratio: 16 / 9; background: #000; }
+.video-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.detail-reel { margin: 10px 0 70px; }
+
+/* Areas index: six areas in a calm three-by-two grid with a few town names. */
+.areas-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.areas-grid .collection-card:nth-child(n) { grid-column: auto; }
+.areas-grid .collection-card__image { aspect-ratio: 16 / 10; }
+.areas-grid__towns { display: block; padding: 0 16px 16px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+
+/* Real estate: two packages side by side, add-ons in a row beneath. */
+.re-package { display: block; }
+.re-hero__areas { margin-top: 18px; color: var(--muted); font-size: 14px; }
+.re-addons__label { margin: 0 0 4px; }
+.re-addons--row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+@media (max-width: 1000px) {
+  .re-addons--row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .client-band__body { grid-template-columns: 1fr; }
+  .areas-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .areas-grid .collection-card:last-child { grid-column: auto; }
+  .areas-grid .collection-card__image, .areas-grid .collection-card:last-child .collection-card__image { aspect-ratio: 1.2; }
+  .areas-grid__towns { padding: 0 12px 12px; font-size: 11px; }
+  .re-addons--row { grid-template-columns: 1fr; }
+  .client-band li { padding: 14px 0; }
+}
+
+/* Service pages: FAQ and area links (SEO pass, October 28, 2026). */
+.service-faq { padding: 10px 0 60px; }
+.service-faq h2 { margin: 0 0 18px; font-size: clamp(28px, 3vw, 42px); font-weight: 300; }
+.service-faq details { padding: 20px 0; border-top: 1px solid var(--line); }
+.service-faq details:last-child { border-bottom: 1px solid var(--line); }
+.service-faq summary { cursor: pointer; font-size: clamp(17px, 1.6vw, 21px); }
+.service-faq details p { max-width: 820px; margin: 12px 0 0; color: var(--muted-light); line-height: 1.7; }
+.service-areas { padding: 0 0 50px; }
+.service-areas > p:not(.eyebrow) { max-width: 820px; color: var(--muted-light); }
+.service-areas .service-links { padding: 14px 0 0; }
+
+/* Footer: areas served. */
+.site-footer__areas { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 14px; font-size: 12px; }
+.site-footer__areas a { margin: 0; color: var(--muted); }

@@ -1,6 +1,6 @@
 import { pageMetadata } from '@/lib/seo';
 
-export const metadata = pageMetadata('Terms of Service', 'Terms for purchasing prints and using photographs from Morse Media.', '/terms');
+export const metadata = pageMetadata('Terms of Service', 'Terms for purchasing fine-art prints and for licensing or using photographs from Morse Media, covering ownership, orders, color, cropping and liability.', '/terms');
 
 export default function TermsPage() {
   return (

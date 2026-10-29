@@ -1,13 +1,15 @@
 import Link from 'next/link';
-import { servicePages } from '@/data/services';
-import { servicePackages, testimonials } from '@/data/proof';
-import { ArrowRight, Camera, Check, Clapperboard, LineChart, PenTool, Share2 } from 'lucide-react';
-import { jsonLd, pageMetadata, siteUrl } from '@/lib/seo';
+import { servicePages, servicePath } from '@/data/services';
+import { servicePackages, showreel, testimonials } from '@/data/proof';
+import { business, areaServedSchema } from '@/data/business';
+import VideoEmbed from '@/components/VideoEmbed';
+import { ArrowRight, CalendarDays, Camera, Check, Clapperboard, Home, Layers } from 'lucide-react';
+import { breadcrumbs, jsonLd, pageMetadata, siteUrl } from '@/lib/seo';
 import styles from './services.module.css';
 
 export const metadata = pageMetadata(
-  'Creative Services — Photography, Video, Social & Design',
-  'Photography, video production, social media content and graphic design services from Morse Media in New Hampshire and across New England.',
+  'Photography & Video Services in Nashville',
+  'Nashville photo and video packages with starting prices: brand shoots, headshots, events, real estate listings, brand films and monthly content.',
   '/services',
   '/images/photos/forest-current.webp',
 );
@@ -20,9 +22,9 @@ const services = [
     title: 'Photography',
     lead: 'Distinctive imagery that gives your business a stronger visual identity.',
     description:
-      'From product and location photography to brand storytelling and editorial assignments, every shoot is planned around where the images will live and what they need to accomplish.',
-    deliverables: ['Brand and lifestyle photography', 'Product and retail photography', 'Architecture and location imagery', 'Event and behind-the-scenes coverage', 'Web, social and print-ready exports'],
-    bestFor: 'Campaigns, websites, social media, retail promotions and editorial use.',
+      'From headshots and team portraits to product, location and event coverage, every shoot is planned around where the images will live and what they need to accomplish.',
+    deliverables: ['Brand and lifestyle photography', 'Headshots and team portraits', 'Product, menu and interior photography', 'Event and conference coverage', 'Web, social and print-ready exports'],
+    bestFor: 'Websites, social media, advertising, recruiting, press and events.',
   },
   {
     id: 'video-production',
@@ -31,31 +33,31 @@ const services = [
     title: 'Video Production',
     lead: 'Cinematic, purposeful video created for the way audiences watch today.',
     description:
-      'Morse Media can shape a project from early concept through final delivery, combining thoughtful shooting, pacing, sound and editing into content that feels polished without losing authenticity.',
-    deliverables: ['Creative direction and shot planning', 'On-location filming', 'Commercial and promotional edits', 'Short-form social cutdowns', 'Motion graphics and audio cleanup'],
-    bestFor: 'Brand films, promotions, product features, events and social campaigns.',
+      'Morse Media shapes a project from early concept through final delivery, combining careful shooting, pacing, sound and editing into video that feels polished without losing authenticity.',
+    deliverables: ['Creative direction and shot planning', 'On-location filming and interviews', 'Brand films and commercial edits', 'Vertical cuts for Reels, TikTok and Shorts', 'Color grading, captions and audio cleanup'],
+    bestFor: 'Brand films, product features, testimonials, recruiting, events and social.',
   },
   {
-    id: 'social-media',
+    id: 'real-estate',
     number: '03',
-    icon: Share2,
-    title: 'Social Media Content',
-    lead: 'A repeatable stream of content built around your brand and business goals.',
+    icon: Home,
+    title: 'Real Estate Photo & Video',
+    lead: 'Listing media that earns the click, the showing and the offer.',
     description:
-      'Instead of posting for the sake of staying active, content is planned around promotions, customer questions, products, services and stories your audience will actually care about.',
-    deliverables: ['Content strategy and campaign planning', 'Photo, video and graphic production', 'Platform-ready captions and assets', 'Content calendars and posting support', 'Performance reporting and recommendations'],
-    bestFor: 'Retailers, local businesses and brands that need consistent ongoing content.',
+      'Bright, true-to-life interiors, clean exteriors and an optional cinematic walkthrough, captured in one visit and delivered ready for the MLS, listing sites and social media.',
+    deliverables: ['Interior and exterior listing photography', 'Window and exposure blending', 'Cinematic walkthrough video', 'Twilight and detail images', 'MLS-ready files within 48 hours'],
+    bestFor: 'Agents, brokerages, builders, short-term rentals and property managers.',
   },
   {
-    id: 'graphic-design',
+    id: 'monthly-content',
     number: '04',
-    icon: PenTool,
-    title: 'Graphic Design',
-    lead: 'Clear, cohesive design that makes information easier to notice and understand.',
+    icon: CalendarDays,
+    title: 'Monthly Content',
+    lead: 'A repeatable stream of real photos and video for your channels.',
     description:
-      'Digital and print creative is designed to work as part of a larger visual system, helping every promotion, campaign and customer touchpoint feel connected to the same brand.',
-    deliverables: ['Campaign and promotional graphics', 'Digital ads and social templates', 'Print materials and signage', 'Brand-aligned layouts and visual systems', 'Production-ready final files'],
-    bestFor: 'Sales campaigns, social media, in-store materials, events and brand refreshes.',
+      'Instead of scrambling for something to post, one planned shoot each month captures your products, people, space and upcoming promotions — delivered in every size your channels need.',
+    deliverables: ['A monthly shoot planned around your calendar', 'Edited photos sized for every platform', 'Short-form vertical videos', 'Seasonal and promotional content', 'A shared library organized by month'],
+    bestFor: 'Restaurants, retailers, salons, gyms and local businesses that post often.',
   },
 ];
 
@@ -63,52 +65,59 @@ const bookingUrl = process.env.NEXT_PUBLIC_BOOKING_URL?.trim();
 
 const workflow = [
   { number: '01', title: 'Discover', copy: 'Clarify the audience, objective, scope, timeline and where the final work will be used.' },
-  { number: '02', title: 'Plan', copy: 'Build the creative direction, shot list, content structure and production schedule.' },
-  { number: '03', title: 'Produce', copy: 'Capture, design and edit the work with clear communication throughout the process.' },
+  { number: '02', title: 'Plan', copy: 'Build the creative direction, shot list, locations and production schedule.' },
+  { number: '03', title: 'Produce', copy: 'Photograph, film and edit the work with clear communication throughout.' },
   { number: '04', title: 'Deliver', copy: 'Provide organized, platform-ready files and refinements based on the agreed scope.' },
 ];
 
 const faqs = [
-  { question: 'What types of clients do you work with?', answer: 'Morse Media works with retailers, local businesses, organizations and independent brands that need professional visual content. Projects can be one-time campaigns or ongoing creative support.' },
-  { question: 'Where are you available?', answer: 'Morse Media is based in New Hampshire and is available for regional assignments and travel. Remote editing, design and content-planning work can be handled from anywhere.' },
-  { question: 'Can services be combined?', answer: 'Yes. Many projects are strongest when photography, video, social content and graphic design are planned together. A custom scope can combine only the services the project actually needs.' },
-  { question: 'Do you offer ongoing social media support?', answer: 'Yes. Ongoing support can include content planning, recurring production, platform-ready assets, posting assistance and performance reporting.' },
+  { question: 'What types of clients do you work with?', answer: 'Morse Media works with local businesses, retailers, restaurants, real estate agents, professional firms, organizations and independent brands that need professional photography and video. Projects can be one-time shoots or ongoing monthly content.' },
+  { question: 'Where are you available?', answer: `Morse Media is based in ${business.city} and works throughout ${business.region}, including Franklin, Brentwood, Murfreesboro, Hendersonville, Gallatin, Mt. Juliet and Lebanon. Travel for larger productions is available anywhere and is quoted up front.` },
+  { question: 'Can you shoot photo and video at the same time?', answer: 'Yes. Many clients book both for the same visit — a brand session with a short video, or listing photos with a walkthrough. Planning them together saves time on site and keeps the look consistent.' },
+  { question: 'How fast is delivery?', answer: 'Real estate photos are delivered within 48 hours. Brand and event galleries typically arrive within five business days, and video timelines are agreed in the quote, usually one to two weeks depending on revisions.' },
+  { question: 'Can I use the photos and videos however I like?', answer: 'Standard business-use licensing is included with every package — your website, social channels, email, digital ads and printed marketing. Broadcast, resale and use by third parties are quoted separately.' },
   { question: 'How are projects priced?', answer: 'Starting prices for typical projects are listed above. Final pricing depends on scope, production time, travel, usage and deliverables, and you will receive a clear written estimate before any work begins.' },
 ];
 
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
-  name: 'Morse Media',
+  name: business.name,
   url: `${siteUrl}/services`,
-  areaServed: 'New England',
-  email: 'hello@morsemedia.co',
-  description: 'Photography, video production, social media content and graphic design services for businesses and brands.',
+  areaServed: areaServedSchema(),
+  email: business.email,
+  description: `Photography and video production services for businesses, brands and real estate agents in ${business.city} and ${business.region}.`,
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
-    name: 'Creative Services',
+    name: 'Photography & Video Services',
     itemListElement: services.map((service) => ({
       '@type': 'Offer',
-      itemOffered: { '@type': 'Service', name: service.title, description: service.description, url: `${siteUrl}/services/${service.id}` },
+      itemOffered: { '@type': 'Service', name: service.title, description: service.description, url: siteUrl + servicePath(service.id) },
     })),
   },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })),
 };
 
 export default function ServicesPage() {
   return (
     <div className={styles.page}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd([serviceSchema, faqSchema, breadcrumbs([{ name: 'Home', path: '/' }, { name: 'Services', path: '/services' }])]) }} />
 
       <section className={styles.hero}>
         <div className={styles.heroGrid} aria-hidden="true" />
         <div className={styles.heroOrb} aria-hidden="true" />
         <div className={styles.container}>
-          <p className={styles.eyebrow}>Creative services</p>
-          <h1>Strategy, production and design under one roof.</h1>
+          <p className={styles.eyebrow}>Photography &amp; video services · {business.baseShort}</p>
+          <h1>Nashville photography and video, under one roof.</h1>
           <div className={styles.heroBottom}>
-            <p>Morse Media creates photography, video, social content and graphic design that help businesses communicate clearly and look consistent.</p>
+            <p>Morse Media creates brand photography, headshots, event coverage, real estate listings and cinematic video that help {business.city} businesses look as good as the work they do.</p>
             <div className={styles.heroActions}>
-              <Link className={styles.primaryButton} href="/contact?service=Combined%20creative%20campaign">Start a project <ArrowRight /></Link>
+              <Link className={styles.primaryButton} href="/contact?service=Photo%20%2B%20video%20project">Start a project <ArrowRight /></Link>
               <Link className={styles.secondaryButton} href="/portfolio">View portfolio <ArrowRight /></Link>
             </div>
           </div>
@@ -120,12 +129,12 @@ export default function ServicesPage() {
           <div className={styles.overviewGrid}>
             <p className={styles.sectionLabel}>How Morse Media helps</p>
             <div>
-              <h2>One visual partner. A more connected brand.</h2>
-              <p>When photography, video, social media and design are planned together, the work feels more consistent and each asset becomes more useful. Services can be booked individually or combined into a custom campaign.</p>
+              <h2>One crew for stills and motion.</h2>
+              <p>When photography and video are planned together, the shoot runs faster, the look stays consistent and every asset is more useful. Book a single service, combine them in one visit, or set up a monthly rhythm.</p>
               <div className={styles.overviewStats}>
-                <div><strong>4</strong><span>Core creative services</span></div>
+                <div><strong>{servicePages.length}</strong><span>Photo and video services</span></div>
                 <div><strong>1</strong><span>Point of contact from plan to delivery</span></div>
-                <div><strong>Flexible</strong><span>Project or ongoing support</span></div>
+                <div><strong>48 hrs</strong><span>Real estate photo delivery</span></div>
               </div>
             </div>
           </div>
@@ -164,7 +173,7 @@ export default function ServicesPage() {
                     <span>Best for</span>
                     <p>{bestFor}</p>
                   </div>
-                  <Link href={`/services/${id}`} className={styles.cardLink}>More on {title.toLowerCase()} <ArrowRight /></Link>
+                  <Link href={servicePath(id)} className={styles.cardLink}>More on {title.toLowerCase()} <ArrowRight /></Link>
                 </div>
               </article>
             ))}
@@ -175,12 +184,12 @@ export default function ServicesPage() {
       <section className={styles.reportingSection}>
         <div className={styles.container}>
           <div className={styles.reportingCard}>
-            <div className={styles.reportingIcon}><LineChart aria-hidden="true" /></div>
+            <div className={styles.reportingIcon}><Layers aria-hidden="true" /></div>
             <div>
-              <p className={styles.sectionLabel}>Creative with purpose</p>
-              <h2>Good content should do more than look polished.</h2>
+              <p className={styles.sectionLabel}>Built to be used</p>
+              <h2>One shoot, every format you need.</h2>
             </div>
-            <p>For ongoing work, performance can be reviewed through practical reporting and recommendations. The goal is to learn what resonates, improve the next round and make the creative investment more useful over time.</p>
+            <p>Every project is planned around where the work will appear — website banners, vertical video for Reels and TikTok, MLS listings, ads and print. You get organized, correctly sized files, not a folder of raw exports to sort through.</p>
           </div>
         </div>
       </section>
@@ -210,7 +219,7 @@ export default function ServicesPage() {
                 <p className={styles.sectionLabel}>Starting points</p>
                 <h2 id="packages-heading">Clear starting prices, scoped to your project.</h2>
               </div>
-              <p>Typical projects in New Hampshire. Every quote is confirmed in writing before work begins.</p>
+              <p>Typical projects in {business.city} and {business.region}. Every quote is confirmed in writing before work begins.</p>
             </div>
             <div className={styles.packageGrid}>
               {servicePackages.map((pkg) => (
@@ -228,7 +237,21 @@ export default function ServicesPage() {
                 </article>
               ))}
             </div>
-            <p className={styles.packageNote}>Travel beyond the local area, licensing beyond standard business use, rush delivery and additional shooting time are quoted separately. Combined projects are scoped together.</p>
+            <p className={styles.packageNote}>Prices cover shoots in the greater {business.city} area. Longer travel, licensing beyond standard business use, rush delivery and additional shooting time are quoted separately. Photo and video booked together are scoped as one project.</p>
+          </div>
+        </section>
+      )}
+
+      {showreel.url && (
+        <section className={styles.packageSection} aria-labelledby="reel-heading">
+          <div className={styles.container}>
+            <div className={styles.sectionHeading}>
+              <div>
+                <p className={styles.sectionLabel}>Reel</p>
+                <h2 id="reel-heading">See the work move.</h2>
+              </div>
+            </div>
+            <VideoEmbed url={showreel.url} title={showreel.title} />
           </div>
         </section>
       )}
@@ -272,7 +295,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <nav className="content-section service-links" aria-label="Service details">{servicePages.map(s => <Link key={s.slug} href={s.slug === 'real-estate' ? '/real-estate' : `/services/${s.slug}`}>{s.name} ↗</Link>)}<Link href="/areas">Areas served ↗</Link></nav>
+      <nav className="content-section service-links" aria-label="Service details">{servicePages.map(s => <Link key={s.slug} href={servicePath(s.slug)}>{s.name} ↗</Link>)}<Link href="/areas">Areas served ↗</Link></nav>
       <section className={styles.ctaSection}>
         <div className={styles.container}>
           <div className={styles.ctaCard}>

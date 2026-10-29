@@ -2,25 +2,38 @@ import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/seo';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Camera, Clapperboard, PenTool, Share2 } from 'lucide-react';
-import RecentGallery from '@/components/RecentGallery';
+import { ArrowRight, CalendarDays, Camera, Clapperboard, Home } from 'lucide-react';
 import ProductGrid from '@/components/ProductGrid';
+import VideoEmbed from '@/components/VideoEmbed';
 import { NewsletterForm } from '@/components/Forms';
-import { collections, featuredProducts, finishOptions, photos } from '@/data/site';
-import { recentWork } from '@/data/recent-work';
+import { collections, featuredProducts } from '@/data/site';
+import { servicePages, servicePath } from '@/data/services';
+import { lowestStartingAt, showreel } from '@/data/proof';
+import { areas } from '@/data/areas';
+import { business } from '@/data/business';
 import { storeIsOpen } from '@/lib/store-readiness';
 
+const homeTitle = 'Nashville Photographer & Videographer | Morse Media';
+
 export const metadata: Metadata = {
-  ...pageMetadata('Morse Media | Fine Art Photography & Creative Services in New Hampshire', 'Original New England landscape photography and fine-art prints, plus brand and real estate photography, video, social content and design for New Hampshire businesses.', '/'),
-  title: { absolute: 'Morse Media | Fine Art Photography & Creative Services in New Hampshire' },
+  ...pageMetadata(
+    homeTitle,
+    'Nashville photographer and videographer for brand, headshot, event and real estate shoots plus cinematic video. Clear starting prices, 48-hour listings.',
+    '/',
+  ),
+  title: { absolute: homeTitle },
 };
 
-const services = [
-  { icon: Camera, title: 'Photography', copy: 'Brand, product, location and editorial imagery built for the places it will be used.', href: '/services/photography' },
-  { icon: Clapperboard, title: 'Video', copy: 'Cinematic production and editing for brands, businesses and social campaigns.', href: '/services/video-production' },
-  { icon: Share2, title: 'Social Media', copy: 'Planning, recurring content production and platform-ready creative for consistent visibility.', href: '/services/social-media' },
-  { icon: PenTool, title: 'Design', copy: 'Graphic design, campaign creative and visual systems built to communicate clearly.', href: '/services/graphic-design' },
-];
+const cardCopy: Record<string, { icon: typeof Camera; title: string; copy: string }> = {
+  photography: { icon: Camera, title: 'Photography', copy: 'Brand, headshot, product and event photography built for the places it will be used.' },
+  'video-production': { icon: Clapperboard, title: 'Video', copy: 'Brand films, social video and event recaps — planned, filmed and edited in house.' },
+  'real-estate': { icon: Home, title: 'Real Estate', copy: 'Listing photos within 48 hours, with an optional walkthrough video from the same visit.' },
+  'monthly-content': { icon: CalendarDays, title: 'Monthly Content', copy: 'A planned shoot every month, so your channels always have something real to post.' },
+};
+
+const services = servicePages.map((page) => ({ ...cardCopy[page.slug], href: servicePath(page.slug), from: lowestStartingAt(page.slug) }));
+
+const clients = ["Love's Bedding & Furniture", "Love's Furniture Loft", 'Cash & Carry Furniture'];
 
 export default function HomePage() {
   const storeOpen = storeIsOpen();
@@ -30,86 +43,42 @@ export default function HomePage() {
         <Image className="hero__image" src="/images/photos/autumn-overlook.webp" alt="Autumn valley and lake in the Adirondacks framed by pine branches" fill priority sizes="100vw" />
         <div className="hero__shade" />
         <div className="hero__copy">
-          <p className="eyebrow">Fine art photography · Bradley Morse</p>
-          <h1>Bring the wild<br />into your home.</h1>
+          <p className="eyebrow">Photography &amp; video · {business.base}</p>
+          <h1>Photo and video<br />for Nashville brands.</h1>
           <div className="short-rule" />
-          <p>Original photographs of places shaped by weather, time and quiet observation — made to order as fine-art prints.</p>
+          <p>Brand photography, headshots, real estate listings and cinematic video for businesses across {business.region} — planned around where the work will be seen, and delivered ready to use.</p>
           <div className="hero__actions">
-            <Link className="button button--solid" href="/shop">{storeOpen ? 'Shop prints' : 'Explore prints'}</Link>
-            <Link className="text-link" href="/photography">See the latest work <ArrowRight /></Link>
+            <Link className="button button--solid" href="/contact?service=Photo%20%2B%20video%20project">Start a project</Link>
+            <Link className="text-link" href="/services">Services &amp; pricing <ArrowRight /></Link>
           </div>
         </div>
-        <span className="hero__caption">Adirondack Mountains · New York</span>
+        <span className="hero__caption">Photograph by Bradley Morse · Adirondacks, New York</span>
       </section>
 
       <section className="home-proof" aria-label="Morse Media at a glance">
-        <div><strong>{photos.length + recentWork.length}</strong><span>Original photographs</span></div>
-        <div><strong>{collections.length}</strong><span>Curated collections</span></div>
-        <div><strong>{finishOptions.length}</strong><span>Made-to-order finishes</span></div>
-        <div><strong>Personal</strong><span>Print & licensing inquiries</span></div>
-      </section>
-
-      <section className="content-section latest-work" id="latest-work">
-        <div className="section-heading"><div><p className="eyebrow">New work / Autumn studies</p><h2>A season in full color.</h2></div><Link className="text-link" href="/photography">Explore the photographs <ArrowRight /></Link></div>
-        <RecentGallery />
-      </section>
-
-      <section className="content-section">
-        <div className="section-heading">
-          <div><p className="eyebrow">Explore collections</p><h2>Places worth remembering.</h2></div>
-          <Link className="text-link" href="/collections">View all collections <ArrowRight /></Link>
-        </div>
-        <div className="collection-card-grid">
-          {collections.map((collection) => (
-            <Link className="collection-card" href={`/collections/${collection.slug}`} key={collection.slug}>
-              <div className="collection-card__image"><Image src={collection.image} alt="" fill sizes="(max-width: 640px) 100vw, (max-width: 1180px) 33vw, 20vw" /></div>
-              <span><strong>{collection.name}</strong><ArrowRight /></span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="print-feature content-section">
-        <div className="print-feature__intro">
-          <p className="eyebrow">Fine art prints</p>
-          <h2>Prints made to be lived with.</h2>
-          <div className="short-rule" />
-          <p>
-            {storeOpen
-              ? 'Each print is made to order on archival paper, canvas or metal, or framed and ready to hang — with secure checkout right here on the site.'
-              : 'Each print is made to order on archival paper, canvas or metal, or framed and ready to hang. Choose a photograph and size, and you will receive a personal quote and timeline.'}
-          </p>
-          <Link className="button" href="/shop">See all prints</Link>
-        </div>
-        <ProductGrid products={featuredProducts.slice(0, 3)} />
-      </section>
-
-      <section className="editorial-split">
-        <div className="editorial-split__image"><Image src="/images/photos/road-to-old-hill.webp" alt="Black and white view of an abandoned building beyond a discarded tire" fill sizes="(max-width: 900px) 100vw, 60vw" /></div>
-        <div className="editorial-split__copy">
-          <p className="eyebrow">Featured collection</p>
-          <h2>Beauty remains after people leave.</h2>
-          <p>The Forgotten Places collection studies architecture, decay and the visual memory held inside abandoned spaces.</p>
-          <Link className="text-link" href="/collections/forgotten-places">Enter the collection <ArrowRight /></Link>
-        </div>
+        <div><strong>{lowestStartingAt('real-estate') || 'Custom'}</strong><span>Real estate listings</span></div>
+        <div><strong>48 hrs</strong><span>Listing photo delivery</span></div>
+        <div><strong>Photo + video</strong><span>One visit, one crew</span></div>
+        <div><strong>{business.region.replace('Tennessee', 'TN')}</strong><span>Nashville &amp; nearby counties</span></div>
       </section>
 
       <section className="studio-section">
         <div className="studio-section__logo"><Image src="/images/morse-media-logo.png" alt="" width={377} height={152} /></div>
         <div className="studio-section__intro">
-          <p className="eyebrow">Creative studio</p>
+          <p className="eyebrow">What Morse Media does</p>
           <h2>Capturing moments.<br />Telling stories.</h2>
-          <p>Morse Media brings the same considered visual approach to photography, cinematic video and design for businesses.</p>
+          <p>Photography and cinematic video for Nashville businesses, agents and organizations — one point of contact from the first call to the final files.</p>
           <div className="detail-actions">
-            <Link className="text-link" href="/services">Explore creative services <ArrowRight /></Link>
-            <Link className="text-link" href="/real-estate">Real estate photography <ArrowRight /></Link>
+            <Link className="text-link" href="/services#packages">Compare packages <ArrowRight /></Link>
+            <Link className="text-link" href="/portfolio">See client work <ArrowRight /></Link>
           </div>
         </div>
         <div className="studio-services">
-          {services.map(({ icon: Icon, title, copy, href }) => (
+          {services.map(({ icon: Icon, title, copy, href, from }) => (
             <article key={title}>
               <Icon aria-hidden="true" />
               <h3>{title}</h3>
+              {from && <p className="studio-services__from">{from}</p>}
               <p>{copy}</p>
               <Link href={href} aria-label={`Explore ${title.toLowerCase()} services`}>Explore service <ArrowRight /></Link>
             </article>
@@ -117,8 +86,73 @@ export default function HomePage() {
         </div>
       </section>
 
+      {showreel.url && (
+        <section className="content-section home-reel">
+          <div className="section-heading"><div><p className="eyebrow">Reel</p><h2>See it move.</h2></div><Link className="text-link" href="/services/video-production">Video production <ArrowRight /></Link></div>
+          <VideoEmbed url={showreel.url} title={showreel.title} />
+        </section>
+      )}
+
+      <section className="content-section client-band">
+        <div className="section-heading">
+          <div><p className="eyebrow">Selected client work</p><h2>Content built for real businesses.</h2></div>
+          <Link className="text-link" href="/portfolio">See the portfolio <ArrowRight /></Link>
+        </div>
+        <div className="client-band__body">
+          <p>Product photography, promotional video and short-form social content for regional retail brands — planned around sales, new arrivals and the questions customers actually ask.</p>
+          <ul aria-label="Clients">
+            {clients.map((client) => <li key={client}>{client}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      <section className="content-section area-strip">
+        <div className="section-heading">
+          <div><p className="eyebrow">Areas served</p><h2>Across Nashville and {business.region}.</h2></div>
+          <p>Based in {business.city} and working throughout {business.counties.slice(0, -1).join(', ')} and {business.counties.at(-1)} counties, with travel available for larger productions.</p>
+        </div>
+        <nav className="service-links" aria-label="Areas served">
+          {areas.map((area) => <Link key={area.slug} href={`/areas/${area.slug}`}>{area.name} ↗</Link>)}
+          <Link href="/real-estate">Real estate photography for agents ↗</Link>
+        </nav>
+      </section>
+
+      <section className="print-feature content-section">
+        <div className="print-feature__intro">
+          <p className="eyebrow">Fine art prints</p>
+          <h2>The eye behind the work.</h2>
+          <div className="short-rule" />
+          <p>
+            Between client shoots, Bradley photographs mountains, coastline, wildlife and forgotten places.{' '}
+            {storeOpen
+              ? 'Each print is made to order on archival paper, canvas or metal, or framed and ready to hang — with secure checkout right here on the site.'
+              : 'Each print is made to order on archival paper, canvas or metal, or framed and ready to hang. Choose a photograph and size for a personal quote and timeline.'}
+          </p>
+          <div className="detail-actions">
+            <Link className="button" href="/shop">See all prints</Link>
+            <Link className="text-link" href="/photography">Latest photography <ArrowRight /></Link>
+          </div>
+        </div>
+        <ProductGrid products={featuredProducts.slice(0, 3)} />
+      </section>
+
+      <section className="content-section home-collections">
+        <div className="section-heading">
+          <div><p className="eyebrow">Explore collections</p><h2>Places worth remembering.</h2></div>
+          <Link className="text-link" href="/collections">View all collections <ArrowRight /></Link>
+        </div>
+        <div className="collection-card-grid">
+          {collections.map((collection) => (
+            <Link className="collection-card" href={`/collections/${collection.slug}`} key={collection.slug}>
+              <div className="collection-card__image"><Image src={collection.image} alt="" fill sizes="(max-width: 640px) 50vw, (max-width: 1180px) 33vw, 20vw" /></div>
+              <span><strong>{collection.name}</strong><ArrowRight /></span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       <section className="newsletter-section">
-        <div><p className="eyebrow">Stay inspired</p><p>New releases, field notes and occasional behind-the-scenes stories.</p></div>
+        <div><p className="eyebrow">Stay in touch</p><p>New work, print releases and the occasional behind-the-scenes story from Nashville shoots.</p></div>
         <NewsletterForm />
       </section>
     </>
