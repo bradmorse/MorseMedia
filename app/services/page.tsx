@@ -11,7 +11,6 @@ export const metadata = pageMetadata(
   'Photography & Video Services in Nashville',
   'Nashville photo and video packages with starting prices: brand shoots, headshots, events, real estate listings, brand films and monthly content.',
   '/services',
-  '/images/photos/forest-current.webp',
 );
 
 const services = [

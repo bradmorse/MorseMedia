@@ -9,7 +9,6 @@ export const metadata = pageMetadata(
     ? 'Meet Bradley Morse, the Nashville photographer and filmmaker behind Morse Media: brand, event and real estate photography, video and fine-art prints.'
     : 'Meet Bradley Morse, the Nashville photographer and filmmaker behind Morse Media: brand, headshot, event and real estate photography and video.',
   '/about',
-  '/images/photos/quiet-watch.webp',
 );
 
 export default function AboutPage() {

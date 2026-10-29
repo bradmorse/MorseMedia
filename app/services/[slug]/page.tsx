@@ -9,13 +9,6 @@ import { caseStudiesForService } from '@/data/case-studies';
 import CaseStudyGrid from '@/components/CaseStudyGrid';
 import { pageMetadata, siteUrl, jsonLd, breadcrumbs, startingPrice } from '@/lib/seo';
 
-const serviceImages: Record<string, string> = {
-  photography: '/images/photos/granite-run.webp',
-  'video-production': '/images/photos/storm-over-lake.webp',
-  'real-estate': '/images/photos/forgotten-house.webp',
-  'monthly-content': '/images/photos/valley-in-color.webp',
-};
-
 export function generateStaticParams() {
   // Real estate has its own landing page at /real-estate (next.config.ts redirects the old path).
   return servicePages.filter((s) => s.slug !== 'real-estate').map((s) => ({ slug: s.slug }));
@@ -25,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const s = servicePages.find((entry) => entry.slug === slug);
   if (!s) return {};
-  return pageMetadata(s.seoTitle, s.seoDescription, `/services/${slug}`, serviceImages[slug]);
+  return pageMetadata(s.seoTitle, s.seoDescription, `/services/${slug}`);
 }
 
 export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {

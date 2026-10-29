@@ -1,3 +1,14 @@
+# Morse Media — Update 7.1 (October 29, 2026)
+
+Version 7.1.0. Links to the site now preview with the Morse Media logo.
+
+- New link-preview card `public/images/og/morse-media-share.jpg` (1200 × 630): the logo on the site's dark background with "Photography & Video · Nashville, TN". Set in `lib/seo.ts` (`brandShareImage`).
+- Used by the home page and every business page (services, service pages, real estate, areas, area pages, about, contact, portfolio) in place of the New England landscape photos. Case studies keep their own project photos.
+- `tests/seo.test.ts` checks the card's size and that these pages don't switch back to a photo.
+- Previews are cached by apps: iMessage may show the old photo for a link it has already displayed; Facebook and LinkedIn can be refreshed with their Sharing Debugger / Post Inspector.
+
+---
+
 # Morse Media — Update 7 (October 29, 2026)
 
 Version 7.0.0. The site now focuses entirely on photo and video clients. The print shop is paused, not deleted.
@@ -5,7 +16,7 @@ Version 7.0.0. The site now focuses entirely on photo and video clients. The pri
 ## New in Update 7
 
 **1. Print shop paused behind one switch** (`data/features.ts`)
-- `/shop`, `/collections`, `/photography`, `/print-guide`, `/shipping-returns` and `/checkout` (and sub-pages) temporarily redirect (302) to `/portfolio`, and are left out of the sitemap, menu, footer, site search and home page. The bag is hidden, "Print or order question" is hidden from the contact form, and `/api/checkout` refuses orders.
+- `/shop`, `/collections`, `/photography`, `/print-guide`, `/shipping-returns` and `/checkout` (and sub-pages) temporarily redirect (307) to `/portfolio`, and are left out of the sitemap, menu, footer, site search and home page. The bag is hidden, "Print or order question" is hidden from the contact form, and `/api/checkout` refuses orders.
 - All print code and data is kept. **To relaunch:** set `NEXT_PUBLIC_PRINT_SHOP=on` in Vercel (Production) and redeploy — every print page, link and home-page section comes back as before. See `STORE-SETUP.md`.
 
 **2. Built for winning clients**

@@ -13,7 +13,7 @@ import { PRINT_SHOP_ENABLED } from '@/data/features';
 const printsNote = PRINT_SHOP_ENABLED ? ' — plus original fine-art prints' : '';
 
 const siteUrl = 'https://www.morsemedia.co';
-const homeShare = shareImage('/images/photos/autumn-overlook.webp', 'Autumn valley and lake in the Adirondacks framed by pine branches');
+const homeShare = shareImage(); // Morse Media logo card
 const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim() || 'G-Q60YZCS3S9';
 
 export const metadata: Metadata = {

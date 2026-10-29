@@ -19,7 +19,6 @@ export const metadata = pageMetadata(
   page?.seoTitle || 'Nashville Real Estate Photography & Video',
   page?.seoDescription || `Listing photography and walkthrough video for ${business.city} and ${business.region} agents.`,
   '/real-estate',
-  '/images/photos/storm-over-lake.webp',
 );
 
 export default function RealEstatePage() {

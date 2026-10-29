@@ -12,7 +12,6 @@ export const metadata = pageMetadata(
     ? 'Book brand, headshot, event or real estate photography and video in Nashville and Middle Tennessee. Ask about fine-art prints and image licensing, too.'
     : 'Book brand, headshot, event or real estate photography and video in Nashville and Middle Tennessee. Get availability and a written quote in two business days.',
   '/contact',
-  '/images/photos/coastline-dusk.webp',
 );
 
 export default function ContactPage() {
