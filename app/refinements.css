@@ -357,3 +357,65 @@ html { scroll-padding-top: calc(var(--header-height) + 16px); }
 /* Same compact logo as the header; widths keep the lettering the size it was with the original artwork. */
 .site-footer__brand img { width: min(227px, 100%); }
 .studio-section__logo img { width: min(100%, 210px); }
+
+/* ── Update 9 — real estate portfolio — November 2, 2026 ───────────────────── */
+
+/* /portfolio/real-estate: each listing in posting order, first photo large, click to open full screen. */
+.re-portfolio .detail-lead { max-width: 820px; }
+.re-listing { margin-top: clamp(48px, 6vw, 88px); padding-top: clamp(32px, 4vw, 54px); border-top: 1px solid var(--line); scroll-margin-top: calc(var(--header-height) + 20px); }
+.re-listing__header { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; margin-bottom: 28px; }
+.re-listing__header h2 { margin: 10px 0 12px; font-size: clamp(32px, 3.6vw, 54px); font-weight: 300; line-height: 1.05; letter-spacing: -.02em; }
+.re-listing__header p:not(.eyebrow) { max-width: 640px; margin: 0; color: var(--muted-light); }
+.re-listing__ranges { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 26px; }
+.re-listing__ranges li { display: grid; gap: 4px; color: var(--muted-light); font-size: 13px; white-space: nowrap; }
+.re-listing__ranges span { color: var(--muted); font-size: 10px; letter-spacing: .14em; }
+.re-portfolio__cta { margin-top: clamp(56px, 7vw, 100px); }
+
+.listing-grid { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.listing-tile { position: relative; margin: 0; aspect-ratio: 3 / 2; overflow: hidden; background: var(--panel); }
+.listing-tile--feature { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+.listing-tile button { position: absolute; inset: 0; display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.listing-tile img { object-fit: cover; transition: transform .5s ease, filter .3s ease; }
+.listing-tile__label { position: absolute; inset: auto 0 0; display: grid; gap: 3px; padding: 48px 16px 14px; text-align: left; background: linear-gradient(transparent, rgba(8, 10, 11, .85)); opacity: 0; transition: opacity .25s ease; }
+.listing-tile__label small { color: var(--muted-light); font-size: 9px; letter-spacing: .16em; text-transform: uppercase; }
+.listing-tile__label strong { font-size: 17px; font-weight: 300; }
+.listing-tile button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.listing-tile button:focus-visible .listing-tile__label { opacity: 1; }
+@media (hover: hover) {
+  .listing-tile button:hover img { transform: scale(1.02); filter: brightness(.85); }
+  .listing-tile button:hover .listing-tile__label { opacity: 1; }
+}
+.listing-lightbox figcaption small { color: var(--muted); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; }
+@media (max-width: 1100px) {
+  .listing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .listing-tile--feature { grid-row: auto; aspect-ratio: 3 / 2; }
+  /* The lead photo takes a full row, so an even count would leave the last photo alone: let it span the row. */
+  .listing-grid > .listing-tile:last-child:nth-child(even) { grid-column: span 2; }
+}
+@media (max-width: 900px) { .re-listing__header { flex-direction: column; align-items: flex-start; gap: 22px; } }
+@media (max-width: 700px) {
+  .listing-grid { grid-template-columns: 1fr; gap: 10px; }
+  .listing-tile--feature, .listing-grid > .listing-tile:last-child:nth-child(even) { grid-column: auto; }
+  .listing-lightbox figcaption small { grid-column: 1 / -1; justify-self: end; }
+}
+
+/* Listing preview cards on /portfolio and /real-estate. */
+.listing-card { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 60px); align-items: end; }
+.listing-card + .listing-card { margin-top: 56px; }
+.listing-card__photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.listing-card__lead { position: relative; grid-column: 1 / -1; aspect-ratio: 16 / 9; overflow: hidden; background: var(--panel); }
+.listing-card__extra { position: relative; aspect-ratio: 3 / 2; overflow: hidden; background: var(--panel); }
+.listing-card img { object-fit: cover; transition: transform .5s ease; }
+.listing-card__text { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.listing-card__meta { color: var(--muted); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+.listing-card strong { font-size: clamp(26px, 2.6vw, 40px); font-weight: 300; line-height: 1.1; transition: color .2s ease; }
+.listing-card__summary { color: var(--muted-light); font-size: 15px; line-height: 1.6; }
+.listing-card__ranges { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 8px; }
+.listing-card__ranges span { padding: 6px 10px; border: 1px solid var(--line); color: var(--muted-light); font-size: 11px; }
+.listing-card__ranges em { margin-left: 4px; color: var(--text); font-style: normal; }
+.listing-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+@media (hover: hover) {
+  .listing-card:hover img { transform: scale(1.03); }
+  .listing-card:hover strong { color: var(--accent); }
+}
+@media (max-width: 900px) { .listing-card { grid-template-columns: 1fr; } }

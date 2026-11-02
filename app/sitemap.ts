@@ -2,6 +2,7 @@ import { recentWork } from '@/data/recent-work';
 import { servicePages } from '@/data/services';
 import { areas } from '@/data/areas';
 import { caseStudies } from '@/data/case-studies';
+import { listings } from '@/data/real-estate-portfolio';
 import type { MetadataRoute } from 'next';
 import { collections, products } from '@/data/site';
 import { PRINT_SHOP_ENABLED, printShopPaths } from '@/data/features';
@@ -23,6 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/collections', priority: 0.8, changeFrequency: 'monthly' as const },
     { path: '/photography', priority: 0.8, changeFrequency: 'monthly' as const },
     { path: '/portfolio', priority: 0.8, changeFrequency: 'monthly' as const },
+    ...(listings.length ? [{ path: '/portfolio/real-estate', priority: 0.8, changeFrequency: 'monthly' as const }] : []),
     { path: '/print-guide', priority: 0.7, changeFrequency: 'monthly' as const },
     { path: '/about', priority: 0.6, changeFrequency: 'yearly' as const },
     { path: '/contact', priority: 0.6, changeFrequency: 'yearly' as const },
@@ -32,7 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const entries: MetadataRoute.Sitemap = [
-    ...staticPages.map((page) => ({ url: `${siteUrl}${page.path || '/'}`, lastModified, changeFrequency: page.changeFrequency, priority: page.priority })),
+    ...staticPages.map((page) => ({ url: `${siteUrl}${page.path || '/'}`, lastModified, changeFrequency: page.changeFrequency, priority: page.priority, ...(page.path === '/portfolio/real-estate' ? { images: listings.flatMap((listing) => listing.photos.map((photo) => siteUrl + photo.src)) } : {}) })),
     ...servicePages.filter((s) => s.slug !== 'real-estate').map((s) => ({ url: `${siteUrl}/services/${s.slug}`, lastModified, changeFrequency: 'monthly' as const, priority: 0.85 })),
     ...areas.map((area) => ({ url: `${siteUrl}/areas/${area.slug}`, lastModified, changeFrequency: 'monthly' as const, priority: 0.7 })),
     ...caseStudies.map((study) => ({ url: `${siteUrl}/work/${study.slug}`, lastModified, images: [siteUrl + study.cover.src], changeFrequency: 'yearly' as const, priority: 0.7 })),

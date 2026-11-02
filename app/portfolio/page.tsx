@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import RecentGallery from '@/components/RecentGallery';
 import CaseStudyGrid from '@/components/CaseStudyGrid';
+import ListingCards from '@/components/ListingCards';
 import { caseStudies } from '@/data/case-studies';
+import { listings } from '@/data/real-estate-portfolio';
 import { pageMetadata } from '@/lib/seo';
 import { PRINT_SHOP_ENABLED } from '@/data/features';
 import styles from './portfolio.module.css';
@@ -228,6 +230,8 @@ export default function PortfolioPage() {
           </article>
         ))}
       </div>
+
+      <ListingCards listings={listings} eyebrow="Real estate portfolio" heading="Homes, inside and out." intro="Complete listing shoots, shown in the order an agent would post them: exteriors first, then outdoor living and the interior walkthrough." />
 
       <CaseStudyGrid studies={caseStudies} eyebrow="In-depth projects" heading="From the brief to the finished work." />
 

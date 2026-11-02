@@ -1,3 +1,15 @@
+# Morse Media — Update 9 (November 2, 2026)
+
+Version 9.0.0. New real estate portfolio.
+
+- New page `/portfolio/real-estate`: the barn-style home listing, all 24 photos in posting order (exteriors 01–07, outdoor living 08–11, interiors 12–24). The first photo is shown large; any photo opens full screen with previous/next buttons and arrow keys.
+- Listings live in `data/real-estate-portfolio.ts`; photos in `public/images/real-estate/<listing>/` (2048 px WebP). Add another listing by adding an entry and its folder. No address or homeowner names are shown.
+- Preview card for the listing on `/portfolio` ("Real estate portfolio") and `/real-estate` ("See a full listing shoot").
+- Sitemap now has 19 pages; the new page lists all 24 photos for image search. Link previews use the Morse Media logo card, like the Portfolio page.
+- `tests/real-estate-portfolio.test.ts` checks exteriors come first, every photo is on disk at its listed size, and the page is in the sitemap and linked.
+
+---
+
 # Morse Media — Update 8.3 (October 29, 2026)
 
 Version 8.3.0. The footer and the home page "What Morse Media does" section now use the same compact logo as the header (circle the same height as the lettering). Lettering sizes are unchanged. The About page keeps the large original mark, and the email and search-engine logo are unchanged.

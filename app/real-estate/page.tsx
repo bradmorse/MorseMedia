@@ -2,10 +2,12 @@ import Link from 'next/link';
 import { CalendarCheck, Clock, Home, Layers } from 'lucide-react';
 import BeforeAfter from '@/components/BeforeAfter';
 import CaseStudyGrid from '@/components/CaseStudyGrid';
+import ListingCards from '@/components/ListingCards';
 import { ContactForm } from '@/components/Forms';
 import { caseStudiesForService } from '@/data/case-studies';
 import { servicePackages } from '@/data/proof';
 import { addOns, comparisons, faqs, prepChecklist } from '@/data/real-estate';
+import { listings } from '@/data/real-estate-portfolio';
 import { areas } from '@/data/areas';
 import { areaServedSchema, business } from '@/data/business';
 import { servicePages } from '@/data/services';
@@ -95,6 +97,8 @@ export default function RealEstatePage() {
           </div>
         </section>
       )}
+
+      <ListingCards listings={listings} eyebrow="Real estate portfolio" heading="See a full listing shoot." intro="Exteriors, outdoor living and every room, delivered in posting order. Open the listing to see all of the photos." />
 
       {comparisons.length > 0 && (
         <section className="content-section re-compare">
