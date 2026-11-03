@@ -1,7 +1,8 @@
-import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
 import './globals.css';
 import './refinements.css';
+import AnalyticsEvents from '@/components/AnalyticsEvents';
 import { CartProvider } from '@/components/CartProvider';
 import { Footer, Header } from '@/components/SiteChrome';
 import { storeIsOpen } from '@/lib/store-readiness';
@@ -9,12 +10,12 @@ import { shareImage } from '@/lib/seo';
 import { areaServedSchema, business } from '@/data/business';
 import { servicePages, servicePath } from '@/data/services';
 import { PRINT_SHOP_ENABLED } from '@/data/features';
+import { GA_ID } from '@/lib/analytics';
 
 const printsNote = PRINT_SHOP_ENABLED ? ' — plus original fine-art prints' : '';
 
 const siteUrl = 'https://www.morsemedia.co';
 const homeShare = shareImage(); // Morse Media logo card
-const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim() || 'G-Q60YZCS3S9';
 
 export const metadata: Metadata = {
   title: {
@@ -106,8 +107,18 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <main id="main-content">{children}</main>
           <Footer />
         </CartProvider>
+        {GA_ID && (
+          <>
+            {/* Google Analytics: the queue is set up straight away, but gtag.js itself loads once the page is idle
+                so it never competes with the page for bandwidth. Page views and events wait in dataLayer until then. */}
+            <Script id="ga-setup" strategy="afterInteractive">
+              {`window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function gtag(){dataLayer.push(arguments);};gtag('js',new Date());gtag('config',${JSON.stringify(GA_ID)});`}
+            </Script>
+            <Script id="ga-gtag" src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="lazyOnload" />
+            <AnalyticsEvents />
+          </>
+        )}
       </body>
-      {gaId && <GoogleAnalytics gaId={gaId} />}
     </html>
   );
 }

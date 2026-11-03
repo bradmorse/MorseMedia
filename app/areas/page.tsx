@@ -1,9 +1,11 @@
 import Image from 'next/image';
+import { blurProps } from '@/lib/blur';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { areas } from '@/data/areas';
 import { business } from '@/data/business';
 import { breadcrumbs, jsonLd, pageMetadata, siteUrl } from '@/lib/seo';
+import { dotList } from '@/lib/text';
 
 export const metadata = pageMetadata(
   'Areas Served in Nashville & Middle Tennessee',
@@ -24,9 +26,9 @@ export default function AreasPage() {
       <div className="collection-card-grid areas-grid">
         {areas.map((area) => (
           <Link className="collection-card" href={`/areas/${area.slug}`} key={area.slug}>
-            <div className="collection-card__image"><Image src={area.image} alt="" fill sizes="(max-width: 640px) 50vw, (max-width: 1180px) 50vw, 33vw" /></div>
+            <div className="collection-card__image"><Image src={area.image} alt="" fill sizes="(max-width: 640px) 50vw, (max-width: 1180px) 50vw, 33vw" {...blurProps(area.image)} /></div>
             <span><strong>{area.name}</strong><ArrowRight /></span>
-            <small className="areas-grid__towns">{area.towns.slice(0, 4).join(' · ')}</small>
+            <small className="areas-grid__towns">{dotList(area.towns.slice(0, 4))}</small>
           </Link>
         ))}
       </div>

@@ -36,8 +36,8 @@
 /* Portfolio hero secondary link sits below the capability chips. */
 .portfolio-hero-link { display: inline-flex; margin-top: 34px; }
 
-/* Avoid horizontal scroll from long words on narrow phones. */
-h1, h2 { overflow-wrap: anywhere; }
+/* Avoid horizontal scroll from long words on narrow phones (break only if a word cannot fit). */
+h1, h2 { overflow-wrap: break-word; }
 @media (max-width: 380px) {
   .hero h1, .page-hero h1, .collection-hero h1 { font-size: 44px; }
 }
@@ -419,3 +419,100 @@ html { scroll-padding-top: calc(var(--header-height) + 16px); }
   .listing-card:hover strong { color: var(--accent); }
 }
 @media (max-width: 900px) { .listing-card { grid-template-columns: 1fr; } }
+
+/* ── Update 9.1 — text fit pass — November 2, 2026 ──────────────────────────── */
+
+/* Headings wrap evenly instead of leaving one word alone on the last line, and paragraphs avoid
+   one-word last lines. A word only breaks mid-word if it cannot fit a line on its own (the title
+   sizes below make sure the longest words fit). */
+h1, h2, h3 { text-wrap: balance; overflow-wrap: break-word; }
+p { text-wrap: pretty; }
+.detail-lead { text-wrap: balance; }
+
+/* Wide screens: the longest area-title word ("Hendersonville") must fit the 850 px title column. */
+.page-hero h1 { font-size: clamp(56px, 7.1vw, 104px); }
+
+/* Phones: size photo-header titles to the screen so "Photo and video", "Hendersonville" and
+   "photography" stay on one line each (they were breaking mid-word at 360–430 px). */
+@media (max-width: 640px) {
+  .hero h1, .page-hero h1, .collection-hero h1 { font-size: clamp(32px, 10.6vw, 64px); }
+}
+
+/* Home "What Morse Media does": the four service cards get a full-width row on desktop too.
+   Squeezed beside the intro they were ~100 px wide, so titles, prices and links wrapped. */
+@media (min-width: 901px) {
+  .studio-section { grid-template-columns: auto minmax(0, 1fr); }
+  .studio-services { grid-column: 1 / -1; border-top: 1px solid var(--line-strong); }
+  .studio-section__intro { padding-right: 0; border-right: 0; }
+  .studio-section__intro p:not(.eyebrow) { max-width: 640px; }
+  /* Titles line up across the row whatever the length of each description; links sit at the bottom. */
+  .studio-services article { min-height: 0; }
+  .studio-services h3 { margin-top: 30px; }
+  .studio-services a { margin-top: auto; padding-top: 16px; }
+}
+
+/* Very small phones: one service card per row so "PHOTOGRAPHY" fits its card. */
+@media (max-width: 380px) {
+  .studio-services { grid-template-columns: 1fr; }
+  .studio-services article:nth-child(odd) { border-right: 0; }
+  .studio-services article:nth-last-child(-n + 2) { border-bottom: 1px solid var(--line-strong); }
+  .studio-services article:last-child { border-bottom: 0; }
+}
+
+/* Smallest text raised to a readable 10 px, with stronger contrast in the footer. */
+.site-footer__bottom { color: var(--muted); font-size: 10px; }
+.site-footer__bottom small { font-size: inherit; }
+.site-footer__legal a { color: var(--muted); }
+.site-footer__location { color: var(--muted); font-size: 10px; }
+.contact-form label { font-size: 10px; }
+.home-proof span { font-size: 10px; }
+.recent-card__caption small { font-size: 10px; }
+@media (max-width: 640px) {
+  .collection-card span strong { font-size: 10px; }
+  .recent-card__caption small { font-size: 10px; }
+}
+
+/* ---------- Update 9.2 ---------- */
+
+/* Listing viewer: thumbnail strip under the photo (tap to jump), room for it on phones. */
+.listing-lightbox { grid-template-rows: minmax(0, 1fr) auto; row-gap: 14px; padding: 64px 0 18px; }
+.listing-lightbox figure { height: 100%; min-height: 0; }
+.listing-lightbox__thumbs { display: flex; gap: 6px; width: min(84vw, 1250px); padding: 4px 3px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+.listing-lightbox__thumb { position: relative; flex: 0 0 auto; width: 64px; height: 44px; padding: 0; border: 0; background: var(--panel); opacity: .45; cursor: pointer; transition: opacity .2s ease; }
+.listing-lightbox__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.listing-lightbox__thumb[aria-current='true'] { opacity: 1; outline: 1px solid var(--text); outline-offset: 2px; }
+.listing-lightbox__thumb:focus-visible { opacity: 1; outline: 2px solid var(--accent); outline-offset: 2px; }
+.listing-lightbox__preload { display: none; }
+@media (hover: hover) { .listing-lightbox__thumb:hover { opacity: 1; } }
+@media (max-width: 640px) {
+  .listing-lightbox { padding: 60px 0 76px; }
+  .listing-lightbox figure, .listing-lightbox__thumbs { width: 92vw; }
+}
+/* Swiping a photo shouldn't select it or start a drag. */
+.listing-lightbox figure, .recent-dialog__content { -webkit-user-select: none; user-select: none; }
+
+/* Accessibility: footer section titles are h2s now (correct heading order) but keep their small caps look. */
+.site-footer h2 { margin: 10px 0 20px; color: var(--text); font-size: 10px; font-weight: 500; line-height: inherit; letter-spacing: .16em; text-transform: uppercase; text-wrap: wrap; }
+/* Tap targets at least 24 px tall for the small footer links (town names, Privacy, Terms). */
+.site-footer__areas { row-gap: 0; }
+.site-footer__areas a, .site-footer__legal a { min-height: 24px; display: inline-flex; align-items: center; }
+@media (max-width: 900px) { .site-footer__legal { gap: 0; } }
+/* Value numbers on About/Home: 5:1 contrast instead of 3.3:1. */
+.about-values article span { color: #859087; }
+/* Success messages take focus when they replace a form; only show the ring for keyboard users. */
+.form-success:focus { outline: none; }
+.form-success:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+/* Home "What Morse Media does": the logo column is only as wide as the logo, set off by a rule,
+   and on wide screens the intro runs in two columns (heading left, copy and links right). */
+@media (min-width: 901px) {
+  .studio-section__logo { align-self: stretch; display: flex; align-items: center; padding-right: clamp(30px, 4vw, 72px); border-right: 1px solid var(--line-strong); }
+  .studio-section__logo img { width: clamp(150px, 13vw, 210px); }
+}
+@media (min-width: 1181px) {
+  .studio-section__intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); grid-template-rows: auto auto 1fr; column-gap: clamp(40px, 5vw, 96px); align-items: end; }
+  .studio-section__intro .eyebrow { grid-area: 1 / 1; }
+  .studio-section__intro h2 { grid-area: 2 / 1 / 4 / 2; margin-bottom: 0; }
+  .studio-section__intro > p:not(.eyebrow) { grid-area: 2 / 2; margin: 0; }
+  .studio-section__intro .detail-actions { grid-area: 3 / 2; align-self: start; }
+}

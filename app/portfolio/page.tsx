@@ -4,6 +4,8 @@ import CaseStudyGrid from '@/components/CaseStudyGrid';
 import ListingCards from '@/components/ListingCards';
 import { caseStudies } from '@/data/case-studies';
 import { listings } from '@/data/real-estate-portfolio';
+import { recentWork } from '@/data/recent-work';
+import { placeholdersFor } from '@/lib/blur';
 import { pageMetadata } from '@/lib/seo';
 import { PRINT_SHOP_ENABLED } from '@/data/features';
 import styles from './portfolio.module.css';
@@ -215,13 +217,13 @@ export default function PortfolioPage() {
 
                 <div className={styles.highlightGrid}>
                   {brand.highlights.map((highlight, highlightIndex) => (
-                    <a href={highlight.url} target="_blank" rel="noopener noreferrer" className={styles.highlightCard} key={highlight.title} aria-label={`${highlight.title}: ${highlight.linkLabel} (opens in a new tab)`}>
+                    <a href={highlight.url} target="_blank" rel="noopener noreferrer" className={styles.highlightCard} key={highlight.title}>
                       <span className={styles.highlightNumber}>{String(highlightIndex + 1).padStart(2, '0')}</span>
                       <div>
                         <h3>{highlight.title}</h3>
                         <p>{highlight.description}</p>
                       </div>
-                      <span className={styles.highlightLink}>{highlight.linkLabel}<ArrowIcon /></span>
+                      <span className={styles.highlightLink}>{highlight.linkLabel}<span className="sr-only"> (opens in a new tab)</span><ArrowIcon /></span>
                     </a>
                   ))}
                 </div>
@@ -237,7 +239,7 @@ export default function PortfolioPage() {
 
       <section className="content-section">
         <div className="section-heading"><div><p className="eyebrow">Personal photography</p><h2>The eye behind the work.</h2></div>{PRINT_SHOP_ENABLED && <Link className="text-link" href="/photography">Explore the archive ↗</Link>}</div>
-        <RecentGallery />
+        <RecentGallery placeholders={placeholdersFor(recentWork.map((item) => item.image))} />
       </section>
       <section className={styles.ctaSection}>
         <div className={styles.container}>

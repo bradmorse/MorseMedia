@@ -12,6 +12,7 @@ import { areas } from '@/data/areas';
 import { areaServedSchema, business } from '@/data/business';
 import { servicePages } from '@/data/services';
 import { breadcrumbs, jsonLd, pageMetadata, siteUrl, startingPrice } from '@/lib/seo';
+import { dotList } from '@/lib/text';
 
 const packages = servicePackages.filter((p) => p.service === 'real-estate');
 const listing = packages[0];
@@ -54,7 +55,7 @@ export default function RealEstatePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />
 
       <section className="re-hero content-section">
-        <p className="eyebrow">Real estate photo &amp; video · {business.city} &amp; {business.region}</p>
+        <p className="eyebrow">{dotList(['Real estate photo & video', `${business.city} & ${business.region}`])}</p>
         <h1>Nashville listing photos{' '}<br />that earn the showing.</h1>
         <p className="detail-lead">Bright, true-to-life interiors, clean exteriors and an optional cinematic walkthrough, delivered ready for the MLS — so your listing looks its best the day it goes live.</p>
         <p className="re-hero__areas">Serving agents in {business.city}, {areas.filter((a) => !a.neighborhoods).map((a) => a.towns[0]).join(', ')} and nearby towns.</p>

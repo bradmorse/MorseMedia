@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { blurProps } from '@/lib/blur';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowRight, MapPin } from 'lucide-react';
@@ -7,6 +8,7 @@ import { servicePackages } from '@/data/proof';
 import { servicePages, servicePath } from '@/data/services';
 import { business } from '@/data/business';
 import { breadcrumbs, jsonLd, pageMetadata, siteUrl } from '@/lib/seo';
+import { dotList } from '@/lib/text';
 
 export function generateStaticParams() {
   return areas.map((area) => ({ slug: area.slug }));
@@ -47,10 +49,10 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />
       <section className="page-hero">
-        <Image src={area.image} alt="" fill priority sizes="100vw" />
+        <Image src={area.image} alt="" fill priority sizes="100vw" {...blurProps(area.image)} />
         <div className="page-hero__shade page-hero__shade--strong" />
         <div className="page-hero__copy">
-          <p className="eyebrow"><MapPin aria-hidden="true" className="inline-icon" /> {area.name} · {business.region}</p>
+          <p className="eyebrow"><MapPin aria-hidden="true" className="inline-icon" /> {dotList([area.name, business.region])}</p>
           <h1>{area.headline}</h1>
         </div>
       </section>
@@ -59,7 +61,7 @@ export default async function AreaPage({ params }: { params: Promise<{ slug: str
         <div><p className="eyebrow">Morse Media in {area.name}</p><h2>Local work, made to a high standard.</h2></div>
         <div>
           <p>{area.intro}</p>
-          <p className="area-towns"><strong>{area.neighborhoods ? 'Neighborhoods' : 'Towns'} served include</strong> {area.towns.join(' · ')}</p>
+          <p className="area-towns"><strong>{area.neighborhoods ? 'Neighborhoods' : 'Towns'} served include</strong> {dotList(area.towns)}</p>
           <div className="detail-actions">
             <Link className="button button--solid" href={`/contact?service=${encodeURIComponent(focus[0]?.service.type || 'Photo + video project')}`}>Start a project</Link>
             <Link className="text-link" href="/portfolio">See client work ↗</Link>

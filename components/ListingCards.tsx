@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { groupRanges, previewPhotos, type Listing } from '@/data/real-estate-portfolio';
+import { blurProps } from '@/lib/blur';
+import { dotList } from '@/lib/text';
 
 /** Preview of each real estate listing (lead photo plus three more), linking to /portfolio/real-estate. */
 export default function ListingCards({ listings, eyebrow, heading, intro }: { listings: Listing[]; eyebrow: string; heading: string; intro?: string }) {
@@ -17,13 +19,13 @@ export default function ListingCards({ listings, eyebrow, heading, intro }: { li
         return (
           <Link className="listing-card" href={`/portfolio/real-estate#${listing.slug}`} key={listing.slug}>
             <span className="listing-card__photos">
-              <span className="listing-card__lead"><Image src={lead.src} alt={lead.alt} fill sizes="(max-width: 900px) 100vw, 60vw" /></span>
+              <span className="listing-card__lead"><Image src={lead.src} alt={lead.alt} fill sizes="(max-width: 900px) 100vw, 60vw" {...blurProps(lead.src)} /></span>
               {extras.map((photo) => (
-                <span className="listing-card__extra" key={photo.src}><Image src={photo.src} alt={photo.alt} fill sizes="(max-width: 900px) 33vw, 20vw" /></span>
+                <span className="listing-card__extra" key={photo.src}><Image src={photo.src} alt={photo.alt} fill sizes="(max-width: 900px) 33vw, 20vw" {...blurProps(photo.src)} /></span>
               ))}
             </span>
             <span className="listing-card__text">
-              <span className="listing-card__meta">{[`${listing.photos.length} photos`, listing.location].filter(Boolean).join(' · ')}</span>
+              <span className="listing-card__meta">{dotList([`${listing.photos.length} photos`, listing.location])}</span>
               <strong>{listing.title}</strong>
               <span className="listing-card__summary">{listing.summary}</span>
               <span className="listing-card__ranges">{groupRanges(listing).map((range) => <span key={range.group}>{range.group} <em>{range.count}</em></span>)}</span>

@@ -6,6 +6,7 @@ import VideoEmbed from '@/components/VideoEmbed';
 import { ArrowRight, CalendarDays, Camera, Check, Clapperboard, Home, Layers } from 'lucide-react';
 import { breadcrumbs, jsonLd, pageMetadata, siteUrl } from '@/lib/seo';
 import styles from './services.module.css';
+import { dotList } from '@/lib/text';
 
 export const metadata = pageMetadata(
   'Photography & Video Services in Nashville',
@@ -111,7 +112,7 @@ export default function ServicesPage() {
         <div className={styles.heroGrid} aria-hidden="true" />
         <div className={styles.heroOrb} aria-hidden="true" />
         <div className={styles.container}>
-          <p className={styles.eyebrow}>Photography &amp; video services · {business.baseShort}</p>
+          <p className={styles.eyebrow}>{dotList(['Photography & video services', business.baseShort])}</p>
           <h1>Nashville photography and video, under one roof.</h1>
           <div className={styles.heroBottom}>
             <p>Morse Media creates brand photography, headshots, event coverage, real estate listings and cinematic video that help {business.city} businesses look as good as the work they do.</p>

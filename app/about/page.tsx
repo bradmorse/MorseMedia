@@ -1,7 +1,9 @@
 import { pageMetadata } from '@/lib/seo';
 import Image from 'next/image';
+import { blurProps } from '@/lib/blur';
 import Link from 'next/link';
 import { PRINT_SHOP_ENABLED } from '@/data/features';
+import { dotList } from '@/lib/text';
 
 export const metadata = pageMetadata(
   'About Bradley Morse, Nashville Photographer',
@@ -15,12 +17,12 @@ export default function AboutPage() {
   return (
     <>
       <section className="page-hero">
-        <Image src="/images/photos/quiet-watch.webp" alt="Young buck in velvet antlers framed by leaves" fill priority sizes="100vw" />
+        <Image src="/images/photos/quiet-watch.webp" alt="Young buck in velvet antlers framed by leaves" fill priority sizes="100vw" {...blurProps('/images/photos/quiet-watch.webp')} />
         <div className="page-hero__shade page-hero__shade--strong" />
         <div className="page-hero__copy"><p className="eyebrow">About Morse Media</p><h1>Made for the<br />story behind it.</h1></div>
       </section>
       <section className="about-intro content-section">
-        <div><p className="eyebrow">Photography · Video · Nashville, Tennessee</p><h2>A photo and video studio based in Nashville.</h2></div>
+        <div><p className="eyebrow">{dotList(['Photography', 'Video', 'Nashville, Tennessee'])}</p><h2>A photo and video studio based in Nashville.</h2></div>
         <div><p>Morse Media is the studio of Bradley Morse, a Nashville-based photographer and filmmaker. The work began in New England — mountains, coastline, wildlife and forgotten places — and that same patient eye for light, weather and detail now goes into brand shoots, listings, events and films for businesses across Middle Tennessee.</p><p>Client work covers brand and headshot photography, real estate photo and video, event coverage and short-form video — built for retailers, real estate agents, professional firms and local businesses that need strong visuals on a steady schedule.{PRINT_SHOP_ENABLED && ' The print collection turns personal work into lasting pieces for homes, offices and hospitality spaces.'}</p><div className="detail-actions"><Link className="button button--solid" href="/contact?service=Photo%20%2B%20video%20project">Get a quote</Link><Link className="text-link" href="/services">Services &amp; pricing ↗</Link></div></div>
       </section>
       <section className="about-logo-section">

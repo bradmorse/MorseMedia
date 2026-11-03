@@ -8,6 +8,7 @@ import VideoEmbed from '@/components/VideoEmbed';
 import { caseStudiesForService } from '@/data/case-studies';
 import CaseStudyGrid from '@/components/CaseStudyGrid';
 import { pageMetadata, siteUrl, jsonLd, breadcrumbs, startingPrice } from '@/lib/seo';
+import { NBSP, dotList, keepTogether } from '@/lib/text';
 
 export function generateStaticParams() {
   // Real estate has its own landing page at /real-estate (next.config.ts redirects the old path).
@@ -64,11 +65,11 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
     <article className="detail-page content-section">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />
       <nav className="breadcrumb" aria-label="Breadcrumb"><Link href="/">Home</Link> / <Link href="/services">Services</Link> / <span>{s.name}</span></nav>
-      <p className="eyebrow">{business.base} · {business.region}</p>
+      <p className="eyebrow">{dotList([business.base, business.region])}</p>
       <h1>{s.h1}</h1>
       <p className="detail-lead">{s.intro}</p>
       {packages.length > 0 && (
-        <p className="detail-from">{packages.map((p) => `${p.name} · ${p.startingAt || 'Custom quote'}`).join('  /  ')}</p>
+        <p className="detail-from">{packages.map((p) => `${p.name}${NBSP}· ${keepTogether(p.startingAt || 'Custom quote')}`).join(`${NBSP}/ `)}</p>
       )}
       <p>{s.copy}</p>
       <div className="detail-actions">

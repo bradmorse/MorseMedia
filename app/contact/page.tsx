@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { pageMetadata } from '@/lib/seo';
 import Image from 'next/image';
+import { blurProps } from '@/lib/blur';
 import { ContactForm } from '@/components/Forms';
 import ContactFormFromQuery from '@/components/ContactFormFromQuery';
 import { business } from '@/data/business';
@@ -18,7 +19,7 @@ export default function ContactPage() {
   return (
     <>
       <section className="page-hero">
-        <Image src="/images/photos/coastline-dusk.webp" alt="Dark Maine coastline at dusk" fill priority sizes="100vw" />
+        <Image src="/images/photos/coastline-dusk.webp" alt="Dark Maine coastline at dusk" fill priority sizes="100vw" {...blurProps('/images/photos/coastline-dusk.webp')} />
         <div className="page-hero__shade page-hero__shade--strong" />
         <div className="page-hero__copy"><p className="eyebrow">Get in touch</p><h1>Let’s make<br />something lasting.</h1></div>
       </section>

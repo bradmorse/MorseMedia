@@ -1,10 +1,12 @@
 import Image from 'next/image';
+import { blurProps } from '@/lib/blur';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { caseStudies, getCaseStudy } from '@/data/case-studies';
 import { servicePages, servicePath } from '@/data/services';
 import { breadcrumbs, jsonLd, pageMetadata, siteUrl } from '@/lib/seo';
 import { videoEmbed } from '@/lib/video';
+import { dotList } from '@/lib/text';
 
 export function generateStaticParams() {
   return caseStudies.map((study) => ({ slug: study.slug }));
@@ -42,10 +44,10 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
     <article className="detail-page content-section case-study-page">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />
       <nav className="breadcrumb" aria-label="Breadcrumb"><Link href="/portfolio">Portfolio</Link> / <span>{study.client}</span></nav>
-      <p className="eyebrow">{[service?.type, study.industry, study.location, study.year].filter(Boolean).join(' · ')}</p>
+      <p className="eyebrow">{dotList([service?.type, study.industry, study.location, study.year])}</p>
       <h1>{study.title}</h1>
       <p className="detail-lead">{study.summary}</p>
-      <div className="case-study-page__cover"><Image src={study.cover.src} alt={study.cover.alt} fill priority sizes="100vw" /></div>
+      <div className="case-study-page__cover"><Image src={study.cover.src} alt={study.cover.alt} fill priority sizes="100vw" {...blurProps(study.cover.src)} /></div>
       <div className="service-detail-grid">
         <section><h2>The brief.</h2><p>{study.challenge}</p></section>
         <section><h2>The approach.</h2><p>{study.approach}</p></section>
@@ -57,7 +59,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       )}
       {study.gallery && study.gallery.length > 0 && (
         <div className="case-study-page__gallery">
-          {study.gallery.map((image) => <figure key={image.src}><Image src={image.src} alt={image.alt} fill sizes="(max-width: 700px) 100vw, 50vw" /></figure>)}
+          {study.gallery.map((image) => <figure key={image.src}><Image src={image.src} alt={image.alt} fill sizes="(max-width: 700px) 100vw, 50vw" {...blurProps(image.src)} /></figure>)}
         </div>
       )}
       <div className="service-detail-grid">

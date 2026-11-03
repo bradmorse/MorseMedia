@@ -13,6 +13,7 @@ import { business } from '@/data/business';
 import { PRINT_SHOP_ENABLED } from '@/data/features';
 import { useCart } from './CartProvider';
 import { useBodyScrollLock } from './useBodyScrollLock';
+import { dotList } from '@/lib/text';
 
 const navItems = [
   { label: 'Services', href: '/services' },
@@ -152,7 +153,7 @@ export function Header({ storeOpen = false }: { storeOpen?: boolean }) {
         </nav>
         <div className="mobile-menu__footer">
           <Link className="button button--solid mobile-menu__cta" href={quoteHref} onClick={() => setMenuOpen(false)} tabIndex={menuOpen ? 0 : -1}>Get a quote</Link>
-          <p>Photography and cinematic video · {business.baseShort}</p>
+          <p>{dotList(['Photography and cinematic video', business.baseShort])}</p>
           <a href={`mailto:${business.email}`} tabIndex={menuOpen ? 0 : -1}>{business.email}</a>
         </div>
       </div>
@@ -197,19 +198,19 @@ export function Footer() {
       <div className="site-footer__brand">
         <Image src="/images/morse-media-logo-inline.png" alt="Morse Media" width={227} height={61} />
         <p>Photography and cinematic video for Nashville businesses, agents and brands{PRINT_SHOP_ENABLED ? ' — plus original fine-art prints' : ''}.</p>
-        <span className="site-footer__location">{business.base} · Available for travel</span>
+        <span className="site-footer__location">{dotList([business.base, 'Available for travel'])}</span>
         <nav className="site-footer__areas" aria-label="Areas served">
           {areas.map((area) => <Link key={area.slug} href={`/areas/${area.slug}`}>{area.name}</Link>)}
         </nav>
       </div>
       <div>
-        <h4>Services</h4>
+        <h2>Services</h2>
         {servicePages.map((service) => <Link key={service.slug} href={servicePath(service.slug)}>{service.name}</Link>)}
         <Link href="/services#packages">Packages &amp; pricing</Link>
       </div>
       {PRINT_SHOP_ENABLED ? (
         <div>
-          <h4>Prints &amp; more</h4>
+          <h2>Prints &amp; more</h2>
           <Link href="/portfolio">Portfolio</Link>
           <Link href="/photography">Latest photography</Link>
           <Link href="/shop">Print shop</Link>
@@ -218,7 +219,7 @@ export function Footer() {
         </div>
       ) : (
         <div>
-          <h4>Studio</h4>
+          <h2>Studio</h2>
           <Link href="/portfolio">Portfolio</Link>
           <Link href="/real-estate">For real estate agents</Link>
           <Link href="/areas">Areas served</Link>
@@ -226,13 +227,13 @@ export function Footer() {
         </div>
       )}
       <div>
-        <h4>Contact</h4>
+        <h2>Contact</h2>
         <Link href={quoteHref}>Get a quote</Link>
         <Link href="/contact?service=Image%20licensing">License an image</Link>
         <a href={`mailto:${business.email}`}><Mail /> {business.email}</a>
       </div>
       <div className="site-footer__bottom">
-        <small>© {new Date().getFullYear()} Morse Media · Bradley Morse. All rights reserved.</small>
+        <small>{dotList([`© ${new Date().getFullYear()} Morse Media`, 'Bradley Morse.'])} All rights reserved.</small>
         <span className="site-footer__legal">{PRINT_SHOP_ENABLED && <Link href="/shipping-returns">Shipping & returns</Link>}<Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link></span>
       </div>
     </footer>

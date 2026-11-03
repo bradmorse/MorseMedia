@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/seo';
 import Image from 'next/image';
+import { blurProps } from '@/lib/blur';
 import Link from 'next/link';
 import { ArrowRight, CalendarDays, Camera, Clapperboard, Home } from 'lucide-react';
 import ProductGrid from '@/components/ProductGrid';
@@ -15,6 +16,7 @@ import { areas } from '@/data/areas';
 import { business } from '@/data/business';
 import { storeIsOpen } from '@/lib/store-readiness';
 import { PRINT_SHOP_ENABLED } from '@/data/features';
+import { dotList } from '@/lib/text';
 
 const homeTitle = 'Nashville Photographer & Videographer | Morse Media';
 
@@ -57,11 +59,11 @@ export default function HomePage() {
   return (
     <>
       <section className="hero">
-        <Image className="hero__image hero__image--film" src={heroFilm.poster} alt={heroFilm.posterAlt} fill priority sizes="100vw" />
+        <Image className="hero__image hero__image--film" src={heroFilm.poster} alt={heroFilm.posterAlt} fill priority sizes="100vw" {...blurProps(heroFilm.poster)} />
         <HeroVideo />
         <div className="hero__shade" />
         <div className="hero__copy">
-          <p className="eyebrow">Photography &amp; video · {business.base}</p>
+          <p className="eyebrow">{dotList(['Photography & video', business.base])}</p>
           <h1>Photo and video<br />for Nashville brands.</h1>
           <div className="short-rule" />
           <p>Brand photography, headshots, real estate listings and cinematic video for businesses across {business.region} — planned around where the work will be seen, and delivered ready to use.</p>
@@ -98,7 +100,7 @@ export default function HomePage() {
               <h3>{title}</h3>
               {from && <p className="studio-services__from">{from}</p>}
               <p>{copy}</p>
-              <Link href={href} aria-label={`Explore ${title.toLowerCase()} services`}>Explore service <ArrowRight /></Link>
+              <Link href={href}>Explore service<span className="sr-only">: {title}</span> <ArrowRight aria-hidden="true" /></Link>
             </article>
           ))}
         </div>
@@ -164,7 +166,7 @@ export default function HomePage() {
             <div className="collection-card-grid">
               {collections.map((collection) => (
                 <Link className="collection-card" href={`/collections/${collection.slug}`} key={collection.slug}>
-                  <div className="collection-card__image"><Image src={collection.image} alt="" fill sizes="(max-width: 640px) 50vw, (max-width: 1180px) 33vw, 20vw" /></div>
+                  <div className="collection-card__image"><Image src={collection.image} alt="" fill sizes="(max-width: 640px) 50vw, (max-width: 1180px) 33vw, 20vw" {...blurProps(collection.image)} /></div>
                   <span><strong>{collection.name}</strong><ArrowRight /></span>
                 </Link>
               ))}

@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { Check, LoaderCircle, Mail } from 'lucide-react';
 import { defaultProjectType, PRINT_INQUIRY, projectTypes } from '@/data/inquiries';
+import { analyticsEvents, trackEvent } from '@/lib/analytics';
 
 type SubmitState = { status: 'idle' | 'sending' | 'success' | 'error'; message: string };
 type SubmitResult = { ok: boolean; mode?: 'webhook' | 'email' | 'list' | 'mailto'; mailto?: string };
@@ -12,6 +13,18 @@ function useStartedAt() {
   const startedAt = useRef(0);
   useEffect(() => { startedAt.current = Date.now(); }, []);
   return startedAt;
+}
+
+/** Moves focus to a success message when it replaces a form, so it is seen and announced. */
+function useFocusOnMount<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  useEffect(() => { ref.current?.focus(); }, []);
+  return ref;
+}
+
+function SuccessMessage({ className, message }: { className: string; message: string }) {
+  const ref = useFocusOnMount<HTMLDivElement>();
+  return <div ref={ref} className={className} role="status" tabIndex={-1}><Check /> {message}</div>;
 }
 
 async function submitJson(url: string, payload: Record<string, string>) {
@@ -36,6 +49,7 @@ export function NewsletterForm() {
     setState({ status: 'sending', message: 'Submitting…' });
     try {
       const result = await submitJson('/api/newsletter', { email, company, startedAt: String(startedAt.current) });
+      trackEvent(analyticsEvents.signUp, { method: 'newsletter' });
       if (result.mode === 'mailto' && result.mailto) {
         window.location.href = result.mailto;
         setState({ status: 'success', message: 'Your email app should open — press send to finish subscribing.' });
@@ -49,7 +63,7 @@ export function NewsletterForm() {
   }
 
   if (state.status === 'success') {
-    return <div className="form-success" role="status"><Check /> {state.message}</div>;
+    return <SuccessMessage className="form-success" message={state.message} />;
   }
 
   return (
@@ -103,13 +117,14 @@ export function ContactForm({ defaultType = defaultProjectType, photoTitle = '' 
     event.preventDefault();
     const formElement = event.currentTarget;
     const form = new FormData(formElement);
+    const type = String(form.get('type') || 'Creative project');
     setState({ status: 'sending', message: 'Sending your message…' });
 
     try {
       const result = await submitJson('/api/contact', {
         name: String(form.get('name') || ''),
         email: String(form.get('email') || ''),
-        type: String(form.get('type') || 'Creative project'),
+        type,
         message: String(form.get('message') || ''),
         location: String(form.get('location') || ''),
         timeline: String(form.get('timeline') || ''),
@@ -120,6 +135,7 @@ export function ContactForm({ defaultType = defaultProjectType, photoTitle = '' 
         startedAt: String(startedAt.current),
       });
 
+      trackEvent(analyticsEvents.lead, { form: 'contact', project_type: type, delivery: result.mode });
       if (result.mode === 'mailto' && result.mailto) {
         window.location.href = result.mailto;
         setMailLink(result.mailto);
@@ -129,12 +145,14 @@ export function ContactForm({ defaultType = defaultProjectType, photoTitle = '' 
         setState({ status: 'success', message: 'Thank you — your inquiry was sent. Expect a reply within two business days.' });
       }
     } catch (error) {
-      setState({ status: 'error', message: error instanceof Error ? error.message : 'Unable to send your inquiry.' });
+      const message = error instanceof Error ? error.message : 'Unable to send your inquiry.';
+      trackEvent(analyticsEvents.formError, { form: 'contact', project_type: type, error: message.slice(0, 100) });
+      setState({ status: 'error', message });
     }
   }
 
   if (state.status === 'success') {
-    return <div className="form-success contact-success" role="status"><Check /> {state.message}</div>;
+    return <SuccessMessage className="form-success contact-success" message={state.message} />;
   }
 
   return (

@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import ListingGallery from '@/components/ListingGallery';
 import { groupRanges, listings } from '@/data/real-estate-portfolio';
+import { placeholdersFor } from '@/lib/blur';
 import { breadcrumbs, jsonLd, pageMetadata, siteUrl } from '@/lib/seo';
+import { dotList } from '@/lib/text';
 
 // Link previews use the Morse Media logo card, like the main Portfolio page.
 export const metadata = pageMetadata(
@@ -38,7 +40,7 @@ export default function RealEstatePortfolioPage() {
         <section className="re-listing" id={listing.slug} aria-labelledby={`${listing.slug}-title`} key={listing.slug}>
           <header className="re-listing__header">
             <div>
-              <p className="eyebrow">{[`${listing.photos.length} photos`, listing.location].filter(Boolean).join(' · ')}</p>
+              <p className="eyebrow">{dotList([`${listing.photos.length} photos`, listing.location])}</p>
               <h2 id={`${listing.slug}-title`}>{listing.title}</h2>
               <p>{listing.summary}</p>
             </div>
@@ -48,7 +50,7 @@ export default function RealEstatePortfolioPage() {
               ))}
             </ul>
           </header>
-          <ListingGallery listing={listing} />
+          <ListingGallery listing={listing} placeholders={placeholdersFor(listing.photos.map((photo) => photo.src))} />
         </section>
       ))}
 
