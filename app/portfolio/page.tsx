@@ -1,4 +1,7 @@
 import Link from 'next/link';
+import Image from 'next/image';
+import { portfolioMosaic } from '@/data/showcase';
+import { blurProps } from '@/lib/blur';
 import RecentGallery from '@/components/RecentGallery';
 import CaseStudyGrid from '@/components/CaseStudyGrid';
 import ListingCards from '@/components/ListingCards';
@@ -133,8 +136,8 @@ export default function PortfolioPage() {
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
-        <div className={styles.heroGlow} aria-hidden="true" />
-        <div className={styles.container}>
+        <div className={`${styles.container} ${styles.heroGrid}`}>
+          <div className={styles.heroText}>
           <p className={styles.eyebrow}>Commercial portfolio</p>
           <h1>Photo and video built to move brands forward.</h1>
           <p className={styles.heroCopy}>
@@ -148,7 +151,25 @@ export default function PortfolioPage() {
             <span>Real estate</span>
           </div>
           <Link className="text-link portfolio-hero-link" href={PRINT_SHOP_ENABLED ? '/photography' : '/services'}>{PRINT_SHOP_ENABLED ? 'Looking for landscape photography? See the latest work ↗' : 'See services and starting prices ↗'}</Link>
+          </div>
+          {portfolioMosaic.length === 3 && (
+            <div className={styles.heroMosaic}>
+              {portfolioMosaic.map((tile, index) => (
+                <Link className={styles.mosaicTile} href={tile.href} key={tile.src}>
+                  <Image src={tile.src} alt={tile.alt} fill priority={index === 0} sizes={index === 0 ? '(max-width: 1000px) 34vw, 22vw' : '(max-width: 1000px) 33vw, 20vw'} {...blurProps(tile.src)} />
+                  <span className={styles.mosaicLabel}>{tile.label}<small>{tile.meta}</small></span>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
+      </section>
+
+      <ListingCards listings={listings} eyebrow="Real estate portfolio" heading="Homes, inside and out." intro="Complete listing shoots, shown in the order an agent would post them: exteriors first, then outdoor living and the interior walkthrough." />
+
+      <section className="content-section portfolio-personal" id="personal-work">
+        <div className="section-heading"><div><p className="eyebrow">Personal photography</p><h2>The eye behind the work.</h2></div>{PRINT_SHOP_ENABLED && <Link className="text-link" href="/photography">Explore the archive ↗</Link>}</div>
+        <RecentGallery placeholders={placeholdersFor(recentWork.map((item) => item.image))} />
       </section>
 
       <section className={styles.introSection}>
@@ -233,14 +254,8 @@ export default function PortfolioPage() {
         ))}
       </div>
 
-      <ListingCards listings={listings} eyebrow="Real estate portfolio" heading="Homes, inside and out." intro="Complete listing shoots, shown in the order an agent would post them: exteriors first, then outdoor living and the interior walkthrough." />
-
       <CaseStudyGrid studies={caseStudies} eyebrow="In-depth projects" heading="From the brief to the finished work." />
 
-      <section className="content-section">
-        <div className="section-heading"><div><p className="eyebrow">Personal photography</p><h2>The eye behind the work.</h2></div>{PRINT_SHOP_ENABLED && <Link className="text-link" href="/photography">Explore the archive ↗</Link>}</div>
-        <RecentGallery placeholders={placeholdersFor(recentWork.map((item) => item.image))} />
-      </section>
       <section className={styles.ctaSection}>
         <div className={styles.container}>
           <div className={styles.ctaCard}>

@@ -3,7 +3,7 @@ import { pageMetadata } from '@/lib/seo';
 import Image from 'next/image';
 import { blurProps } from '@/lib/blur';
 import Link from 'next/link';
-import { ArrowRight, CalendarDays, Camera, Clapperboard, Home } from 'lucide-react';
+import { ArrowRight, CalendarDays, Camera, Clapperboard, Home, Play } from 'lucide-react';
 import ProductGrid from '@/components/ProductGrid';
 import VideoEmbed from '@/components/VideoEmbed';
 import HeroVideo from '@/components/HeroVideo';
@@ -17,6 +17,7 @@ import { business } from '@/data/business';
 import { storeIsOpen } from '@/lib/store-readiness';
 import { PRINT_SHOP_ENABLED } from '@/data/features';
 import { dotList } from '@/lib/text';
+import { homeShowcase } from '@/data/showcase';
 
 // Brad's wording (Nov 4, 2026). Google showed the old title as "Morse Media: Nashville Photographer & Videographer";
 // "photographer" and "videographer" still appear in the description, H1 area and service pages.
@@ -107,6 +108,26 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {homeShowcase.length > 0 && (
+        <section className="content-section home-work" aria-labelledby="home-work-heading">
+          <div className="section-heading">
+            <div><p className="eyebrow">Recent work</p><h2 id="home-work-heading">From listing tours to landscapes.</h2></div>
+            <Link className="text-link" href="/portfolio">See the portfolio <ArrowRight /></Link>
+          </div>
+          <div className="home-work__grid">
+            {homeShowcase.map((tile, index) => (
+              <Link className={index === 0 ? 'home-work__tile home-work__tile--feature' : 'home-work__tile'} href={tile.href} key={tile.src}>
+                <span className="home-work__image">
+                  <Image src={tile.src} alt={tile.alt} fill sizes={index === 0 ? '(max-width: 900px) 100vw, 60vw' : '(max-width: 900px) 100vw, 34vw'} {...blurProps(tile.src)} />
+                  {tile.video && <span className="home-work__play" aria-hidden="true"><Play /></span>}
+                </span>
+                <span className="home-work__caption"><small>{tile.meta}</small><strong>{tile.label}</strong><ArrowRight aria-hidden="true" /></span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {showreel.url && (
         <section className="content-section home-reel">

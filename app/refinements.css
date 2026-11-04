@@ -615,3 +615,44 @@ p { text-wrap: pretty; }
 }
 /* The video label reads title-then-length to screen readers; the length shows above the title. */
 .listing-video__label small { order: -1; }
+
+/* ── Update 9.5 — design refinement — November 4, 2026 ──────────────────────── */
+
+/* One heading voice: page titles in sentence case like every other heading; small labels stay uppercase. */
+.hero h1, .page-hero h1, .collection-hero h1, .product-detail h1 { text-transform: none; letter-spacing: -.045em; line-height: .96; }
+/* Short laptop screens: titles also scale with the window height, so the label above never crowds the header. */
+@media (min-width: 641px) {
+  .hero h1 { font-size: min(clamp(56px, 7.1vw, 112px), 12.5svh); }
+  .page-hero h1 { font-size: min(clamp(56px, 7.1vw, 104px), 13svh); }
+}
+
+/* Home, "Recent work": the listing video tour large, listing photos and landscape work beside it. */
+.home-work { padding-top: clamp(56px, 6vw, 96px); }
+.home-work__grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: clamp(16px, 1.8vw, 26px); }
+.home-work__tile { display: flex; flex-direction: column; gap: 14px; min-width: 0; color: var(--text); }
+.home-work__tile--feature { grid-row: span 2; }
+.home-work__image { position: relative; display: block; overflow: hidden; aspect-ratio: 3 / 2; background: var(--panel); }
+.home-work__tile--feature .home-work__image { flex: 1; aspect-ratio: auto; min-height: 340px; }
+.home-work__image img { object-fit: cover; transition: transform .6s ease, filter .3s ease; }
+.home-work__play { position: absolute; top: 50%; left: 50%; display: grid; place-items: center; width: clamp(56px, 5.5vw, 78px); aspect-ratio: 1; border: 1px solid rgba(242, 242, 238, .7); border-radius: 50%; background: rgba(8, 10, 11, .45); color: var(--text); transform: translate(-50%, -50%); transition: background .2s ease, border-color .2s ease, color .2s ease; }
+.home-work__play svg { width: 34%; height: 34%; margin-left: 6%; fill: currentColor; }
+.home-work__caption { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 16px; row-gap: 4px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.home-work__caption small { grid-column: 1; color: var(--muted); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+.home-work__caption strong { grid-column: 1; font-size: clamp(18px, 1.5vw, 22px); font-weight: 300; line-height: 1.2; }
+.home-work__caption svg { grid-column: 2; grid-row: 1 / span 2; width: 18px; height: 18px; color: var(--accent); transition: transform .2s ease; }
+.home-work__tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+@media (hover: hover) {
+  .home-work__tile:hover img { transform: scale(1.025); filter: brightness(.92); }
+  .home-work__tile:hover .home-work__caption svg { transform: translateX(4px); }
+  .home-work__tile:hover .home-work__play { background: var(--accent); border-color: var(--accent); color: #0d1412; }
+}
+@media (max-width: 900px) {
+  .home-work__grid { grid-template-columns: 1fr; }
+  .home-work__tile--feature { grid-row: auto; }
+  .home-work__tile--feature .home-work__image { flex: none; aspect-ratio: 16 / 9; min-height: 0; }
+}
+
+/* "Why book" (home) and About values: the number is a small accent label, with no large empty gap above the title. */
+.about-values article { display: flex; flex-direction: column; }
+.about-values article span { color: var(--accent); font-size: 11px; letter-spacing: .16em; }
+.about-values h3 { margin-top: 26px; }

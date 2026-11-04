@@ -1,3 +1,15 @@
+# Morse Media — Update 9.5 (November 4, 2026)
+
+Version 9.5.0. Design refinement: the work comes first, and one consistent heading style.
+
+- **Home, new "Recent work" band** (after the services): the barn home video tour large, with listing photography and landscape photography beside it, each linking to the work. Images and labels live in `data/showcase.ts`, so Nashville client work can replace them later.
+- **Portfolio**: the header now shows a photo mosaic (a landscape photograph and two listing photos) beside the title instead of decorative rings. The page leads with images: the real estate listing and personal photography come before the written client case studies. Personal photography has an anchor, `/portfolio#personal-work`.
+- **Headings**: page titles on the home, About, Contact and area pages are now sentence case like every other heading on the site (small labels stay uppercase). On short laptop screens titles also scale with the window height, so the home title no longer crowds the header.
+- **"Why book" and About values cards**: the 01/02/03 numbers are now a readable accent label, without the large empty gap above each title.
+- `tests/update-9-5.test.ts`.
+
+---
+
 # Morse Media — Update 9.4.1 (November 4, 2026)
 
 Version 9.4.1. Home page title (browser tab, Google result, link previews) is now **Morse Media: Nashville Photography & Videography** (was "Nashville Photographer & Videographer | Morse Media"). Google updates its result after it recrawls the home page; requesting indexing in Search Console speeds that up.

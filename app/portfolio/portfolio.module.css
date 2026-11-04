@@ -42,26 +42,67 @@
   pointer-events: none;
 }
 
-.heroGlow {
-  position: absolute;
-  top: 5%;
-  right: -12%;
-  width: 44rem;
-  height: 44rem;
-  border: 1px solid rgba(182, 201, 165, 0.11);
-  border-radius: 50%;
+/* Update 9.5: the header shows real work (a photo mosaic) beside the copy instead of decorative rings. */
+.heroGrid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+  gap: clamp(40px, 5vw, 84px);
+  align-items: end;
 }
 
-.heroGlow::before,
-.heroGlow::after {
-  position: absolute;
-  border: 1px solid rgba(182, 201, 165, 0.08);
-  border-radius: 50%;
-  content: '';
+.heroText { min-width: 0; }
+
+.heroMosaic {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  aspect-ratio: 10 / 9;
 }
 
-.heroGlow::before { inset: 11%; }
-.heroGlow::after { inset: 23%; }
+.mosaicTile {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--portfolio-line);
+  background: var(--portfolio-panel);
+}
+
+.mosaicTile:first-child { grid-row: span 2; }
+
+.mosaicTile img {
+  object-fit: cover;
+  transition: transform 0.6s ease, filter 0.3s ease;
+}
+
+.mosaicLabel {
+  position: absolute;
+  inset: auto 0 0;
+  display: grid;
+  gap: 3px;
+  padding: 40px 14px 12px;
+  background: linear-gradient(transparent, rgba(8, 12, 10, 0.85));
+  color: var(--portfolio-text);
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.mosaicLabel small {
+  order: -1;
+  color: var(--portfolio-muted);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.mosaicTile:focus-visible { outline: 2px solid var(--portfolio-accent); outline-offset: 3px; }
+.mosaicTile:focus-visible .mosaicLabel { opacity: 1; }
+
+@media (hover: hover) {
+  .mosaicTile:hover img { transform: scale(1.03); filter: brightness(0.9); }
+  .mosaicTile:hover .mosaicLabel { opacity: 1; }
+}
 
 .eyebrow,
 .sectionLabel,
@@ -81,7 +122,7 @@
   position: relative;
   max-width: 920px;
   margin: 22px 0 0;
-  font-size: clamp(3.2rem, 8vw, 7.5rem);
+  font-size: clamp(3.2rem, 5.6vw, 6.4rem);
   font-weight: 300;
   letter-spacing: -0.055em;
   line-height: 0.92;
@@ -394,6 +435,14 @@
   background: transparent;
   color: var(--portfolio-text);
   transform: translateY(-2px);
+}
+
+@media (max-width: 1000px) {
+  .heroGrid { grid-template-columns: 1fr; gap: 44px; }
+  .heroMosaic { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: none; aspect-ratio: auto; gap: 8px; }
+  .mosaicTile { aspect-ratio: 3 / 4; }
+  .mosaicTile:first-child { grid-row: auto; }
+  .mosaicLabel { display: none; }
 }
 
 @media (max-width: 900px) {
