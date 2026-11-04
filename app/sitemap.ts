@@ -13,6 +13,16 @@ const lastModified = new Date('2026-10-29');
 /** True for URLs that belong to the paused print shop (see data/features.ts). */
 const isPrintShopUrl = (path: string) => printShopPaths.some((base) => path === base || path.startsWith(`${base}/`));
 
+/** Listing video tours, for video search. */
+const listingVideos = listings.flatMap((listing) => (listing.video ? [{
+  title: `${listing.title} — ${listing.video.title}`,
+  thumbnail_loc: siteUrl + listing.video.poster,
+  description: listing.video.description,
+  content_loc: siteUrl + listing.video.src,
+  duration: Math.round(listing.video.duration),
+  publication_date: listing.video.uploadDate,
+}] : []));
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
     { path: '', priority: 1, changeFrequency: 'monthly' as const },
@@ -34,7 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const entries: MetadataRoute.Sitemap = [
-    ...staticPages.map((page) => ({ url: `${siteUrl}${page.path || '/'}`, lastModified, changeFrequency: page.changeFrequency, priority: page.priority, ...(page.path === '/portfolio/real-estate' ? { images: listings.flatMap((listing) => listing.photos.map((photo) => siteUrl + photo.src)) } : {}) })),
+    ...staticPages.map((page) => ({ url: `${siteUrl}${page.path || '/'}`, lastModified, changeFrequency: page.changeFrequency, priority: page.priority, ...(page.path === '/portfolio/real-estate' ? { images: listings.flatMap((listing) => listing.photos.map((photo) => siteUrl + photo.src)), videos: listingVideos } : {}) })),
     ...servicePages.filter((s) => s.slug !== 'real-estate').map((s) => ({ url: `${siteUrl}/services/${s.slug}`, lastModified, changeFrequency: 'monthly' as const, priority: 0.85 })),
     ...areas.map((area) => ({ url: `${siteUrl}/areas/${area.slug}`, lastModified, changeFrequency: 'monthly' as const, priority: 0.7 })),
     ...caseStudies.map((study) => ({ url: `${siteUrl}/work/${study.slug}`, lastModified, images: [siteUrl + study.cover.src], changeFrequency: 'yearly' as const, priority: 0.7 })),

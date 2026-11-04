@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import ListingGallery from '@/components/ListingGallery';
-import { groupRanges, listings } from '@/data/real-estate-portfolio';
+import ListingVideo from '@/components/ListingVideo';
+import { groupRanges, isoDuration, listingMeta, listings } from '@/data/real-estate-portfolio';
+import { blurPlaceholders } from '@/data/blur-placeholders';
 import { placeholdersFor } from '@/lib/blur';
 import { breadcrumbs, jsonLd, pageMetadata, siteUrl } from '@/lib/seo';
 import { dotList } from '@/lib/text';
@@ -8,7 +10,7 @@ import { dotList } from '@/lib/text';
 // Link previews use the Morse Media logo card, like the main Portfolio page.
 export const metadata = pageMetadata(
   'Real Estate Photography Portfolio',
-  'Real estate listing photography by Morse Media: exteriors, outdoor living and room-by-room interiors, delivered MLS-ready. Now booking Nashville listings.',
+  'Real estate photo and video by Morse Media: a video tour, exteriors, outdoor living and room-by-room interiors, MLS-ready. Now booking Nashville listings.',
   '/portfolio/real-estate',
 );
 
@@ -25,6 +27,19 @@ export default function RealEstatePortfolioPage() {
       creator: { '@id': `${siteUrl}/#business` },
       image: listing.photos.map((photo) => ({ '@type': 'ImageObject', contentUrl: siteUrl + photo.src, caption: photo.caption, description: photo.alt, width: photo.width, height: photo.height })),
     })),
+    ...listings.flatMap((listing) => (listing.video ? [{
+      '@context': 'https://schema.org',
+      '@type': 'VideoObject',
+      name: `${listing.title} — ${listing.video.title}`,
+      description: listing.video.description,
+      thumbnailUrl: siteUrl + listing.video.poster,
+      contentUrl: siteUrl + listing.video.src,
+      uploadDate: listing.video.uploadDate,
+      duration: isoDuration(listing.video.duration),
+      width: listing.video.width,
+      height: listing.video.height,
+      creator: { '@id': `${siteUrl}/#business` },
+    }] : [])),
     breadcrumbs([{ name: 'Home', path: '/' }, { name: 'Portfolio', path: '/portfolio' }, { name: 'Real estate portfolio', path: '/portfolio/real-estate' }]),
   ];
 
@@ -40,7 +55,7 @@ export default function RealEstatePortfolioPage() {
         <section className="re-listing" id={listing.slug} aria-labelledby={`${listing.slug}-title`} key={listing.slug}>
           <header className="re-listing__header">
             <div>
-              <p className="eyebrow">{dotList([`${listing.photos.length} photos`, listing.location])}</p>
+              <p className="eyebrow">{dotList(listingMeta(listing))}</p>
               <h2 id={`${listing.slug}-title`}>{listing.title}</h2>
               <p>{listing.summary}</p>
             </div>
@@ -50,6 +65,7 @@ export default function RealEstatePortfolioPage() {
               ))}
             </ul>
           </header>
+          {listing.video && <ListingVideo video={listing.video} listingTitle={listing.title} placeholder={blurPlaceholders[listing.video.poster]} />}
           <ListingGallery listing={listing} placeholders={placeholdersFor(listing.photos.map((photo) => photo.src))} />
         </section>
       ))}

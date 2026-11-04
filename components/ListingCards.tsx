@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
-import { groupRanges, previewPhotos, type Listing } from '@/data/real-estate-portfolio';
+import { groupRanges, listingMeta, previewPhotos, type Listing } from '@/data/real-estate-portfolio';
 import { blurProps } from '@/lib/blur';
 import { dotList } from '@/lib/text';
 
@@ -25,7 +25,7 @@ export default function ListingCards({ listings, eyebrow, heading, intro }: { li
               ))}
             </span>
             <span className="listing-card__text">
-              <span className="listing-card__meta">{dotList([`${listing.photos.length} photos`, listing.location])}</span>
+              <span className="listing-card__meta">{dotList(listingMeta(listing))}</span>
               <strong>{listing.title}</strong>
               <span className="listing-card__summary">{listing.summary}</span>
               <span className="listing-card__ranges">{groupRanges(listing).map((range) => <span key={range.group}>{range.group} <em>{range.count}</em></span>)}</span>

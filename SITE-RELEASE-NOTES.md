@@ -1,3 +1,14 @@
+# Morse Media — Update 9.3 (November 4, 2026)
+
+Version 9.3.0. Video tour for the barn home listing.
+
+- `/portfolio/real-estate`: the barn-style home now has its 90-second video tour (`/video/barn-home-tour-v1.mp4`, 1920 × 1080 H.264 with sound, web-optimized, under 25 MB) above the 24 photos. Only the poster frame (`/images/real-estate/barn-home/tour-poster.webp`) loads with the page; clicking it starts the video with sound and the browser's own controls.
+- The listing eyebrow and the preview cards on `/portfolio` and `/real-estate` read "24 photos · 1:30 video tour".
+- Search: VideoObject schema on the page and a video entry in the sitemap. GA records a `video_start` event when someone plays it.
+- To add a video to another listing: put a versioned MP4 in `public/video/` and its poster in the listing's photo folder, then add `video` to the listing in `data/real-estate-portfolio.ts`. `tests/listing-video.test.ts` checks the file, size, length and poster.
+
+---
+
 # Morse Media — Update 9 (November 2, 2026)
 
 Version 9.0.0. New real estate portfolio.
