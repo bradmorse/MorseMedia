@@ -1,3 +1,9 @@
+# Morse Media — Update 9.4.1 (November 4, 2026)
+
+Version 9.4.1. Home page title (browser tab, Google result, link previews) is now **Morse Media: Nashville Photography & Videography** (was "Nashville Photographer & Videographer | Morse Media"). Google updates its result after it recrawls the home page; requesting indexing in Search Console speeds that up.
+
+---
+
 # Morse Media — Update 9.4 (November 4, 2026)
 
 Version 9.4.0. Video on the real estate page, a seller checklist, Google profile links.

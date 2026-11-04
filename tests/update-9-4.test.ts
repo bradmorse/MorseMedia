@@ -48,3 +48,8 @@ test('the listing photo checklist is complete, linked and in the sitemap', () =>
   assert.match(page, /<ChecklistActions /);
   assert.match(read('app/refinements.css'), /@media print \{[^]*\.prep-page/);
 });
+
+test('the home page title reads "Morse Media: Nashville Photography & Videography"', () => {
+  assert.match(read('app/page.tsx'), /const homeTitle = 'Morse Media: Nashville Photography & Videography';/);
+  assert.match(read('app/page.tsx'), /title: \{ absolute: homeTitle \}/);
+});

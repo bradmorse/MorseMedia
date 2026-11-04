@@ -18,7 +18,9 @@ import { storeIsOpen } from '@/lib/store-readiness';
 import { PRINT_SHOP_ENABLED } from '@/data/features';
 import { dotList } from '@/lib/text';
 
-const homeTitle = 'Nashville Photographer & Videographer | Morse Media';
+// Brad's wording (Nov 4, 2026). Google showed the old title as "Morse Media: Nashville Photographer & Videographer";
+// "photographer" and "videographer" still appear in the description, H1 area and service pages.
+const homeTitle = 'Morse Media: Nashville Photography & Videography';
 
 export const metadata: Metadata = {
   ...pageMetadata(
