@@ -3,11 +3,14 @@ import { CalendarCheck, Clock, Home, Layers } from 'lucide-react';
 import BeforeAfter from '@/components/BeforeAfter';
 import CaseStudyGrid from '@/components/CaseStudyGrid';
 import ListingCards from '@/components/ListingCards';
+import ListingVideo from '@/components/ListingVideo';
 import { ContactForm } from '@/components/Forms';
 import { caseStudiesForService } from '@/data/case-studies';
 import { servicePackages } from '@/data/proof';
 import { addOns, comparisons, faqs, prepChecklist } from '@/data/real-estate';
-import { listings } from '@/data/real-estate-portfolio';
+import { formatDuration, listings } from '@/data/real-estate-portfolio';
+import { blurPlaceholders } from '@/data/blur-placeholders';
+import { listingPrepPage } from '@/data/listing-prep';
 import { areas } from '@/data/areas';
 import { areaServedSchema, business } from '@/data/business';
 import { servicePages } from '@/data/services';
@@ -17,6 +20,8 @@ import { dotList } from '@/lib/text';
 const packages = servicePackages.filter((p) => p.service === 'real-estate');
 const listing = packages[0];
 const page = servicePages.find((s) => s.slug === 'real-estate');
+/** The first listing with a video tour, shown beside the photo + video package. */
+const tour = listings.find((l) => l.video);
 
 export const metadata = pageMetadata(
   page?.seoTitle || 'Nashville Real Estate Photography & Video',
@@ -86,6 +91,17 @@ export default function RealEstatePage() {
               </div>
             ))}
           </div>
+          {tour?.video && (
+            <div className="re-tour" id="video-tour">
+              <ListingVideo video={tour.video} listingTitle={tour.title} placeholder={blurPlaceholders[tour.video.poster]} sizes="(max-width: 900px) 100vw, 62vw" />
+              <div className="re-tour__copy">
+                <p className="eyebrow">{dotList(['Listing Photo + Video', `${formatDuration(tour.video.duration)} tour`])}</p>
+                <h3>Watch a listing video tour.</h3>
+                <p>A barn-style home in the woods, filmed in the same visit as its 24 photos: the house from across the pond, the main rooms and the upstairs, then the patio, grill and pool.</p>
+                <Link className="text-link" href={`/portfolio/real-estate#${tour.slug}`}>See the photos from this shoot ↗</Link>
+              </div>
+            </div>
+          )}
           <p className="eyebrow re-addons__label">Add-ons</p>
           <div className="re-addons re-addons--row">
             {addOns.map((addOn) => (
@@ -129,6 +145,7 @@ export default function RealEstatePage() {
             </article>
           ))}
         </div>
+        <Link className="text-link re-prep__more" href={listingPrepPage.path}>Full room-by-room checklist to print or send ↗</Link>
       </section>
 
       <section className="content-section re-faq">

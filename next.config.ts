@@ -36,6 +36,10 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Short links for the Google Business Profile (same URLs as business.google in data/business.ts).
+      // Temporary, so they can be pointed elsewhere later.
+      { source: '/review', destination: 'https://search.google.com/local/writereview?placeid=ChIJwYWSDWU8mqURtzOJ7jfqDag', permanent: false },
+      { source: '/reviews', destination: 'https://maps.google.com/?cid=12109592499015201719', permanent: false },
       // While the print shop is paused these win (first match), and are temporary so search engines keep the URLs.
       ...pausedPrintShopRedirects,
       { source: '/prints', destination: '/shop', permanent: true },

@@ -1,3 +1,16 @@
+# Morse Media — Update 9.4 (November 4, 2026)
+
+Version 9.4.0. Video on the real estate page, a seller checklist, Google profile links.
+
+- `/real-estate`: the barn home video tour now sits right under the two listing packages, next to a short note on what it shows and a link to the photos from the same shoot.
+- New page `/real-estate/listing-photo-checklist` ("How to Prepare a Home for Listing Photos"): what to do the day before and the morning of the shoot, room by room, what to do if video is booked, and what sellers don't need to worry about. Tick boxes work on a phone; "Print the checklist" prints a clean black-and-white version; "Send to a seller" opens the phone's share sheet ("Copy link to send" on a computer). Linked from the prep section on `/real-estate`, the footer and site search; in the sitemap (20 pages) with Article schema.
+- Google Business Profile: `business.google` in `data/business.ts` (place ID, profile and review links). The footer links "Morse Media on Google", the contact page has "Leave a Google review", and the business schema lists the profile (`sameAs`, `hasMap`). Short links: **morsemedia.co/review** opens Google's review box (send this to clients) and **morsemedia.co/reviews** opens the listing.
+- GA events: `share` and `print_checklist` on the checklist.
+- Audit fixes (live site checked Nov 4: 19 pages and 78 links/files all fine; Lighthouse mobile performance 89–95, accessibility, best practices and SEO 100 on 8 pages): the video play button's spoken name now matches its visible label ("Play Video tour, 1:30, with sound"); the About page logo no longer loads a 1600 px file on phones; the /real-estate video poster loads at the size it is shown.
+- `tests/update-9-4.test.ts`.
+
+---
+
 # Morse Media — Update 9.3 (November 4, 2026)
 
 Version 9.3.0. Video tour for the barn home listing.

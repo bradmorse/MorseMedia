@@ -28,6 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '', priority: 1, changeFrequency: 'monthly' as const },
     { path: '/services', priority: 0.95, changeFrequency: 'monthly' as const },
     { path: '/real-estate', priority: 0.9, changeFrequency: 'monthly' as const },
+    { path: '/real-estate/listing-photo-checklist', priority: 0.6, changeFrequency: 'yearly' as const },
     { path: '/shop', priority: 0.8, changeFrequency: 'weekly' as const },
     { path: '/areas', priority: 0.7, changeFrequency: 'monthly' as const },
     ...(caseStudies.length ? [{ path: '/work', priority: 0.75, changeFrequency: 'monthly' as const }] : []),

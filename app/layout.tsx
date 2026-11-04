@@ -70,6 +70,9 @@ const organizationSchema = {
       founder: { '@type': 'Person', name: business.owner },
       address: { '@type': 'PostalAddress', addressLocality: business.city, addressRegion: business.stateCode, addressCountry: 'US' },
       areaServed: areaServedSchema(),
+      // The Google Business Profile, so search engines connect the site and the Maps listing.
+      sameAs: [business.google.profileUrl],
+      hasMap: business.google.profileUrl,
       contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', email: business.email, areaServed: 'US', availableLanguage: 'English' },
       hasOfferCatalog: {
         '@type': 'OfferCatalog',

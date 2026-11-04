@@ -95,6 +95,7 @@ export function Header({ storeOpen = false }: { storeOpen?: boolean }) {
       { label: 'Get a quote', meta: 'Tell me about your project', href: quoteHref, terms: 'contact quote book booking hire availability email' },
       { label: 'Services & pricing', meta: 'Packages and starting prices', href: '/services#packages', terms: 'price pricing cost rates packages quote headshots headshot portraits event events wedding conference' },
       { label: 'Areas served', meta: `Nashville & ${business.region}`, href: '/areas', terms: `nashville tennessee tn middle ${areaTerms}` },
+      { label: 'Listing photo checklist', meta: 'Get a home ready for photos', href: '/real-estate/listing-photo-checklist', terms: 'checklist prep prepare preparing seller sellers staging tips listing photos real estate realtor agent' },
     ].filter((page) => matches(page.label, page.terms)).map(({ label, meta, href }) => ({ label, meta, href }));
     const printResults = PRINT_SHOP_ENABLED ? [...collectionResults, ...photoResults, ...productResults] : [];
     return [...serviceResults, ...pageResults, ...areaResults, ...printResults].slice(0, 10);
@@ -222,6 +223,7 @@ export function Footer() {
           <h2>Studio</h2>
           <Link href="/portfolio">Portfolio</Link>
           <Link href="/real-estate">For real estate agents</Link>
+          <Link href="/real-estate/listing-photo-checklist">Listing photo checklist</Link>
           <Link href="/areas">Areas served</Link>
           <Link href="/about">About</Link>
         </div>
@@ -231,6 +233,7 @@ export function Footer() {
         <Link href={quoteHref}>Get a quote</Link>
         <Link href="/contact?service=Image%20licensing">License an image</Link>
         <a href={`mailto:${business.email}`}><Mail /> {business.email}</a>
+        <a href={business.google.profileUrl} target="_blank" rel="noopener">Morse Media on Google <span className="sr-only">(opens in a new tab)</span>↗</a>
       </div>
       <div className="site-footer__bottom">
         <small>{dotList([`© ${new Date().getFullYear()} Morse Media`, 'Bradley Morse.'])} All rights reserved.</small>

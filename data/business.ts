@@ -16,6 +16,16 @@ export const business = {
   counties: ['Davidson', 'Williamson', 'Rutherford', 'Sumner', 'Wilson'],
   /** Cities named in structured data (search engines) as the service area. */
   serviceCities: ['Nashville', 'Franklin', 'Brentwood', 'Murfreesboro', 'Hendersonville', 'Mt. Juliet', 'Gallatin', 'Smyrna', 'Lebanon', 'Spring Hill'],
+  /**
+   * Google Business Profile (the Morse Media listing on Google Search and Maps).
+   * profileUrl opens the listing; reviewUrl opens Google's "write a review" box. Send clients
+   * morsemedia.co/review (a redirect in next.config.ts) rather than the long link.
+   */
+  google: {
+    placeId: 'ChIJwYWSDWU8mqURtzOJ7jfqDag',
+    profileUrl: 'https://maps.google.com/?cid=12109592499015201719',
+    reviewUrl: 'https://search.google.com/local/writereview?placeid=ChIJwYWSDWU8mqURtzOJ7jfqDag',
+  },
 } as const;
 
 /** schema.org areaServed list: the base city, the wider region and nearby cities. */

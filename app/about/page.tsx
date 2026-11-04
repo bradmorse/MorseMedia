@@ -26,7 +26,7 @@ export default function AboutPage() {
         <div><p>Morse Media is the studio of Bradley Morse, a Nashville-based photographer and filmmaker. The work began in New England — mountains, coastline, wildlife and forgotten places — and that same patient eye for light, weather and detail now goes into brand shoots, listings, events and films for businesses across Middle Tennessee.</p><p>Client work covers brand and headshot photography, real estate photo and video, event coverage and short-form video — built for retailers, real estate agents, professional firms and local businesses that need strong visuals on a steady schedule.{PRINT_SHOP_ENABLED && ' The print collection turns personal work into lasting pieces for homes, offices and hospitality spaces.'}</p><div className="detail-actions"><Link className="button button--solid" href="/contact?service=Photo%20%2B%20video%20project">Get a quote</Link><Link className="text-link" href="/services">Services &amp; pricing ↗</Link></div></div>
       </section>
       <section className="about-logo-section">
-        <Image src="/images/morse-media-logo.png" alt="Morse Media logo" width={754} height={304} />
+        <Image src="/images/morse-media-logo.png" alt="Morse Media logo" width={754} height={304} sizes="(max-width: 740px) 88vw, 650px" />
         <p>The mountain mark reflects the places that inspire the work: layered landscapes, strong geometry and the horizon line between exploration and home.</p>
       </section>
       <section className="about-values content-section">

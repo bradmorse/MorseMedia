@@ -10,7 +10,7 @@ import { trackEvent } from '@/lib/analytics';
  * A listing's video tour. Until it is clicked only the poster frame loads (a responsive next/image), so the
  * page stays fast; the click swaps in the real player, which starts playing with sound and native controls.
  */
-export default function ListingVideo({ video, listingTitle, placeholder }: { video: Video; listingTitle: string; placeholder?: string }) {
+export default function ListingVideo({ video, listingTitle, placeholder, sizes = '(max-width: 1440px) 100vw, 1360px' }: { video: Video; listingTitle: string; placeholder?: string; sizes?: string }) {
   const [started, setStarted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const length = formatDuration(video.duration);
@@ -39,16 +39,17 @@ export default function ListingVideo({ video, listingTitle, placeholder }: { vid
             onPlay={() => trackEvent('video_start', { video_title: `${listingTitle} — ${video.title}`, video_url: video.src })}
           />
         ) : (
-          <button type="button" className="listing-video__start" onClick={() => setStarted(true)} aria-label={`Play the ${video.title.toLowerCase()} (${length}, with sound)`}>
+          <button type="button" className="listing-video__start" onClick={() => setStarted(true)}>
             <Image
               src={video.poster}
               alt=""
               fill
-              sizes="(max-width: 1440px) 100vw, 1360px"
+              sizes={sizes}
               {...(placeholder ? { placeholder: 'blur' as const, blurDataURL: placeholder } : {})}
             />
             <span className="listing-video__play" aria-hidden="true"><Play /></span>
-            <span className="listing-video__label" aria-hidden="true"><small>Video · {length}</small><strong>{video.title}</strong></span>
+            {/* The visible label is the button's accessible name: "Play Video tour, 1:30, with sound". */}
+            <span className="listing-video__label"><span className="sr-only">Play </span><strong>{video.title}</strong><small><span className="sr-only">, </span>{length}, with sound</small></span>
           </button>
         )}
       </div>

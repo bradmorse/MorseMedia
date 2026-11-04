@@ -35,6 +35,7 @@ export default function ContactPage() {
           </ol>
           <a className="contact-email" href={`mailto:${business.email}`}>{business.email}</a>
           <div className="contact-details"><span>Based in {business.base}</span><span>Serving {business.region}</span><span>Available for travel</span></div>
+          <p className="contact-review">Worked together already? <a href="/review" target="_blank" rel="noopener">Leave a Google review <span className="sr-only">(opens in a new tab)</span>↗</a></p>
         </div>
         <Suspense fallback={<ContactForm />}>
           <ContactFormFromQuery />
