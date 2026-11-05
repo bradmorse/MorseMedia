@@ -60,7 +60,7 @@ export const listings: Listing[] = [
     preview: [8, 17, 18],
     video: {
       src: '/video/barn-home-tour-v1.mp4',
-      poster: '/images/real-estate/barn-home/tour-poster.webp',
+      poster: '/images/real-estate/barn-home/tour-poster-v2.webp', // the video's opening frame
       title: 'Video tour',
       description: 'A 90-second listing video of a barn-style home in the woods: the house from across the pond, the dining room, kitchen and family room, the upstairs, then the patio, grill and pool.',
       width: 1920,

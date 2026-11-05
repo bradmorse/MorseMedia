@@ -31,7 +31,7 @@ const storm = photo('storm-over-lake');
 
 /** Home page, "Recent work": the video tour large, listing photography and personal work beside it. */
 export const homeShowcase: ShowcaseTile[] = [
-  video ? { src: video.poster, alt: 'A barn-style home seen across a pond, the opening shot of a listing video tour', label: 'Listing video tour', meta: `${formatDuration(video.duration)} · Barn-style home`, href: `/portfolio/real-estate#${barn?.slug}`, video: true } : null,
+  video ? { src: video.poster, alt: 'A barn-style home seen past a granite boulder, across a lawn and pond, the opening shot of a listing video tour', label: 'Listing video tour', meta: `${formatDuration(video.duration)} · Barn-style home`, href: `/portfolio/real-estate#${barn?.slug}`, video: true } : null,
   kitchen ? { src: kitchen.src, alt: kitchen.alt, label: 'Listing photography', meta: `${barn?.photos.length} photos · Same visit`, href: `/portfolio/real-estate#${barn?.slug}` } : null,
   mountains ? { src: mountains.image, alt: mountains.alt, label: 'Landscape photography', meta: 'Personal work', href: '/portfolio#personal-work' } : null,
 ].filter(tile);

@@ -51,5 +51,5 @@ export const blurPlaceholders: Record<string, string> = {
   '/images/real-estate/barn-home/22-primary-bedroom.webp': 'data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAQAgCdASoMAAgAA4BaJaACdAD5jrbTjOsgAP7Zq6wuYnn3sjpgrPUKFmxgICXyBMsrxRRKwbJ2XF7+SCB3h4OOLtqCmG2ztLAAAA==',
   '/images/real-estate/barn-home/23-primary-bedroom-2.webp': 'data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADwAQCdASoMAAgAA4BaJbACdAD0jxgam+AA/qKzn6x3bt9/tt7DPniFV7gZ+ke4s2fnROnGBX2FP1j+g9nEQ+evvN817Vj1KAAAAA==',
   '/images/real-estate/barn-home/24-guest-bedroom.webp': 'data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAADQAQCdASoMAAgAA4BaJZwAArJgrC/oAAD+5dUsFC9pWAVl7tkNw81vkDoXR9nsnfHQIAAA',
-  '/images/real-estate/barn-home/tour-poster.webp': 'data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAADwAQCdASoMAAcAA4BaJZQAAusmpdrOqQAA/s3K8GMP+7EfO7vbKrFAUfJAAA==',
+  '/images/real-estate/barn-home/tour-poster-v2.webp': 'data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoMAAcAA4BaJagCdAEOzXu/AAD+7MeeJ3bIcDN8P0FRWKpHyQa4uff3a6gdGsOUEiDAAA==',
 };

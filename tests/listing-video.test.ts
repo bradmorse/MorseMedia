@@ -77,6 +77,17 @@ test('each video has a 16:9 poster frame with a blur placeholder', () => {
   }
 });
 
+test('poster frames are versioned so a new frame is never hidden by the image cache', () => {
+  for (const { slug, video } of withVideo) {
+    if (!video) continue;
+    assert.match(video.poster, /-v\d+\.webp$/, `${slug}: ${video.poster} needs a version in its name (images are cached for a week)`);
+  }
+  // Update 9.5.1: the barn home tour uses its opening frame as the thumbnail; the old 6-second frame is gone.
+  const barn = listings.find((listing) => listing.slug === 'barn-home');
+  assert.equal(barn?.video?.poster, '/images/real-estate/barn-home/tour-poster-v2.webp');
+  assert.ok(!existsSync(publicFile('/images/real-estate/barn-home/tour-poster.webp')), 'old poster should be removed');
+});
+
 test('video durations format for people and for search engines', () => {
   assert.equal(formatDuration(90), '1:30');
   assert.equal(formatDuration(90.39), '1:30');

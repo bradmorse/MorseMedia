@@ -1,3 +1,9 @@
+# Morse Media — Update 9.5.1 (November 5, 2026)
+
+Version 9.5.1. The barn home video tour's thumbnail is now the video's opening frame (the house seen past the granite boulder, across the lawn and pond) instead of the frame at 6 seconds. It shows wherever the tour appears: `/portfolio/real-estate`, `/real-estate`, the home page's "Recent work" band, the VideoObject schema and the video sitemap. New file `/images/real-estate/barn-home/tour-poster-v2.webp` (1920 × 1080, taken from the first frame of `barn-home-tour-v1.mp4`, so the picture doesn't jump when playback starts); the old `tour-poster.webp` is removed. Poster file names now carry a version like the videos, because images are cached for a week.
+
+---
+
 # Morse Media — Update 9.5 (November 4, 2026)
 
 Version 9.5.0. Design refinement: the work comes first, and one consistent heading style.
