@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import './refinements.css';
 import AnalyticsEvents from '@/components/AnalyticsEvents';
@@ -11,6 +12,12 @@ import { areaServedSchema, business } from '@/data/business';
 import { servicePages, servicePath } from '@/data/services';
 import { PRINT_SHOP_ENABLED } from '@/data/features';
 import { GA_ID } from '@/lib/analytics';
+
+// Update 9.6: one typeface for every visitor. Before this the site borrowed whatever the device had —
+// Helvetica Neue on Apple devices, Arial on Windows, Roboto on Android. Inter (the font on the business card
+// and link-preview card) is self-hosted by next/font; the optical-size axis switches large titles to Inter's
+// tighter display cut automatically.
+const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter', axes: ['opsz'] });
 
 const printsNote = PRINT_SHOP_ENABLED ? ' — plus original fine-art prints' : '';
 
@@ -98,7 +105,7 @@ const organizationSchema = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const storeOpen = storeIsOpen();
   return (
-    <html lang="en-US">
+    <html lang="en-US" className={inter.variable}>
       <body>
         <a className="skip-link" href="#main-content">Skip to main content</a>
         <script

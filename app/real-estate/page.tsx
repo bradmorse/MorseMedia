@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { CalendarCheck, Clock, Home, Layers } from 'lucide-react';
 import BeforeAfter from '@/components/BeforeAfter';
@@ -16,12 +17,17 @@ import { areaServedSchema, business } from '@/data/business';
 import { servicePages } from '@/data/services';
 import { breadcrumbs, jsonLd, pageMetadata, siteUrl, startingPrice } from '@/lib/seo';
 import { dotList } from '@/lib/text';
+import { blurProps } from '@/lib/blur';
 
 const packages = servicePackages.filter((p) => p.service === 'real-estate');
 const listing = packages[0];
 const page = servicePages.find((s) => s.slug === 'real-estate');
 /** The first listing with a video tour, shown beside the photo + video package. */
 const tour = listings.find((l) => l.video);
+/** Update 9.6: the header shows a real listing photo (the front of the barn home) beside the copy, at full
+    brightness, instead of grid lines — agents see the work before they read about it. */
+const heroListing = listings[0];
+const heroPhoto = heroListing?.photos[0];
 
 export const metadata = pageMetadata(
   page?.seoTitle || 'Nashville Real Estate Photography & Video',
@@ -60,13 +66,23 @@ export default function RealEstatePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />
 
       <section className="re-hero content-section">
-        <p className="eyebrow">{dotList(['Real estate photo & video', `${business.city} & ${business.region}`])}</p>
-        <h1>Nashville listing photos{' '}<br />that earn the showing.</h1>
-        <p className="detail-lead">Bright, true-to-life interiors, clean exteriors and an optional cinematic walkthrough, delivered ready for the MLS — so your listing looks its best the day it goes live.</p>
-        <p className="re-hero__areas">Serving agents in {business.city}, {areas.filter((a) => !a.neighborhoods).map((a) => a.towns[0]).join(', ')} and nearby towns.</p>
-        <div className="detail-actions">
-          <Link className="button button--solid" href="#book">Book a listing shoot</Link>
-          <Link className="text-link" href="#package">See what’s included ↗</Link>
+        <div className="re-hero__layout">
+          <div className="re-hero__copy">
+            <p className="eyebrow">{dotList(['Real estate photo & video', `${business.city} & ${business.region}`])}</p>
+            <h1>Nashville listing photos that earn the showing.</h1>
+            <p className="detail-lead">Bright, true-to-life interiors, clean exteriors and an optional cinematic walkthrough, delivered ready for the MLS — so your listing looks its best the day it goes live.</p>
+            <p className="re-hero__areas">Serving agents in {business.city}, {areas.filter((a) => !a.neighborhoods).map((a) => a.towns[0]).join(', ')} and nearby towns.</p>
+            <div className="detail-actions">
+              <Link className="button button--solid" href="#book">Book a listing shoot</Link>
+              <Link className="text-link" href="#package">See what’s included ↗</Link>
+            </div>
+          </div>
+          {heroListing && heroPhoto && (
+            <Link className="re-hero__media" href={`/portfolio/real-estate#${heroListing.slug}`}>
+              <Image src={heroPhoto.src} alt={heroPhoto.alt} fill priority sizes="(max-width: 900px) 100vw, 46vw" {...blurProps(heroPhoto.src)} />
+              <span className="re-hero__label"><small>From a listing shoot</small>{heroListing.title} ↗</span>
+            </Link>
+          )}
         </div>
         <ul className="re-stats" aria-label="At a glance">
           <li><Home aria-hidden="true" /><strong>{listing?.startingAt || 'Custom quote'}</strong><span>Homes up to 2,500 sq ft</span></li>

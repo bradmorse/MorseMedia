@@ -27,11 +27,12 @@ test('the header logo fits inside the header line at every size', () => {
   assert.ok((phone * height) / width <= 68 - 24, `phone logo is ${((phone * height) / width).toFixed(1)}px tall`);
 });
 
-test('the footer and home page use the same compact logo as the header', () => {
+test('the footer uses the same compact logo as the header, and the home page does not repeat it', () => {
   const chrome = readFileSync(join(root, 'components', 'SiteChrome.tsx'), 'utf8');
   const footer = chrome.slice(chrome.indexOf('export function Footer'));
   assert.ok(footer.includes(`src="${logo}"`), 'footer does not use the compact logo');
   assert.ok(!chrome.includes('src="/images/morse-media-logo.png"'), 'header or footer still uses the original logo');
+  // Update 9.6: the home "What Morse Media does" band dropped its second large logo (the header logo is just above).
   const home = readFileSync(join(root, 'app', 'page.tsx'), 'utf8');
-  assert.ok(home.includes(`src="${logo}"`), 'home page studio section does not use the compact logo');
+  assert.ok(!home.includes('studio-section__logo'), 'home page studio section still repeats the logo');
 });

@@ -1,3 +1,16 @@
+# Morse Media — Update 9.6 (November 5, 2026)
+
+Version 9.6.0. Design pass: one typeface for everyone, photos instead of decorative backgrounds, calmer details.
+
+- **Typeface**: the site now loads Inter (the font on the business card and link-preview card), self-hosted through `next/font`, so every visitor sees the same type. Before, it used whatever the device had: Helvetica Neue on Apple devices, Arial on Windows, Roboto on Android. Large titles use Inter's display cut automatically.
+- **/real-estate** opens with the front of the barn home beside the copy (full brightness, links to the listing) instead of grid lines. **/services** opens on the barn home's family room ("under one roof") instead of grid lines and rings. The faint grid behind the portfolio header is gone too.
+- **Services**: the "4 services / 1 point of contact / 48 hrs" boxes are replaced by three pieces of real work — listing photography, the video tour and landscape photography — each linking to the portfolio (`servicesStrip` in `data/showcase.ts`).
+- **Home**: "What Morse Media does" is now in the site's green-black palette (it was neutral grey) and no longer repeats the logo under the header. The large "Recent work" video tile crops past the boulder so the house sits whole in the frame (`position` on showcase tiles).
+- **Small text**: menu, buttons and labels go from 9–10 px to 11–11.5 px.
+- `tests/update-9-6.test.ts`.
+
+---
+
 # Morse Media — Update 9.5.1 (November 5, 2026)
 
 Version 9.5.1. The barn home video tour's thumbnail is now the video's opening frame (the house seen past the granite boulder, across the lawn and pond) instead of the frame at 6 seconds. It shows wherever the tour appears: `/portfolio/real-estate`, `/real-estate`, the home page's "Recent work" band, the VideoObject schema and the video sitemap. New file `/images/real-estate/barn-home/tour-poster-v2.webp` (1920 × 1080, taken from the first frame of `barn-home-tour-v1.mp4`, so the picture doesn't jump when playback starts); the old `tour-poster.webp` is removed. Poster file names now carry a version like the videos, because images are cached for a week.

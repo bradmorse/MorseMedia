@@ -30,17 +30,7 @@
     #0d1412;
 }
 
-.hero::before {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  background-size: 72px 72px;
-  content: '';
-  mask-image: linear-gradient(to bottom, black, transparent 94%);
-  pointer-events: none;
-}
+/* Update 9.6: the faint grid-line overlay is gone (it read as a tech template, not a photographer). */
 
 /* Update 9.5: the header shows real work (a photo mosaic) beside the copy instead of decorative rings. */
 .heroGrid {
@@ -91,7 +81,7 @@
 .mosaicLabel small {
   order: -1;
   color: var(--portfolio-muted);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }

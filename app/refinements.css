@@ -142,10 +142,7 @@ html { scroll-padding-top: calc(var(--header-height) + 16px); }
 .service-detail-grid p { color: var(--muted-light); line-height: 1.75; }
 
 /* Real estate landing page */
-.re-hero { padding-top: calc(var(--header-height) + 90px); padding-bottom: 60px; background:
-  linear-gradient(180deg, rgba(13,20,18,0) 0%, var(--bg) 100%),
-  repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 120px),
-  repeating-linear-gradient(0deg, var(--line) 0 1px, transparent 1px 120px); }
+.re-hero { padding-top: calc(var(--header-height) + 90px); padding-bottom: 60px; }
 .re-hero h1 { font-size: clamp(46px, 7vw, 104px); line-height: 1; letter-spacing: -.035em; margin: 24px 0; max-width: 1100px; }
 .re-hero .detail-lead { max-width: 760px; color: var(--muted-light); }
 .re-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin: 56px 0 0; padding: 0; list-style: none; background: var(--line); border: 1px solid var(--line); }
@@ -656,3 +653,41 @@ p { text-wrap: pretty; }
 .about-values article { display: flex; flex-direction: column; }
 .about-values article span { color: var(--accent); font-size: 11px; letter-spacing: .16em; }
 .about-values h3 { margin-top: 26px; }
+
+/* ── Update 9.6 — one typeface, photo headers, calmer details — November 5, 2026 ── */
+
+/* One typeface for every visitor: Inter, self-hosted by next/font (app/layout.tsx). Before this the site used
+   whatever the device had — Helvetica Neue on Apple devices, Arial on Windows, Roboto on Android. The
+   optical-size axis gives large titles Inter's tighter display cut, so they need a little less negative tracking. */
+body { font-family: var(--font-inter), "Helvetica Neue", Arial, sans-serif; font-optical-sizing: auto; letter-spacing: 0; }
+h1, h2 { letter-spacing: -.035em; }
+.hero h1, .page-hero h1, .collection-hero h1, .product-detail h1 { letter-spacing: -.04em; }
+
+/* Small text: menu, buttons and labels were 9–10 px capitals; now 11–11.5 px. */
+.eyebrow, .button, .text-link, .back-link, .home-work__caption small, .studio-services a, .home-proof span,
+.contact-details, .contact-form label, .site-footer h2, .site-footer__bottom, .site-footer__location,
+.case-study-card__meta, .re-addons small, .area-towns strong, .area-focus article > span, .contact-next li::before,
+.re-listing__ranges span, .listing-tile__label small, .listing-lightbox figcaption small, .listing-card__meta,
+.listing-video__label small, .before-after__label, .mobile-menu nav a span { font-size: 11px; }
+.studio-services__from { font-size: 11px !important; }
+.desktop-nav a, .header-cta { font-size: 11.5px; letter-spacing: .16em; }
+.hero__caption { font-size: 10px; }
+
+/* Home "What Morse Media does": the same green-black family as the rest of the site (it was a neutral grey),
+   and no second large logo right under the header logo. */
+.studio-section { background: var(--panel); }
+@media (min-width: 901px) { .studio-section { grid-template-columns: minmax(0, 1fr); } }
+
+/* /real-estate header: copy beside a real listing photo at full brightness, in place of the grid-line background. */
+.re-hero__layout { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(36px, 5vw, 88px); align-items: center; }
+.re-hero h1 { max-width: none; font-size: clamp(44px, 5.2vw, 84px); line-height: .98; }
+.re-hero__media { position: relative; display: block; overflow: hidden; aspect-ratio: 5 / 4; background: var(--panel); color: var(--text); }
+.re-hero__media img { object-fit: cover; object-position: 52% 50%; transition: transform .6s ease; }
+.re-hero__label { position: absolute; inset: auto 0 0; display: flex; flex-direction: column; gap: 4px; padding: 48px 22px 18px; background: linear-gradient(0deg, rgba(8, 10, 11, .72), transparent); font-size: 15px; }
+.re-hero__label small { color: var(--muted-light); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+.re-hero__media:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+@media (hover: hover) { .re-hero__media:hover img { transform: scale(1.02); } }
+@media (max-width: 900px) {
+  .re-hero__layout { grid-template-columns: 1fr; }
+  .re-hero__media { aspect-ratio: 3 / 2; }
+}

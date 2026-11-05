@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { servicePages, servicePath } from '@/data/services';
 import { servicePackages, showreel, testimonials } from '@/data/proof';
@@ -7,6 +8,13 @@ import { ArrowRight, CalendarDays, Camera, Check, Clapperboard, Home, Layers } f
 import { breadcrumbs, jsonLd, pageMetadata, siteUrl } from '@/lib/seo';
 import styles from './services.module.css';
 import { dotList } from '@/lib/text';
+import { blurProps } from '@/lib/blur';
+import { listings } from '@/data/real-estate-portfolio';
+import { servicesStrip } from '@/data/showcase';
+
+/** Update 9.6: the header opens on real work instead of grid lines and rings — a room "under one roof"
+    (vaulted ceiling and beams) from the barn home listing. */
+const heroPhoto = listings.find((l) => l.slug === 'barn-home')?.photos.find((p) => p.src.endsWith('18-family-room.webp'));
 
 export const metadata = pageMetadata(
   'Photography & Video Services in Nashville',
@@ -109,8 +117,8 @@ export default function ServicesPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd([serviceSchema, faqSchema, breadcrumbs([{ name: 'Home', path: '/' }, { name: 'Services', path: '/services' }])]) }} />
 
       <section className={styles.hero}>
-        <div className={styles.heroGrid} aria-hidden="true" />
-        <div className={styles.heroOrb} aria-hidden="true" />
+        {heroPhoto && <Image className={styles.heroImage} src={heroPhoto.src} alt={heroPhoto.alt} fill priority sizes="100vw" {...blurProps(heroPhoto.src)} />}
+        <div className={styles.heroShade} aria-hidden="true" />
         <div className={styles.container}>
           <p className={styles.eyebrow}>{dotList(['Photography & video services', business.baseShort])}</p>
           <h1>Nashville photography and video, under one roof.</h1>
@@ -131,10 +139,17 @@ export default function ServicesPage() {
             <div>
               <h2>One crew for stills and motion.</h2>
               <p>When photography and video are planned together, the shoot runs faster, the look stays consistent and every asset is more useful. Book a single service, combine them in one visit, or set up a monthly rhythm.</p>
-              <div className={styles.overviewStats}>
-                <div><strong>{servicePages.length}</strong><span>Photo and video services</span></div>
-                <div><strong>1</strong><span>Point of contact from plan to delivery</span></div>
-                <div><strong>48 hrs</strong><span>Real estate photo delivery</span></div>
+              <div className={styles.overviewPhotos}>
+                {servicesStrip.map((tile) => (
+                  <Link className={styles.overviewPhoto} href={tile.href} key={tile.src}>
+                    <span className={styles.overviewPhotoImage}>
+                      <Image src={tile.src} alt={tile.alt} fill sizes="(max-width: 820px) 33vw, 22vw" style={tile.position ? { objectPosition: tile.position } : undefined} {...blurProps(tile.src)} />
+                      {tile.video && <span className={styles.overviewPlay} aria-hidden="true" />}
+                    </span>
+                    <small>{tile.meta}</small>
+                    <strong>{tile.label}</strong>
+                  </Link>
+                ))}
               </div>
             </div>
           </div>

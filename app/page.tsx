@@ -86,7 +86,6 @@ export default function HomePage() {
       </section>
 
       <section className="studio-section">
-        <div className="studio-section__logo"><Image src="/images/morse-media-logo-inline.png" alt="" width={210} height={57} /></div>
         <div className="studio-section__intro">
           <p className="eyebrow">What Morse Media does</p>
           <h2>Capturing moments.<br />Telling stories.</h2>
@@ -119,7 +118,7 @@ export default function HomePage() {
             {homeShowcase.map((tile, index) => (
               <Link className={index === 0 ? 'home-work__tile home-work__tile--feature' : 'home-work__tile'} href={tile.href} key={tile.src}>
                 <span className="home-work__image">
-                  <Image src={tile.src} alt={tile.alt} fill sizes={index === 0 ? '(max-width: 900px) 100vw, 60vw' : '(max-width: 900px) 100vw, 34vw'} {...blurProps(tile.src)} />
+                  <Image src={tile.src} alt={tile.alt} fill sizes={index === 0 ? '(max-width: 900px) 100vw, 60vw' : '(max-width: 900px) 100vw, 34vw'} style={tile.position ? { objectPosition: tile.position } : undefined} {...blurProps(tile.src)} />
                   {tile.video && <span className="home-work__play" aria-hidden="true"><Play /></span>}
                 </span>
                 <span className="home-work__caption"><small>{tile.meta}</small><strong>{tile.label}</strong><ArrowRight aria-hidden="true" /></span>
