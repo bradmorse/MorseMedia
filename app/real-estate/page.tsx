@@ -131,7 +131,7 @@ export default function RealEstatePage() {
         </section>
       )}
 
-      <ListingCards listings={listings} eyebrow="Real estate portfolio" heading="See a full listing shoot." intro="Exteriors, outdoor living and every room, delivered in posting order. Open the listing to see all of the photos." />
+      <ListingCards listings={listings} eyebrow="Real estate portfolio" heading="See real listing shoots." intro="Exteriors, outdoor living and every room, delivered in posting order. Open a listing to see all of the photos." />
 
       {comparisons.length > 0 && (
         <section className="content-section re-compare">

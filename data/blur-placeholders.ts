@@ -52,4 +52,13 @@ export const blurPlaceholders: Record<string, string> = {
   '/images/real-estate/barn-home/23-primary-bedroom-2.webp': 'data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADwAQCdASoMAAgAA4BaJbACdAD0jxgam+AA/qKzn6x3bt9/tt7DPniFV7gZ+ke4s2fnROnGBX2FP1j+g9nEQ+evvN817Vj1KAAAAA==',
   '/images/real-estate/barn-home/24-guest-bedroom.webp': 'data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAADQAQCdASoMAAgAA4BaJZwAArJgrC/oAAD+5dUsFC9pWAVl7tkNw81vkDoXR9nsnfHQIAAA',
   '/images/real-estate/barn-home/tour-poster-v2.webp': 'data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADQAQCdASoMAAcAA4BaJagCdAEOzXu/AAD+7MeeJ3bIcDN8P0FRWKpHyQa4uff3a6gdGsOUEiDAAA==',
+  '/images/real-estate/farmhouse-barn/01-exterior-front.webp': 'data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAACwAQCdASoMAAgAA4BaJZAAAln32EIgAP6Ru76C3seRBFpgc+IRpu04f0JfOR08RdrxwtkcBdR/xcidYdOSAAAA',
+  '/images/real-estate/farmhouse-barn/02-exterior-front-porch.webp': 'data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAAAwAgCdASoMAAgAA4BaJZACdH8AGESMLG5IAAD+7Y3vdw9/sA17QYjafDmcbbLIY3vKm+zJLj9uD9uN1hHbnWO3Ho34AAAA',
+  '/images/real-estate/farmhouse-barn/03-exterior-shingled-wing.webp': 'data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADQAQCdASoMAAgAA4BaJQBOgCEtRyOeAAD+9R5Brxmuyq5Hc6R/1UypzsliMeVpXXMIHlpLDHeRy8Y6lDnOFsDSMkMgAA==',
+  '/images/real-estate/farmhouse-barn/04-exterior-back-corner.webp': 'data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADQAQCdASoMAAgAA4BaJYgC7AEOZ62EwAD+7bNfsdnAAiOP0VVv8Ukrz919X1T4llBKRmxiHk6I3nphPqf+b6yjtwAAAA==',
+  '/images/real-estate/farmhouse-barn/05-exterior-back.webp': 'data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAACwAQCdASoMAAgAA4BaJYgCdAEOqNgAAP7tUYTCR6LXBkmjdYhTXjEhvh6VAfb/KZyjkNqzt2O3HD3KwAA=',
+  '/images/real-estate/farmhouse-barn/06-exterior-back-to-barn.webp': 'data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAAAQAgCdASoMAAgAA4BaJYgC7AELY1QVE4LwAP7x2vb2SVB2SH58aJSzBGCJzgp0Qihs55OrO3Y7wIAA',
+  '/images/real-estate/farmhouse-barn/07-exterior-barn-gable.webp': 'data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAACwAQCdASoMAAgAA4BaJQAAOmKJXHgIAP7Xu6aTZnSlWBGh3AqDxT4dOeHY6k+r3aNe8ObfgIe6S9L2No8MOAAA',
+  '/images/real-estate/farmhouse-barn/08-exterior-barn-roadside.webp': 'data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADQAQCdASoMAAgAA4BaJQBdgCPgbnApUAD+tsGz9vz5KktqMlfFnqntQ5eTUtJhiL+iERytRFNBZrMAAAA=',
+  '/images/real-estate/farmhouse-barn/09-exterior-backyard.webp': 'data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADQAQCdASoMAAgAA4BaJQBdgCHejLxu4AD+hBq/j/YFlN9PFu7L2mKCn0fsG+3gVpIrbkuTIycptfUY4NEAAA==',
 };

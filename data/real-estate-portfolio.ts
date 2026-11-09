@@ -43,14 +43,18 @@ export type Listing = {
 
 export const listingGroups: ListingGroup[] = ['Exterior', 'Outdoor living', 'Interior'];
 
-const barn = (file: string, caption: string, group: ListingGroup, alt: string, height = 1365): ListingPhoto => ({
-  src: `/images/real-estate/barn-home/${file}.webp`,
+/** Photo helper for one listing folder: public/images/real-estate/<slug>/<file>.webp, 2048 px wide. */
+const photosFrom = (slug: string) => (file: string, caption: string, group: ListingGroup, alt: string, height = 1365): ListingPhoto => ({
+  src: `/images/real-estate/${slug}/${file}.webp`,
   alt,
   caption,
   group,
   width: 2048,
   height,
 });
+
+const barn = photosFrom('barn-home');
+const farmhouse = photosFrom('farmhouse-barn');
 
 export const listings: Listing[] = [
   {
@@ -93,6 +97,24 @@ export const listings: Listing[] = [
       barn('22-primary-bedroom', 'Primary bedroom', 'Interior', 'Bedroom with warm rust walls, a sleigh bed, matching lamps and a large floral print above the bed'),
       barn('23-primary-bedroom-2', 'Primary bedroom', 'Interior', 'Bedroom with plum walls, a wide curtained window, house plants and a glass-front cabinet'),
       barn('24-guest-bedroom', 'Guest bedroom', 'Interior', 'Bedroom with a floral quilt, a window onto the woods and a large vintage forest print'),
+    ],
+  },
+  {
+    // Update 9.7 (November 9, 2026): exteriors-only shoot, walked around the property from the front.
+    slug: 'farmhouse-barn',
+    title: 'Farmhouse with an attached barn',
+    summary: 'An exteriors-only shoot, all the way around the property: the covered front porch, the cedar-shingled wing, the attached barn above its granite wall and the fenced backyard.',
+    preview: [2, 3, 6],
+    photos: [
+      farmhouse('01-exterior-front', 'Front of the property', 'Exterior', 'Front of a white farmhouse with two dormers and a covered porch, joined by a cedar-shingled ell and an open carport to a large white barn, seen across the lawn'),
+      farmhouse('02-exterior-front-porch', 'Front porch', 'Exterior', 'Covered front porch with white railings and cedar-shingled walls under two dormers, the attached barn behind and a white rail fence in front'),
+      farmhouse('03-exterior-shingled-wing', 'Shingled wing', 'Exterior', 'Cedar-shingled end of the house with a sage-green door between two windows, a brick chimney, granite posts and a white rail fence', 1360),
+      farmhouse('04-exterior-back-corner', 'Back corner', 'Exterior', 'Back of the farmhouse with a raised covered porch and stairs, a fenced yard and the attached barn behind, seen past a white rail fence'),
+      farmhouse('05-exterior-back', 'Back of the home', 'Exterior', 'Back of the house, ell and barn in one long line: the covered porch, French doors, an open carport and a barn door with a row of windows'),
+      farmhouse('06-exterior-back-to-barn', 'House to barn', 'Exterior', 'The farmhouse and its attached barn seen from the field, with a fenced yard, a lamp post and tall bare maples under an overcast sky'),
+      farmhouse('07-exterior-barn-gable', 'Barn gable end', 'Exterior', 'Gable end of the white clapboard barn with a tall loft window, a paned barn door on the lower level and a granite wall beside it'),
+      farmhouse('08-exterior-barn-roadside', 'Barn from the road', 'Exterior', 'Long side of the barn above a dry-laid granite wall along the road, with lower-level doors and gooseneck lights, the house beyond'),
+      farmhouse('09-exterior-backyard', 'Backyard', 'Exterior', 'Fenced backyard lawn sloping down to a stone wall, an open field and mixed woods of pine, birch and maple'),
     ],
   },
 ];
