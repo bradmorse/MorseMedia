@@ -165,7 +165,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      <ListingCards listings={listings} eyebrow="Real estate portfolio" heading="Homes, inside and out." intro="Complete listing shoots, shown in the order an agent would post them: exteriors first, then outdoor living and the interior walkthrough." />
+      <ListingCards listings={listings} eyebrow="Real estate portfolio" heading="Homes, inside and out." intro="Listing shoots, shown in the order an agent would post them: exteriors first, then outdoor living and the interior walkthrough." />
 
       <section className="content-section portfolio-personal" id="personal-work">
         <div className="section-heading"><div><p className="eyebrow">Personal photography</p><h2>The eye behind the work.</h2></div>{PRINT_SHOP_ENABLED && <Link className="text-link" href="/photography">Explore the archive ↗</Link>}</div>

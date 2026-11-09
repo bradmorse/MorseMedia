@@ -1,3 +1,15 @@
+# Morse Media — Update 9.7 (November 9, 2026)
+
+Version 9.7.0. A second real estate listing: **Farmhouse with an attached barn**, an exteriors-only shoot of 9 photos.
+
+- **/portfolio/real-estate** shows it after the barn home (`#farmhouse-barn`): the full front of the property leads, then a walk around the house and barn — front porch, cedar-shingled wing, back of the home, house to barn, barn gable end, barn from the road — and the fenced backyard. Same grid and full-screen viewer as the barn home. No town or address shown.
+- **Preview cards**: `/portfolio` and `/real-estate` now show both listings (lead photo plus the porch, shingled wing and house-to-barn shots). Card copy no longer assumes a single listing ("See real listing shoots.", "Listing shoots, shown in the order an agent would post them…").
+- The barn home stays first, so the `/real-estate` header photo, the video tour and the home and services tiles are unchanged.
+- Photos: `public/images/real-estate/farmhouse-barn/01-…09-….webp` (2048 px wide, WebP q84, no camera metadata). Listing in `data/real-estate-portfolio.ts` (new `photosFrom(slug)` helper); blur placeholders regenerated; sitemap now lists 33 listing photos.
+- `tests/update-9-7.test.ts`.
+
+---
+
 # Morse Media — Update 9.6 (November 5, 2026)
 
 Version 9.6.0. Design pass: one typeface for everyone, photos instead of decorative backgrounds, calmer details.
